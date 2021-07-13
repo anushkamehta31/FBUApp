@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">FBUApp</string>
+    <string name="password">password</string>
+    <string name="login">Login</string>
+    <string name="username">username</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="current_location">current location</string>
+    <string name="log_out">Log Out</string>
+    <string name="api_key">AIzaSyCoN3IkXspHi5ECM5gARwI9C6jlAIGhRTw</string>
+</resources>
