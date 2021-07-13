@@ -43,5 +43,7 @@ dependencies {
     implementation "com.github.parse-community.Parse-SDK-Android:parse:1.18.5"
     implementation 'com.google.android.libraries.places:places:2.4.0'
     implementation "androidx.cardview:cardview:1.0.0"
+    implementation "androidx.appcompat:appcompat:${appCompatVersion}"
+    implementation "com.google.android.material:material:${designSupportVersion}"
 
 }

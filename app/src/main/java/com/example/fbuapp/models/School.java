@@ -1,32 +1,27 @@
 package com.example.fbuapp.models;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.parse.Parse;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.SaveCallback;
 
-@ParseClassName("Location")
-public class Location extends ParseObject {
+@ParseClassName("School")
+public class School extends ParseObject {
 
     LatLng location;
     String name;
-    String address;
     public static final String KEY_LOCATION = "location";
     public static final String KEY_NAME = "name";
-    public static final String KEY_ADDRESS = "address";
-    public static final String KEY_OBJECT_ID = "objectId";
-    public static final String TAG = "Location";
+    public static final String TAG = "School";
 
-    public Location() {
+    public School() {
+
     }
 
-    // Need to define getters and setters for each Key that we have defined (names of Parse columns)
     public LatLng getLocation() {
         return location;
     }
@@ -45,21 +40,8 @@ public class Location extends ParseObject {
         this.name = name;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        put(KEY_ADDRESS, address);
-        this.address = address;
-    }
-
-    public String getID() {
-        return getString(KEY_OBJECT_ID);
-    }
-
-    public static void saveLocation(Location location) {
-        location.saveInBackground(new SaveCallback() {
+    public static void saveSchool(School school) {
+        school.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
                 if (e != null) {
@@ -70,5 +52,4 @@ public class Location extends ParseObject {
             }
         });
     }
-
 }

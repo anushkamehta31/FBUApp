@@ -8,11 +8,13 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.fbuapp.databinding.ActivityMainBinding;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.ParseUser;
 
 public class MainActivity extends AppCompatActivity {
 
     private Button btnLogout;
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
         // layout of activity is stored in root property
         View view = binding.getRoot();
         setContentView(view);
+
+        bottomNavigationView = binding.bottomNavigation;
 
         btnLogout = binding.btnLogout;
         btnLogout.setOnClickListener(new View.OnClickListener() {
