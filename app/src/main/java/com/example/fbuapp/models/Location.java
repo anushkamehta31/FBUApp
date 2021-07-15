@@ -1,5 +1,6 @@
 package com.example.fbuapp.models;
 
+import android.os.Parcelable;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -12,7 +13,7 @@ import com.parse.ParseObject;
 import com.parse.SaveCallback;
 
 @ParseClassName("Location")
-public class Location extends ParseObject {
+public class Location extends ParseObject implements Parcelable {
 
     LatLng location;
     String name;

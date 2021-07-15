@@ -1,2 +1,4 @@
 rootProject.name = "FBUApp"
 include ':app'
+include ':mobilertc'
+include ':commonlib'

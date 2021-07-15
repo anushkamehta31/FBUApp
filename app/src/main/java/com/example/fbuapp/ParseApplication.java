@@ -2,7 +2,9 @@ package com.example.fbuapp;
 
 import android.app.Application;
 
+import com.example.fbuapp.models.Group;
 import com.example.fbuapp.models.Location;
+import com.example.fbuapp.models.Resources;
 import com.example.fbuapp.models.School;
 import com.parse.Parse;
 import com.parse.ParseObject;
@@ -16,6 +18,8 @@ public class ParseApplication extends Application {
         // Register your parse models
         ParseObject.registerSubclass(Location.class);
         ParseObject.registerSubclass(School.class);
+        ParseObject.registerSubclass(Group.class);
+        ParseObject.registerSubclass(Resources.class);
 
         Parse.initialize(new Parse.Configuration.Builder(this)
                 .applicationId("NNqUGawKPZBgeFxVQR6DPrL7PGO8jRc1srjtJcC5")

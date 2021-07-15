@@ -1,5 +1,6 @@
 package com.example.fbuapp.models;
 
+import android.os.Parcelable;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -10,7 +11,7 @@ import com.parse.ParseObject;
 import com.parse.SaveCallback;
 
 @ParseClassName("School")
-public class School extends ParseObject {
+public class School extends ParseObject implements Parcelable {
 
     LatLng location;
     String name;
