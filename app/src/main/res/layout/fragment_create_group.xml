@@ -14,69 +14,67 @@
         android:layout_height="wrap_content"
         app:singleSelection="true"
         android:layout_margin="15dp">
-
         <com.google.android.material.chip.Chip
             android:id="@+id/chipVirtual"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/CustomChipStyle"
-            android:text="Virtual"/>
+            android:text="@string/virtual" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chipInPerson"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/CustomChipStyle"
-            android:text="In-Person"/>
+            android:text="@string/in_person"/>
 
     </com.google.android.material.chip.ChipGroup>
 
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/txtLayout"
+    <TextView
+        android:id="@+id/tvLoc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_below="@+id/cgGroupType"
-        app:counterEnabled="true"
-        app:counterMaxLength="200">
+        android:layout_below="@id/cgGroupType"
+        android:hint="@string/meeting_location"
+        android:padding="5dp"
+        android:layout_margin="15dp"
+        android:textSize="12sp"
+        />
 
-        <EditText
-            android:id="@+id/etCompose"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="5dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="0dp"
-            android:layout_marginRight="10dp"
-            android:ems="10"
-            android:gravity="start|top"
-            android:hint="Enter study topics (min. 3)"
-            android:inputType="textMultiLine"
-            android:minLines="5" />
 
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/cgUsers"
+    <com.hootsuite.nachos.NachoTextView
+        android:id="@+id/nTopics"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvLoc"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="15dp"
+        android:hint="@string/enter_study_topics_min_3"
+        android:textSize="12sp"
+        app:chipTextColor="#4E99F4" />
+
+    <com.hootsuite.nachos.NachoTextView
+        android:id="@+id/nAdditionalTopics"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/nTopics"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="15dp"
+        android:hint="@string/additional_topics_class_names_i_e_chem101"
+        android:textSize="12sp"
+        app:chipTextColor="#4E99F4" />
 
     <Button
         android:id="@+id/btnTweet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/txtLayout"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="7dp"
+        android:layout_below="@+id/nAdditionalTopics"
+        android:layout_centerInParent="true"
+        android:layout_margin="15dp"
         android:backgroundTint="#1494CD"
         android:fontFamily="@font/roboto"
         android:text="Create Group"

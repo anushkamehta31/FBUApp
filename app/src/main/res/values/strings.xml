@@ -21,4 +21,141 @@
     <string name="in_person">In-Person</string>
     <string name="zoom">zoom.us</string>
     <string name="create_group">Create Group</string>
+    <string name="meeting_location">Meeting Location</string>
+    <string name="enter_study_topics_min_3">Enter study topics (min. 3)</string>
+    <string name="additional_topics_class_names_i_e_chem101">Additional topics/class names (i.e. CHEM101)</string>
+
+    <string-array name="topics_array">
+        <item>Accounting</item>
+        <item>Business law</item>
+        <item>Business management</item>
+        <item>Consumer education</item>
+        <item>Entrepreneurship</item>
+        <item>Business</item>
+        <item>Marketing</item>
+        <item>Finance</item>
+        <item>Animation</item>
+        <item>App Development</item>
+        <item>Computer Science</item>
+        <item>Computer Hardware</item>
+        <item>Film Production</item>
+        <item>Graphic Design</item>
+        <item>Keyboarding</item>
+        <item>Media Technology</item>
+        <item>Programming</item>
+        <item>Computer Engineering</item>
+        <item>Music</item>
+        <item>Video Game Design</item>
+        <item>Web Development</item>
+        <item>American Literature</item>
+        <item>British Literature</item>
+        <item>Contemporary literature</item>
+        <item>Creative writing</item>
+        <item>Communication skills</item>
+        <item>Debate</item>
+        <item>English language and composition</item>
+        <item>Humanities</item>
+        <item>Journalism</item>
+        <item>Poetry</item>
+        <item>Rhetoric</item>
+        <item>Shakespeare</item>
+        <item>Technical writing</item>
+        <item>Written and oral communication</item>
+        <item>World literature</item>
+        <item>Chemistry of foods</item>
+        <item>CPR training</item>
+        <item>Culinary arts</item>
+        <item>Fashion and retail merchandising</item>
+        <item>Fashion construction</item>
+        <item>Nutrition</item>
+        <item>American Sign Language</item>
+        <item>Ancient Greek</item>
+        <item>Arabic</item>
+        <item>Chinese</item>
+        <item>French</item>
+        <item>German</item>
+        <item>Hebrew</item>
+        <item>Italian</item>
+        <item>Japanese</item>
+        <item>Korean</item>
+        <item>Latin</item>
+        <item>Spanish</item>
+        <item>Algebra</item>
+        <item>Calculus</item>
+        <item>Computer math</item>
+        <item>Geometry</item>
+        <item>Integrated math</item>
+        <item>Multivariable calculus</item>
+        <item>Statistics</item>
+        <item>Trigonometry</item>
+        <item>Probability</item>
+        <item>Choir</item>
+        <item>Dance</item>
+        <item>Gymnastics</item>
+        <item>Health</item>
+        <item>Agriculture</item>
+        <item>Astronomy</item>
+        <item>Biology</item>
+        <item>Botany</item>
+        <item>Chemistry</item>
+        <item>Earth science</item>
+        <item>Electronics</item>
+        <item>Environmental science</item>
+        <item>Environmental studies</item>
+        <item>Forensic science</item>
+        <item>Geology</item>
+        <item>Marine biology</item>
+        <item>Aerospace Engineering</item>
+        <item>Oceanography</item>
+        <item>Physical science</item>
+        <item>Physics</item>
+        <item>Zoology</item>
+        <item>Cultural anthropology</item>
+        <item>Current events</item>
+        <item>European history</item>
+        <item>Geography</item>
+        <item>Global studies</item>
+        <item>Human geography</item>
+        <item>International relations</item>
+        <item>Law</item>
+        <item>Macroeconomics</item>
+        <item>Microeconomics</item>
+        <item>Modern world studies</item>
+        <item>Physical anthropology</item>
+        <item>Political studies</item>
+        <item>Psychology</item>
+        <item>Religious studies</item>
+        <item>Sociology</item>
+        <item>US government</item>
+        <item>US history</item>
+        <item>Women’s studies</item>
+        <item>World history</item>
+        <item>World politics</item>
+        <item>World religions</item>
+        <item>Drawing</item>
+        <item>Photography</item>
+        <item>Art</item>
+        <item>Printmaking</item>
+        <item>Sculpture</item>
+        <item>Research</item>
+        <item>Art History</item>
+        <item>Music Theory</item>
+        <item>Aerospace Engineering</item>
+        <item>Aeronautical</item>
+        <item>Agriculture Engineering</item>
+        <item>Biomedical Engineering</item>
+        <item>Biochemical Engineering</item>
+        <item>Electrical Engineering</item>
+        <item>Engineering</item>
+        <item>Computer Software</item>
+        <item>Choir</item>
+        <item>Accounting Technician</item>
+        <item>Business Administration and Management, General</item>
+        <item>Hotel/Motel Management</item>
+        <item>Human Resources Development/Training</item>
+        <item>Human Resources Management</item>
+        <item>International Business Management</item>
+        <item>Labor/Industrial Relations</item>
+    </string-array>
+
 </resources>
