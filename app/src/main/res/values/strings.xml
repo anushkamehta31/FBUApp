@@ -24,6 +24,9 @@
     <string name="meeting_location">Meeting Location</string>
     <string name="enter_study_topics_min_3">Enter study topics (min. 3)</string>
     <string name="additional_topics_class_names_i_e_chem101">Additional topics/class names (i.e. CHEM101)</string>
+    <string name="create_your_group_below">Create your group below</string>
+    <string name="school">School</string>
+    <string name="group_name">Group Name</string>
 
     <string-array name="topics_array">
         <item>Accounting</item>

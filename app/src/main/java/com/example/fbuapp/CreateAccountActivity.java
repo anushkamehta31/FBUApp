@@ -165,7 +165,7 @@ public class CreateAccountActivity extends AppCompatActivity {
     }
 
 
-    private void launchPlaceFinder(int autocompleteRequestCode) {
+    public void launchPlaceFinder(int autocompleteRequestCode) {
         // Set the fields to specify which types of place data to
         // return after the user has made a selection.
         List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME,
