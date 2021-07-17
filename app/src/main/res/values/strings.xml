@@ -27,8 +27,10 @@
     <string name="create_your_group_below">Create your group below</string>
     <string name="school">School</string>
     <string name="group_name">Group Name</string>
-    <string name="jwt_token">eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOm51bGwsImlzcyI6IkVYNFhyU1JkVFRxODdna2h6R2hCN3ciLCJleHAiOjE2MjY0ODIzODAsImlhdCI6MTYyNjQ3Njk4MX0.br9IGOEYJ1rnS4k2uP9AwAkhSUul_y9AQbNRad_d7jc</string>
+    <string name="jwt_token">eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOm51bGwsImlzcyI6IkVYNFhyU1JkVFRxODdna2h6R2hCN3ciLCJleHAiOjE2NjM3NzY3MjAsImlhdCI6MTYyNjU0OTU4Mn0.75GQtzra3VKKfp5-tpkn54kQ0Hzeydkp4Gdd_mTPg3c</string>
     <string name="endPoint">https://api.zoom.us/v2/users/anushkamehta311@gmail.com/meetings</string>
+    <string name="zoom_JWT_key">EX4XrSRdTTq87gkhzGhB7w</string>
+    <string name="zoom_JWT_secret_key">qwoZeALzrTvGaoTAGXnvi1lu1zdeHCIqdZa2</string>
 
     <string-array name="topics_array">
         <item>Accounting</item>

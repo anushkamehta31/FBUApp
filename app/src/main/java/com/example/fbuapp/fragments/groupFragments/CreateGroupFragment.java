@@ -1,14 +1,14 @@
 package com.example.fbuapp.fragments.groupFragments;
 
-import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
+import org.json.JSONObject;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.FragmentManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,19 +22,28 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpClientStack;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.codepath.asynchttpclient.AsyncHttpClient;
+import com.codepath.asynchttpclient.RequestHeaders;
+import com.codepath.asynchttpclient.RequestParams;
+import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
+import com.codepath.asynchttpclient.callback.TextHttpResponseHandler;
 import com.example.fbuapp.MainActivity;
 import com.example.fbuapp.R;
 import com.example.fbuapp.databinding.FragmentCreateGroupBinding;
+
 import com.example.fbuapp.models.Group;
 import com.example.fbuapp.models.GroupMappings;
 import com.example.fbuapp.models.Location;
 import com.example.fbuapp.models.School;
-import com.github.informramiz.daypickerlibrary.views.DayPickerDialog;
-import com.github.informramiz.daypickerlibrary.views.DayPickerView;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
@@ -55,12 +64,19 @@ import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+import com.parse.http.ParseHttpRequest;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.sql.Time;
+import java.security.Key;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -70,17 +86,21 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.UUID;
 
-import ca.antonious.materialdaypicker.MaterialDayPicker;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
+import okhttp3.Headers;
+import okhttp3.Interceptor;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
-import us.zoom.sdk.AccountService;
-import us.zoom.sdk.MeetingItem;
-import us.zoom.sdk.ZoomSDK;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import okhttp3.internal.http.HttpHeaders;
+
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
-import static java.net.Proxy.Type.HTTP;
+import org.json.JSONObject;
 
 
 public class CreateGroupFragment extends DialogFragment {
@@ -114,6 +134,9 @@ public class CreateGroupFragment extends DialogFragment {
     CreateGroupFragment dialogFragment;
     FragmentCreateGroupBinding binding;
     Group group;
+    public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
+
+    OkHttpClient client = new OkHttpClient();
 
 
     public CreateGroupFragment() {
@@ -467,7 +490,7 @@ public class CreateGroupFragment extends DialogFragment {
                     "Group type not chosen", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (groupName.getText().toString().equals("") || school == null || meetingLocation == null) {
+        if (groupName.getText().toString().equals("") || school == null || (cInPerson.isChecked() && meetingLocation == null)) {
             Toast.makeText(getContext(),
                     "Missing fields", Toast.LENGTH_SHORT).show();
             return;
@@ -489,7 +512,7 @@ public class CreateGroupFragment extends DialogFragment {
         if (cVirtual.isChecked()) {
             try {
                 generateZoomRoom();
-            } catch (IOException e) {
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
             group.setMeetingID(meetingID);
@@ -546,18 +569,53 @@ public class CreateGroupFragment extends DialogFragment {
         mappings.setGroup(group);
         mappings.setIsMember(true);
         mappings.setUser(ParseUser.getCurrentUser());
+        mappings.save();
     }
 
 
 
-    // TODO: create Zoom room and set password and meetingID
-    private void generateZoomRoom() throws IOException {
-        String token = getString(R.string.jwt_token);
-        URL endPoint = new URL(getString(R.string.endPoint));
+    // Create Zoom room and set password and meetingID
+    private void generateZoomRoom() throws JSONException {
 
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+        RequestHeaders headers = new RequestHeaders();
+        params.put("userId", "anushkamehta311@gmail.com");
+        params.put("type", 3);
+        headers.put("Authorization", "Bearer " + getString(R.string.jwt_token));
+        headers.put("Content-Type", "application/json");
+        // Must create the request body
+        String body = new StringBuilder().append("{\n").append("    \"topic\": \"general meeting\",\n").append("    \"type\": \"3\",\n").append("    \"settings\": {\n").append("        \"join_before_host\": \"true\"\n").append("    }\n").append("}").toString();
+        client.post(getString(R.string.endPoint), headers, params, body, new JsonHttpResponseHandler() {
 
-        HttpURLConnection urlConnection = (HttpURLConnection) endPoint.openConnection();
-        urlConnection.setDoOutput(true); //Triggers post
-        urlConnection.setRequestProperty("auth", token);
+            @Override
+            public void onSuccess(int statusCode, Headers headers, JsonHttpResponseHandler.JSON json) {
+                Toast.makeText(getContext(), "Success!", Toast.LENGTH_LONG).show();
+                JSONObject jsonObject = json.jsonObject;
+                // Get meeting id and password and store
+                long id = 0;
+                try {
+                    id = jsonObject.getLong("id");
+                    meetingID = String.valueOf(id);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    password = jsonObject.getString("password");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Log.i(TAG, "meetingID: "+meetingID);
+                Log.i(TAG, "ID:" + id);
+                Log.i(TAG, "Password: " + password);
+            }
+
+            @Override
+            public void onFailure(int statusCode, @Nullable Headers headers, String errorResponse, @Nullable Throwable throwable) {
+                Toast.makeText(getContext(), errorResponse, Toast.LENGTH_LONG).show();
+            }
+        });
     }
+
+
 }
