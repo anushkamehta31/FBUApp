@@ -16,17 +16,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.fbuapp.MainActivity;
 import com.example.fbuapp.R;
 import com.example.fbuapp.databinding.FragmentCreateGroupBinding;
+import com.example.fbuapp.models.Group;
+import com.example.fbuapp.models.GroupMappings;
 import com.example.fbuapp.models.Location;
 import com.example.fbuapp.models.School;
+import com.github.informramiz.daypickerlibrary.views.DayPickerDialog;
+import com.github.informramiz.daypickerlibrary.views.DayPickerView;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.Places;
@@ -38,6 +44,7 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.android.material.timepicker.TimeFormat;
 import com.hootsuite.nachos.NachoTextView;
@@ -47,19 +54,33 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 
 import ca.antonious.materialdaypicker.MaterialDayPicker;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
+import okhttp3.OkHttpClient;
+import us.zoom.sdk.AccountService;
+import us.zoom.sdk.MeetingItem;
+import us.zoom.sdk.ZoomSDK;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
+import static java.net.Proxy.Type.HTTP;
 
 
 public class CreateGroupFragment extends DialogFragment {
@@ -74,11 +95,17 @@ public class CreateGroupFragment extends DialogFragment {
     private Chip cDays;
     private Chip cTimes;
     private ChipGroup chipGroupTimes;
+    private ChipGroup chipGroupDay;
     private TextView tvLocation;
     private TextView tvSchool;
     private ImageView ivProfile;
     private ImageButton ibClose;
+    private TextView tvDescription;
+    private EditText groupName;
     private TextView tvUsername;
+    private String meetingID;
+    private String password;
+    private ExtendedFloatingActionButton efCreate;
     public static final String TAG = "CreateGroupFragment";
     private static int AUTOCOMPLETE_REQUEST_CODE = 1;
     private static int AUTOCOMPLETE_REQUEST_CODE_SCHOOL = 2;
@@ -86,6 +113,7 @@ public class CreateGroupFragment extends DialogFragment {
     School school;
     CreateGroupFragment dialogFragment;
     FragmentCreateGroupBinding binding;
+    Group group;
 
 
     public CreateGroupFragment() {
@@ -125,6 +153,12 @@ public class CreateGroupFragment extends DialogFragment {
         cTimes = binding.chipTimes;
         cDays = binding.chipDays;
         chipGroupTimes = binding.cgMeetingTimes;
+        chipGroupDay = binding.cgMeetingDays;
+        efCreate = binding.efCreate;
+        groupName = binding.tvName;
+        tvDescription = binding.tvDescription;
+        meetingID = "";
+        password = "";
         usernames = new ArrayList<>();
         users = new HashMap<String, ParseUser>();
         MainActivity activity = (MainActivity) getContext();
@@ -180,18 +214,58 @@ public class CreateGroupFragment extends DialogFragment {
     }
 
     private void openDatePicker() {
-        /*
+
         MaterialDatePicker.Builder builder = MaterialDatePicker.Builder.datePicker();
         builder.setTitleText("Select a meeting date");
         MaterialDatePicker materialDatePicker = builder.build();
         materialDatePicker.show(getChildFragmentManager(), TAG);
 
-        materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
+        materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
             @Override
-            public void onPositiveButtonClick(Object selection) {
-                Log.i(TAG, "Selection: " + materialDatePicker.getHeaderText());
+            public void onPositiveButtonClick(Long selection) {
+                // user has selected a date
+                // format the date and set the text of the input box to be the selected date
+                // right now this format is hard-coded, this will change
+                ;
+                // Get the offset from our timezone and UTC.
+                TimeZone timeZoneUTC = TimeZone.getDefault();
+                // It will be negative, so that's the -1
+                int offsetFromUTC = timeZoneUTC.getOffset(new Date().getTime()) * -1;
+
+                // Create a date format, then a date object with our offset
+                SimpleDateFormat simpledateformat = new SimpleDateFormat("EEEE");
+                SimpleDateFormat simpleFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
+                Date date = new Date(selection + offsetFromUTC);
+                // Get day of week
+                String dayOfWeek = simpledateformat.format(date);
+
+                // Create a new chip and add it to the chip group
+                Chip chip = new Chip(getContext());
+                chip.setText(dayOfWeek);
+                chip.setCloseIconVisible(true);
+                chip.setOnCloseIconClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        chipGroupDay.removeView(chip);
+                    }
+                });
+
+                // We only want to allow the user to select on time
+                chipGroupDay.removeAllViews();
+                chipGroupDay.addView(chip);
             }
-        });*/
+        });
+
+        efCreate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    createGroup();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
     }
 
@@ -370,14 +444,120 @@ public class CreateGroupFragment extends DialogFragment {
         }
     }
 
+    // Defines the listener interface
+    public interface CreateGroupDialogListener {
+        void onFinishCreateGroupDialog(Group group);
+    }
+
+    // Call this method to send the data back to the parent fragment
+    public void sendBackResult() {
+        // Notice the use of `getTargetFragment` which will be set when the dialog is displayed
+        CreateGroupDialogListener listener = (CreateGroupDialogListener) getTargetFragment();
+        listener.onFinishCreateGroupDialog(group);
+        dismiss();
+    }
 
 
 
-    public void createGroup() {
+
+    public void createGroup() throws ParseException {
         // Check that all fields are filled out
+        if (!cVirtual.isChecked() && !cInPerson.isChecked()) {
+            Toast.makeText(getContext(),
+                    "Group type not chosen", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (groupName.getText().toString().equals("") || school == null || meetingLocation == null) {
+            Toast.makeText(getContext(),
+                    "Missing fields", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (chipGroupDay.getChildCount() == 0 || chipGroupTimes.getChildCount() == 0) {
+            Toast.makeText(getContext(),
+                    "Missing date or time", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (acTopics.getAllChips().size() < 3) {
+            Toast.makeText(getContext(),
+                    "Missing times", Toast.LENGTH_SHORT).show();
+            return;
+        }
         // Create new Group Object
+        group = new Group();
         // Populate group object fields
+        group.setName(groupName.getText().toString());
+        if (cVirtual.isChecked()) {
+            try {
+                generateZoomRoom();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            group.setMeetingID(meetingID);
+            group.setPassword(password);
+            group.setIsVirtual(true);
+        }
+        else {
+            group.setLocation(meetingLocation);
+            group.setIsVirtual(false);
+        }
+        group.setSchool(school);
+        group.setDescription(tvDescription.getText().toString());
+        group.setMeetingDay(((Chip) chipGroupDay.getChildAt(0)).getText().toString());
+        group.setMeetingTime(((Chip) chipGroupTimes.getChildAt(0)).getText().toString());
+
+        List<String> topics = new ArrayList<>();
+        for (com.hootsuite.nachos.chip.Chip chip : acTopics.getAllChips()) {
+            topics.add(chip.getText().toString());
+        }
+
+        for (com.hootsuite.nachos.chip.Chip chip : nAdditionalTopics.getAllChips()) {
+            topics.add(chip.getText().toString());
+        }
+
         // Save to parse
-        // Return instance of group back to parent fragment
+        group.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                // Create mappings and save
+                try {
+                    setUserMappings();
+                } catch (ParseException parseException) {
+                    parseException.printStackTrace();
+                }
+
+                // Return instance of group back to parent fragment
+                sendBackResult();
+            }
+        });
+
+    }
+
+    // TODO: create mappings between users and group
+    private void setUserMappings() throws ParseException {
+        for (com.hootsuite.nachos.chip.Chip chip : nUsers.getAllChips()) {
+            ParseUser user = users.get(chip.getText().toString());
+            GroupMappings mappings = new GroupMappings();
+            mappings.setGroup(group);
+            mappings.setIsMember(false);
+            mappings.setUser(user);
+            mappings.save();
+        }
+        GroupMappings mappings = new GroupMappings();
+        mappings.setGroup(group);
+        mappings.setIsMember(true);
+        mappings.setUser(ParseUser.getCurrentUser());
+    }
+
+
+
+    // TODO: create Zoom room and set password and meetingID
+    private void generateZoomRoom() throws IOException {
+        String token = getString(R.string.jwt_token);
+        URL endPoint = new URL(getString(R.string.endPoint));
+
+
+        HttpURLConnection urlConnection = (HttpURLConnection) endPoint.openConnection();
+        urlConnection.setDoOutput(true); //Triggers post
+        urlConnection.setRequestProperty("auth", token);
     }
 }

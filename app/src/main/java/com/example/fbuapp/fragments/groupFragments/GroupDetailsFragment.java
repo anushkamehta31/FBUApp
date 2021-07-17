@@ -70,7 +70,7 @@ public class GroupDetailsFragment extends Fragment {
         view.findViewById(R.id.join_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                joinMeeting(getContext(), "9450266480", "128535");
+                joinMeeting(getContext(), group.getMeetingID(), group.getPassword());
             }
         });
 

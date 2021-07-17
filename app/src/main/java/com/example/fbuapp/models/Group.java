@@ -24,8 +24,8 @@ public class Group extends ParseObject implements Parcelable {
     public static final String KEY_TOPICS = "topics";
     public static final String KEY_LOCATION = "location";
     public static final String KEY_RESOURCES = "resources";
-    public static final String KEY_MEETING_DAYS = "meetingDays";
-    public static final String KEY_MEETING_TIMES = "meetingTimes";
+    public static final String KEY_MEETING_DAY = "meetingDay";
+    public static final String KEY_MEETING_TIME = "meetingTime";
     public static final String KEY_VIRTUAL = "virtual";
     public static final String KEY_SCHOOL = "school";
     public static final String KEY_MEETING_ID = "meetingID";
@@ -86,20 +86,20 @@ public class Group extends ParseObject implements Parcelable {
         put(KEY_RESOURCES, resources);
     }
 
-    public ArrayList<String> getMeetingDays() {
-        return (ArrayList<String>) get(KEY_MEETING_DAYS);
+    public String getMeetingDays() {
+        return getString(KEY_MEETING_DAY);
     }
 
-    public void setMeetingDays(ArrayList<String> meetingDays) {
-        put(KEY_MEETING_DAYS, meetingDays);
+    public void setMeetingDay(String meetingDay) {
+        put(KEY_MEETING_DAY, meetingDay);
     }
 
-    public ArrayList<String> getMeetingTimes() {
-        return (ArrayList<String>) get(KEY_MEETING_TIMES);
+    public String getMeetingTime() {
+        return getString(KEY_MEETING_TIME);
     }
 
-    public void setMeetingTimes(ArrayList<String> meetingTimes) {
-        put(KEY_MEETING_DAYS, meetingTimes);
+    public void setMeetingTime(String meetingTime) {
+        put(KEY_MEETING_TIME, meetingTime);
     }
 
     public boolean isVirtual() {
@@ -132,32 +132,5 @@ public class Group extends ParseObject implements Parcelable {
 
     public void setPassword(String password) {
         put(KEY_PASSWORD, password);
-    }
-
-    // TODO: Fix this method it's not returning a list of users.
-    public List<ParseUser> getUsers() {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("GroupMappings");
-        List<ParseUser> groupUsers = new ArrayList<>();
-        query.include(KEY_GROUP_ID);
-        query.include(KEY_USER_ID);
-        query.whereEqualTo(KEY_GROUP_ID, this);
-        query.whereEqualTo(KEY_IS_MEMBER, true);
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> users, ParseException e) {
-                if (e != null) {
-                    Log.e(TAG, "Issue with getting posts", e);
-                    return;
-                }
-                for (ParseObject mappedUser : users) {
-                    ParseUser user = (ParseUser) mappedUser.get(KEY_USER_ID);
-                    Log.i(TAG, "Username: " + user.getUsername());
-                    groupUsers.add(user);
-                }
-            }
-        });
-
-        Log.i(TAG, "Size of list: "+ groupUsers.size());
-        return groupUsers;
     }
 }

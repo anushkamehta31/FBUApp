@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
 <ScrollView android:layout_width="match_parent"
     android:layout_height="fill_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -90,11 +95,22 @@
             android:textSize="12sp"
             />
 
+        <EditText
+            android:id="@+id/tvDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvName"
+            android:hint="Group Description"
+            android:paddingBottom="25dp"
+            android:layout_margin="15dp"
+            android:textSize="12sp"
+            />
+
         <TextView
             android:id="@+id/tvLoc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvName"
+            android:layout_below="@id/tvDescription"
             android:hint="@string/meeting_location"
             android:padding="5dp"
             android:layout_margin="15dp"
@@ -197,30 +213,30 @@
             android:layout_marginStart="15dp"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="15dp"
-            android:layout_marginBottom="15dp"
+            android:layout_marginBottom="400dp"
             android:hint="Add group members"
             android:textSize="12sp"
-            app:chipTextColor="#4E99F4" />
-
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/extended_fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/nUsers"
-            android:layout_centerInParent="true"
-            android:layout_gravity="bottom|right"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            android:text="Create"
-            app:backgroundTint="#51C7FB"
-            android:textColor="@color/white"
-            app:iconTint="@color/white"
-            app:icon="@drawable/outline_group_add_20" />
-
-
-
+            app:chipTextColor="#4E99F4"
+            />
 
     </RelativeLayout>
 </ScrollView>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/efCreate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_gravity="bottom|right"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="Create"
+        app:backgroundTint="#51C7FB"
+        android:textColor="@color/white"
+        app:iconTint="@color/white"
+        app:icon="@drawable/outline_group_add_20"
+        />
+
+</RelativeLayout>

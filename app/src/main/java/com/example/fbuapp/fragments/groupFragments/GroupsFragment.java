@@ -30,7 +30,7 @@ import com.parse.ParseUser;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GroupsFragment extends Fragment {
+public class GroupsFragment extends Fragment implements CreateGroupFragment.CreateGroupDialogListener {
 
     protected RecyclerView rvGroups;
     public static final String TAG = "GroupsFragment";
@@ -103,7 +103,7 @@ public class GroupsFragment extends Fragment {
                 }
                 for (ParseObject mapping : userMappings) {
                     Group group = (Group) mapping.getParseObject(Group.KEY_GROUP_ID);
-                    Log.i(TAG, "Group: " + group.getName() + ", Members " + group.getUsers());
+                    Log.i(TAG, "Group: " + group.getName());
                     adapter.notifyDataSetChanged();
                     userGroups.add(group);
                 }
@@ -113,4 +113,10 @@ public class GroupsFragment extends Fragment {
 
     }
 
+
+    @Override
+    public void onFinishCreateGroupDialog(Group group) {
+        userGroups.add(group);
+        adapter.notifyDataSetChanged();
+    }
 }
