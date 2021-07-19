@@ -81,6 +81,9 @@ public class GroupsFragment extends Fragment implements CreateGroupFragment.Crea
         MainActivity activity = (MainActivity) getContext();
         FragmentManager ft = activity.getSupportFragmentManager();
         CreateGroupFragment fragment = new CreateGroupFragment();
+        // Launch create group dialog fragment and set the target fragment for later use when
+        // sending results
+        fragment.setTargetFragment(GroupsFragment.this, 300);
         fragment.show(ft, "fragment_create_group");
     }
 
@@ -114,6 +117,7 @@ public class GroupsFragment extends Fragment implements CreateGroupFragment.Crea
     }
 
 
+    // When CreateGroupDialog is completed and we want to update the recycler view
     @Override
     public void onFinishCreateGroupDialog(Group group) {
         userGroups.add(group);

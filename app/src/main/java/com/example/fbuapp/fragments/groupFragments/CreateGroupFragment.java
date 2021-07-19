@@ -59,6 +59,7 @@ import com.google.android.material.timepicker.TimeFormat;
 import com.hootsuite.nachos.NachoTextView;
 import com.hootsuite.nachos.terminator.ChipTerminatorHandler;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseQuery;
@@ -123,8 +124,6 @@ public class CreateGroupFragment extends DialogFragment {
     private TextView tvDescription;
     private EditText groupName;
     private TextView tvUsername;
-    private String meetingID;
-    private String password;
     private ExtendedFloatingActionButton efCreate;
     public static final String TAG = "CreateGroupFragment";
     private static int AUTOCOMPLETE_REQUEST_CODE = 1;
@@ -134,10 +133,8 @@ public class CreateGroupFragment extends DialogFragment {
     CreateGroupFragment dialogFragment;
     FragmentCreateGroupBinding binding;
     Group group;
-    public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
-
-    OkHttpClient client = new OkHttpClient();
-
+    StringBuffer meetingID;
+    StringBuffer password ;
 
     public CreateGroupFragment() {
         // Required empty public constructor
@@ -180,14 +177,12 @@ public class CreateGroupFragment extends DialogFragment {
         efCreate = binding.efCreate;
         groupName = binding.tvName;
         tvDescription = binding.tvDescription;
-        meetingID = "";
-        password = "";
         usernames = new ArrayList<>();
+        meetingID = new StringBuffer(getString(R.string.empty_string));
+        password = new StringBuffer(getString(R.string.empty_string));
         users = new HashMap<String, ParseUser>();
         MainActivity activity = (MainActivity) getContext();
-        dialogFragment = (CreateGroupFragment) activity.getSupportFragmentManager()
-                .findFragmentByTag("fragment_create_group");
-
+        dialogFragment = (CreateGroupFragment) activity.getSupportFragmentManager().findFragmentByTag("fragment_create_group");
         specifyDialogParameters(view);
         initializeTopics();
         initializeGroupLocation();
@@ -234,34 +229,77 @@ public class CreateGroupFragment extends DialogFragment {
             }
         });
 
+        // Set on click listener for closing the create group fragment
+        efCreate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initiateGroup();
+            }
+        });
+
+    }
+
+    private void initiateGroup() {
+        // Check that all fields are filled out
+        if (!cVirtual.isChecked() && !cInPerson.isChecked()) {
+            Toast.makeText(getContext(),
+                    "Group type not chosen", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (groupName.getText().toString().equals("") || school == null || (cInPerson.isChecked() && meetingLocation == null)) {
+            Toast.makeText(getContext(),
+                    "Missing fields", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (chipGroupDay.getChildCount() == 0 || chipGroupTimes.getChildCount() == 0) {
+            Toast.makeText(getContext(),
+                    "Missing date or time", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (acTopics.getAllChips().size() < 3) {
+            Toast.makeText(getContext(),
+                    "Missing topics", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (cVirtual.isChecked()) {
+            try {
+                // If the group is virtual, first generate the room and then create the group
+                generateZoomRoom();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            group = new Group();
+            // If the group is in person, simply create the group
+            try {
+                createGroup();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void openDatePicker() {
-
         MaterialDatePicker.Builder builder = MaterialDatePicker.Builder.datePicker();
         builder.setTitleText("Select a meeting date");
         MaterialDatePicker materialDatePicker = builder.build();
         materialDatePicker.show(getChildFragmentManager(), TAG);
-
         materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
             @Override
             public void onPositiveButtonClick(Long selection) {
                 // user has selected a date
                 // format the date and set the text of the input box to be the selected date
-                // right now this format is hard-coded, this will change
-                ;
                 // Get the offset from our timezone and UTC.
                 TimeZone timeZoneUTC = TimeZone.getDefault();
                 // It will be negative, so that's the -1
                 int offsetFromUTC = timeZoneUTC.getOffset(new Date().getTime()) * -1;
-
                 // Create a date format, then a date object with our offset
                 SimpleDateFormat simpledateformat = new SimpleDateFormat("EEEE");
                 SimpleDateFormat simpleFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
                 Date date = new Date(selection + offsetFromUTC);
                 // Get day of week
                 String dayOfWeek = simpledateformat.format(date);
-
                 // Create a new chip and add it to the chip group
                 Chip chip = new Chip(getContext());
                 chip.setText(dayOfWeek);
@@ -272,24 +310,11 @@ public class CreateGroupFragment extends DialogFragment {
                         chipGroupDay.removeView(chip);
                     }
                 });
-
                 // We only want to allow the user to select on time
                 chipGroupDay.removeAllViews();
                 chipGroupDay.addView(chip);
             }
         });
-
-        efCreate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    createGroup();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
     }
 
     /** Method that opens the Materials Time picker and allows user to choose a time */
@@ -298,7 +323,6 @@ public class CreateGroupFragment extends DialogFragment {
         MaterialTimePicker picker = new MaterialTimePicker.Builder()
                 .setTimeFormat(clockFormat).setHour(12).setMinute(0).setTitleText("Select Meeting Times").build();
         picker.show(getChildFragmentManager(), TAG);
-
         picker.addOnPositiveButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -307,7 +331,6 @@ public class CreateGroupFragment extends DialogFragment {
                 if (hour > 12) hour -= 12;
                 int minute = picker.getMinute();
                 String chipText = (minute < 10) ? hour + ":0" + minute + " " + am_pm : hour + ":" + minute + " " + am_pm;
-
                 // Create a new chip and add it to the chip group
                 Chip chip = new Chip(getContext());
                 chip.setText(chipText);
@@ -318,22 +341,12 @@ public class CreateGroupFragment extends DialogFragment {
                         chipGroupTimes.removeView(chip);
                     }
                 });
-
                 // We only want to allow the user to select on time
                 chipGroupTimes.removeAllViews();
                 chipGroupTimes.addView(chip);
 
             }
         });
-
-        picker.addOnNegativeButtonClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-
     }
 
 
@@ -430,7 +443,6 @@ public class CreateGroupFragment extends DialogFragment {
         // return after the user has made a selection.
         List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME,
                 Place.Field.LAT_LNG, Place.Field.ADDRESS);
-
         // Start the autocomplete intent.
         Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
                 .build(getContext());
@@ -474,88 +486,53 @@ public class CreateGroupFragment extends DialogFragment {
 
     // Call this method to send the data back to the parent fragment
     public void sendBackResult() {
-        // Notice the use of `getTargetFragment` which will be set when the dialog is displayed
         CreateGroupDialogListener listener = (CreateGroupDialogListener) getTargetFragment();
         listener.onFinishCreateGroupDialog(group);
         dismiss();
     }
 
 
-
-
     public void createGroup() throws ParseException {
-        // Check that all fields are filled out
-        if (!cVirtual.isChecked() && !cInPerson.isChecked()) {
-            Toast.makeText(getContext(),
-                    "Group type not chosen", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (groupName.getText().toString().equals("") || school == null || (cInPerson.isChecked() && meetingLocation == null)) {
-            Toast.makeText(getContext(),
-                    "Missing fields", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (chipGroupDay.getChildCount() == 0 || chipGroupTimes.getChildCount() == 0) {
-            Toast.makeText(getContext(),
-                    "Missing date or time", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (acTopics.getAllChips().size() < 3) {
-            Toast.makeText(getContext(),
-                    "Missing times", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        // Create new Group Object
-        group = new Group();
-        // Populate group object fields
-        group.setName(groupName.getText().toString());
-        if (cVirtual.isChecked()) {
-            try {
-                generateZoomRoom();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            group.setMeetingID(meetingID);
-            group.setPassword(password);
-            group.setIsVirtual(true);
-        }
+        if (cVirtual.isChecked()) group.setIsVirtual(true);
         else {
             group.setLocation(meetingLocation);
             group.setIsVirtual(false);
         }
+        group.setName(groupName.getText().toString());
+        querySchool(school.getName());
         group.setSchool(school);
         group.setDescription(tvDescription.getText().toString());
         group.setMeetingDay(((Chip) chipGroupDay.getChildAt(0)).getText().toString());
         group.setMeetingTime(((Chip) chipGroupTimes.getChildAt(0)).getText().toString());
-
-        List<String> topics = new ArrayList<>();
+        ArrayList<String> topics = new ArrayList<>();
         for (com.hootsuite.nachos.chip.Chip chip : acTopics.getAllChips()) {
             topics.add(chip.getText().toString());
         }
-
         for (com.hootsuite.nachos.chip.Chip chip : nAdditionalTopics.getAllChips()) {
             topics.add(chip.getText().toString());
         }
-
+        group.setTopics(topics);
         // Save to parse
         group.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
+                if (e!= null) {
+                    Log.e(TAG, "Error while saving group", e);
+                    return;
+                }
                 // Create mappings and save
                 try {
                     setUserMappings();
                 } catch (ParseException parseException) {
                     parseException.printStackTrace();
                 }
-
                 // Return instance of group back to parent fragment
                 sendBackResult();
             }
         });
-
     }
 
-    // TODO: create mappings between users and group
+    /** Create mappings between users and group */
     private void setUserMappings() throws ParseException {
         for (com.hootsuite.nachos.chip.Chip chip : nUsers.getAllChips()) {
             ParseUser user = users.get(chip.getText().toString());
@@ -571,7 +548,6 @@ public class CreateGroupFragment extends DialogFragment {
         mappings.setUser(ParseUser.getCurrentUser());
         mappings.save();
     }
-
 
 
     // Create Zoom room and set password and meetingID
@@ -596,18 +572,30 @@ public class CreateGroupFragment extends DialogFragment {
                 long id = 0;
                 try {
                     id = jsonObject.getLong("id");
-                    meetingID = String.valueOf(id);
+                    String meeting = String.valueOf(id);
+                    meetingID.append(meeting);
+                    // group.setMeetingID(meeting);
+                    Log.i(TAG, "meetingID: "+ meeting);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 try {
-                    password = jsonObject.getString("password");
+                    String pwd = jsonObject.getString("password");
+                    // group.setPassword(pwd);
+                    Log.i(TAG, "Password: " + pwd);
+                    password.append(pwd);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                Log.i(TAG, "meetingID: "+meetingID);
-                Log.i(TAG, "ID:" + id);
-                Log.i(TAG, "Password: " + password);
+                // After zoom thread has finished, that's when we want to instantiate the new group
+                group = new Group();
+                group.setMeetingID(meetingID.toString());
+                group.setPassword(password.toString());
+                try {
+                    createGroup();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -615,6 +603,14 @@ public class CreateGroupFragment extends DialogFragment {
                 Toast.makeText(getContext(), errorResponse, Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private void querySchool(String schoolName) throws ParseException {
+        ParseQuery<School> query = ParseQuery.getQuery(School.class);
+        // Specify what other data we would like to get back
+        query.whereEqualTo(School.KEY_NAME, schoolName);
+        School temp = query.getFirst();
+        if (temp != null) school = temp;
     }
 
 

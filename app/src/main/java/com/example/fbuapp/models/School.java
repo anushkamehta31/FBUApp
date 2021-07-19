@@ -53,4 +53,6 @@ public class School extends ParseObject implements Parcelable {
             }
         });
     }
+
+
 }
