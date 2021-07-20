@@ -14,11 +14,11 @@ import com.example.fbuapp.models.Group;
 
 import org.jetbrains.annotations.NotNull;
 
-public class FragmentAdapter extends FragmentStateAdapter {
+public class TabsAdapter extends FragmentStateAdapter {
 
     Group group;
 
-    public FragmentAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle, Group group) {
+    public TabsAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle, Group group) {
         super(fragmentManager, lifecycle);
         this.group = group;
     }

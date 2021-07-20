@@ -16,7 +16,6 @@
     <string name="title_activity_group">GroupActivity</string>
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
-    <string name="virtual">Virtual</string>
     <string name="join_meeting">join meeting</string>
     <string name="in_person">In-Person</string>
     <string name="zoom">zoom.us</string>
@@ -31,6 +30,13 @@
     <string name="endPoint">https://api.zoom.us/v2/users/anushkamehta311@gmail.com/meetings</string>
     <string name="zoom_JWT_key">EX4XrSRdTTq87gkhzGhB7w</string>
     <string name="zoom_JWT_secret_key">qwoZeALzrTvGaoTAGXnvi1lu1zdeHCIqdZa2</string>
+    <string name="hello">hello</string>
+    <string name="virtual">Virtual</string>
+    <string name="title_group_type">Select group type preference...</string>
+    <string name="title_study_topics">Topics I wish to study...</string>
+    <string name="join">Join</string>
+    <string name="members">members</string>
+    <string name="vg">Virtual Group</string>
 
     <string-array name="topics_array">
         <item>Accounting</item>
@@ -163,6 +169,24 @@
         <item>Human Resources Management</item>
         <item>International Business Management</item>
         <item>Labor/Industrial Relations</item>
+    </string-array>
+
+    <string-array name="preferences_array">
+        <item>Quiet group</item>
+        <item>Highly collaborative</item>
+        <item>Moderately collaborative</item>
+        <item>Regular meetings</item>
+        <item>Independent</item>
+        <item>Frequent meetings</item>
+        <item>Discussion based</item>
+        <item>Resource sharing based</item>
+        <item>Active group</item>
+        <item>Basic level</item>
+        <item>Intermediate level</item>
+        <item>Advanced topics</item>
+        <item>Active group</item>
+        <item>Visual learning style</item>
+        <item>Active engagement</item>
     </string-array>
 
 </resources>

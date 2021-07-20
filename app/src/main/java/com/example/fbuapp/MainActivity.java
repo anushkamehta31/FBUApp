@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.fbuapp.databinding.ActivityMainBinding;
-import com.example.fbuapp.fragments.FindGroupFragment;
+import com.example.fbuapp.fragments.findGroupFragments.FindGroupFragment;
 import com.example.fbuapp.fragments.groupFragments.GroupsFragment;
 import com.example.fbuapp.fragments.HomeFragment;
 import com.example.fbuapp.fragments.NotificationsFragment;
@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         // layout of activity is stored in root property
         View view = binding.getRoot();
         setContentView(view);
+
 
         bottomNavigationView = binding.bottomNavigation;
 

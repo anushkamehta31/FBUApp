@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.fbuapp.R;
-import com.example.fbuapp.adapters.FragmentAdapter;
+import com.example.fbuapp.adapters.TabsAdapter;
 import com.example.fbuapp.models.Group;
 import com.google.android.material.tabs.TabLayout;
 
@@ -21,7 +21,7 @@ public class ViewGroupFragment extends Fragment {
 
     TabLayout tabLayout;
     ViewPager2 pager2;
-    FragmentAdapter adapter;
+    TabsAdapter adapter;
     private Group group;
 
     public ViewGroupFragment() {
@@ -59,7 +59,7 @@ public class ViewGroupFragment extends Fragment {
         pager2 = view.findViewById(R.id.viewPager);
 
         FragmentManager fm = getActivity().getSupportFragmentManager();
-        adapter = new FragmentAdapter(fm, getLifecycle(), group);
+        adapter = new TabsAdapter(fm, getLifecycle(), group);
         pager2.setAdapter(adapter);
 
         tabLayout.addTab(tabLayout.newTab().setText("Details"));
