@@ -79,7 +79,7 @@ public class GroupDetailsFragment extends Fragment {
 
     public void initializeSdk(Context context) {
         ZoomSDK sdk = ZoomSDK.getInstance();
-        // TODO: For the purpose of this demo app, we are storing the credentials in the client app itself.
+        // Fr the purpose of this demo app, we are storing the credentials in the client app itself.
         //  However, you should not use hard-coded values for your key/secret in your app in production.
         ZoomSDKInitParams params = new ZoomSDKInitParams();
         params.appKey = getString(R.string.zoom_key);

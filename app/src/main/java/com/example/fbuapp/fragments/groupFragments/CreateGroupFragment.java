@@ -39,6 +39,8 @@ import com.example.fbuapp.MainActivity;
 import com.example.fbuapp.R;
 import com.example.fbuapp.databinding.FragmentCreateGroupBinding;
 
+import com.example.fbuapp.managers.GroupManager;
+import com.example.fbuapp.managers.ZoomManager;
 import com.example.fbuapp.models.Group;
 import com.example.fbuapp.models.GroupMappings;
 import com.example.fbuapp.models.Location;
@@ -132,7 +134,7 @@ public class CreateGroupFragment extends DialogFragment {
     School school;
     CreateGroupFragment dialogFragment;
     FragmentCreateGroupBinding binding;
-    Group group;
+    public Group group;
     StringBuffer meetingID;
     StringBuffer password ;
 
@@ -261,10 +263,21 @@ public class CreateGroupFragment extends DialogFragment {
                     "Missing topics", Toast.LENGTH_SHORT).show();
             return;
         }
+        ArrayList<String> topics = new ArrayList<>();
+        for (com.hootsuite.nachos.chip.Chip chip : acTopics.getAllChips()) {
+            topics.add(chip.getText().toString());
+        }
+        for (com.hootsuite.nachos.chip.Chip chip : nAdditionalTopics.getAllChips()) {
+            topics.add(chip.getText().toString());
+        }
         if (cVirtual.isChecked()) {
             try {
                 // If the group is virtual, first generate the room and then create the group
-                generateZoomRoom();
+                ZoomManager zoomManager = new ZoomManager();
+                zoomManager.generateZoomRoom(getContext(), cVirtual.isChecked(), groupName.getText().toString(), school, meetingLocation,
+                        tvDescription.getText().toString(), ((Chip) chipGroupDay.getChildAt(0)).getText().toString(),
+                        ((Chip) chipGroupTimes.getChildAt(0)).getText().toString(), topics, users, nUsers, getTargetFragment());
+                // generateZoomRoom();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -273,7 +286,11 @@ public class CreateGroupFragment extends DialogFragment {
             group = new Group();
             // If the group is in person, simply create the group
             try {
-                createGroup();
+                GroupManager groupManager = new GroupManager();
+                groupManager.createGroup(group, cVirtual.isChecked(), groupName.getText().toString(), school, meetingLocation,
+                        tvDescription.getText().toString(), ((Chip) chipGroupDay.getChildAt(0)).getText().toString(),
+                        ((Chip) chipGroupTimes.getChildAt(0)).getText().toString(), topics, users, nUsers, getTargetFragment(), getContext());
+                // createGroup();
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -478,140 +495,5 @@ public class CreateGroupFragment extends DialogFragment {
             return;
         }
     }
-
-    // Defines the listener interface
-    public interface CreateGroupDialogListener {
-        void onFinishCreateGroupDialog(Group group);
-    }
-
-    // Call this method to send the data back to the parent fragment
-    public void sendBackResult() {
-        CreateGroupDialogListener listener = (CreateGroupDialogListener) getTargetFragment();
-        listener.onFinishCreateGroupDialog(group);
-        dismiss();
-    }
-
-
-    public void createGroup() throws ParseException {
-        if (cVirtual.isChecked()) group.setIsVirtual(true);
-        else {
-            group.setLocation(meetingLocation);
-            group.setIsVirtual(false);
-        }
-        group.setName(groupName.getText().toString());
-        querySchool(school.getName());
-        group.setSchool(school);
-        group.setDescription(tvDescription.getText().toString());
-        group.setMeetingDay(((Chip) chipGroupDay.getChildAt(0)).getText().toString());
-        group.setMeetingTime(((Chip) chipGroupTimes.getChildAt(0)).getText().toString());
-        ArrayList<String> topics = new ArrayList<>();
-        for (com.hootsuite.nachos.chip.Chip chip : acTopics.getAllChips()) {
-            topics.add(chip.getText().toString());
-        }
-        for (com.hootsuite.nachos.chip.Chip chip : nAdditionalTopics.getAllChips()) {
-            topics.add(chip.getText().toString());
-        }
-        group.setTopics(topics);
-        // Save to parse
-        group.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e!= null) {
-                    Log.e(TAG, "Error while saving group", e);
-                    return;
-                }
-                // Create mappings and save
-                try {
-                    setUserMappings();
-                } catch (ParseException parseException) {
-                    parseException.printStackTrace();
-                }
-                // Return instance of group back to parent fragment
-                sendBackResult();
-            }
-        });
-    }
-
-    /** Create mappings between users and group */
-    private void setUserMappings() throws ParseException {
-        for (com.hootsuite.nachos.chip.Chip chip : nUsers.getAllChips()) {
-            ParseUser user = users.get(chip.getText().toString());
-            GroupMappings mappings = new GroupMappings();
-            mappings.setGroup(group);
-            mappings.setIsMember(false);
-            mappings.setUser(user);
-            mappings.save();
-        }
-        GroupMappings mappings = new GroupMappings();
-        mappings.setGroup(group);
-        mappings.setIsMember(true);
-        mappings.setUser(ParseUser.getCurrentUser());
-        mappings.save();
-    }
-
-
-    // Create Zoom room and set password and meetingID
-    private void generateZoomRoom() throws JSONException {
-
-        AsyncHttpClient client = new AsyncHttpClient();
-        RequestParams params = new RequestParams();
-        RequestHeaders headers = new RequestHeaders();
-        params.put("userId", "anushkamehta311@gmail.com");
-        params.put("type", 3);
-        headers.put("Authorization", "Bearer " + getString(R.string.jwt_token));
-        headers.put("Content-Type", "application/json");
-        // Must create the request body
-        String body = new StringBuilder().append("{\n").append("    \"topic\": \"general meeting\",\n").append("    \"type\": \"3\",\n").append("    \"settings\": {\n").append("        \"join_before_host\": \"true\"\n").append("    }\n").append("}").toString();
-        client.post(getString(R.string.endPoint), headers, params, body, new JsonHttpResponseHandler() {
-
-            @Override
-            public void onSuccess(int statusCode, Headers headers, JsonHttpResponseHandler.JSON json) {
-                Toast.makeText(getContext(), "Success!", Toast.LENGTH_LONG).show();
-                JSONObject jsonObject = json.jsonObject;
-                // Get meeting id and password and store
-                long id = 0;
-                try {
-                    id = jsonObject.getLong("id");
-                    String meeting = String.valueOf(id);
-                    meetingID.append(meeting);
-                    // group.setMeetingID(meeting);
-                    Log.i(TAG, "meetingID: "+ meeting);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    String pwd = jsonObject.getString("password");
-                    // group.setPassword(pwd);
-                    Log.i(TAG, "Password: " + pwd);
-                    password.append(pwd);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                // After zoom thread has finished, that's when we want to instantiate the new group
-                group = new Group();
-                group.setMeetingID(meetingID.toString());
-                group.setPassword(password.toString());
-                try {
-                    createGroup();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(int statusCode, @Nullable Headers headers, String errorResponse, @Nullable Throwable throwable) {
-                Toast.makeText(getContext(), errorResponse, Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-    private void querySchool(String schoolName) throws ParseException {
-        ParseQuery<School> query = ParseQuery.getQuery(School.class);
-        // Specify what other data we would like to get back
-        query.whereEqualTo(School.KEY_NAME, schoolName);
-        School temp = query.getFirst();
-        if (temp != null) school = temp;
-    }
-
 
 }

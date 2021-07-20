@@ -30,7 +30,7 @@ import com.parse.ParseUser;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GroupsFragment extends Fragment implements CreateGroupFragment.CreateGroupDialogListener {
+public class GroupsFragment extends Fragment {
 
     protected RecyclerView rvGroups;
     public static final String TAG = "GroupsFragment";
@@ -116,11 +116,4 @@ public class GroupsFragment extends Fragment implements CreateGroupFragment.Crea
 
     }
 
-
-    // When CreateGroupDialog is completed and we want to update the recycler view
-    @Override
-    public void onFinishCreateGroupDialog(Group group) {
-        userGroups.add(group);
-        adapter.notifyDataSetChanged();
-    }
 }

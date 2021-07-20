@@ -37,6 +37,7 @@
     <string name="join">Join</string>
     <string name="members">members</string>
     <string name="vg">Virtual Group</string>
+    <string name="meetingID">\"meetingID: \"</string>
 
     <string-array name="topics_array">
         <item>Accounting</item>

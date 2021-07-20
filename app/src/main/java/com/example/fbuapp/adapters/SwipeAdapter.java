@@ -55,9 +55,9 @@ public class SwipeAdapter extends PagerAdapter {
         TextView tvName, tvDescription, tvDistance, tvMembers;
 
         imageView = view.findViewById(R.id.ivImage);
-        tvName = view.findViewById(R.id.tvName);
+        tvName = view.findViewById(R.id.tvNameItem);
         tvDescription = view.findViewById(R.id.tvDescriptionItem);
-        tvDistance = view.findViewById(R.id.tvName);
+        tvDistance = view.findViewById(R.id.tvDistance);
         tvMembers = view.findViewById(R.id.tvMembers);
 
         ParseFile image = group.getImage();
@@ -72,7 +72,7 @@ public class SwipeAdapter extends PagerAdapter {
         if (group.isVirtual()) {
             tvDistance.setText(R.string.vg);
         } else {
-            // tvDistance.setText(String.valueOf(GroupManager.getDistanceToGroup(group)));
+            tvDistance.setText(String.valueOf(GroupManager.getDistanceToGroup(group)));
         }
 
         container.addView(view, 0);
