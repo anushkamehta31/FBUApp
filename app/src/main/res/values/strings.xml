@@ -190,4 +190,11 @@
         <item>Active engagement</item>
     </string-array>
 
+    <string-array name="group_size">
+        <item>Auto</item>
+        <item>Large (20 or more)</item>
+        <item>Small (less than 10)</item>
+        <item>Average (10-20)</item>
+    </string-array>
+
 </resources>

@@ -19,19 +19,20 @@
             android:orientation="vertical">
 
             <!-- Media -->
+
             <ImageView
                 android:id="@+id/ivImage"
                 android:layout_width="match_parent"
                 android:layout_height="194dp"
-                tools:src="@tools:sample/avatars"
                 android:scaleType="centerCrop"
-                />
+                tools:src="@tools:sample/avatars" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="16dp"
+                android:layout_marginTop="50dp">
 
                 <!-- Title, secondary and supporting text -->
                 <TextView

@@ -33,7 +33,7 @@ public class School extends ParseObject implements Parcelable {
     }
 
     public String getName() {
-        return name;
+        return getString(KEY_NAME);
     }
 
     public void setName(String name) {

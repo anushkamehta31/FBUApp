@@ -1,149 +1,261 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/filter_dialog_bg">
 
     <TextView
-        android:id="@+id/tvShowMatchesFor"
+        android:id="@+id/tvCancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="40dp"
-        android:text="Show results for"
-        android:textStyle="bold" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnVirtual"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
-        android:layout_width="180dp"
-        android:layout_height="70dp"
-        app:cornerRadius="20dp"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
-        android:insetLeft="0dp"
-        android:layout_margin="10dp"
-        android:layout_below="@+id/tvShowMatchesFor"
-        android:text="@string/virtual"
-        android:textColor="@color/black"
-        android:fontFamily="@font/source_sans_pro"
-        app:icon="@drawable/outline_laptop_24"
-        app:iconTint="@color/black"
-        android:insetRight="0dp" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnInperson"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
-        android:layout_width="178dp"
-        android:layout_height="70dp"
-        app:cornerRadius="20dp"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
-        android:insetLeft="0dp"
-        android:layout_margin="10dp"
-        android:layout_below="@+id/tvShowMatchesFor"
-        android:layout_toEndOf="@+id/btnVirtual"
-        android:text="@string/in_person"
-        android:textColor="@color/black"
-        android:fontFamily="@font/source_sans_pro"
-        app:icon="@drawable/outline_emoji_people_20"
-        app:iconTint="@color/black"
-
-        android:insetRight="0dp" />
-
-    <TextView
-        android:id="@+id/tvSortby"
-        android:layout_below="@id/btnVirtual"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
-        android:text="Sort by"
-        android:textStyle="bold" />
-
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/cgSortBy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:singleSelection="true"
-        android:layout_below="@+id/tvSortby"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp">
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chipFeatured"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/Widget.MaterialComponents.Chip.Filter"
-            android:text="Featured"/>
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chipDistance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/Widget.MaterialComponents.Chip.Filter"
-            android:text="Distance"/>
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chipNewest"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/Widget.MaterialComponents.Chip.Filter"
-            android:text="Newest"/>
-    </com.google.android.material.chip.ChipGroup>
-
-    <TextView
-        android:id="@+id/tvDistance"
-        android:layout_below="@id/cgSortBy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
-        android:text="Distance (mi)"
-        android:textStyle="bold" />
-
-    <com.google.android.material.slider.Slider
-        android:id="@+id/slider"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:value="20.0"
-        android:valueFrom="0.0"
-        android:valueTo="50.0"
-        android:layout_below="@+id/tvDistance"/>
-
-    <TextView
-        android:id="@+id/startMile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/slider"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="13dp"
-        android:layout_marginTop="-17dp"
-        android:fontFamily="@font/source_sans_pro"
-        android:text="0" />
-
-    <TextView
-        android:id="@+id/endMile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/slider"
+        android:text="Cancel"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="12dp"
-        android:layout_marginTop="-17dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
         android:fontFamily="@font/source_sans_pro"
-        android:text="50" />
+        android:textColor="#CD3B3B"/>
 
-    <TextView
-        android:id="@+id/tvFilter"
-        android:layout_below="@id/endMile"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tvCancel">
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tvShowMatchesFor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="40dp"
+                android:text="Show results for"
+                android:textStyle="bold" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnVirtual"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+                android:layout_width="167dp"
+                android:layout_height="70dp"
+                app:cornerRadius="20dp"
+                android:insetTop="0dp"
+                android:layout_marginStart="10dp"
+                android:insetBottom="0dp"
+                android:insetLeft="0dp"
+                android:layout_margin="10dp"
+                android:layout_below="@+id/tvShowMatchesFor"
+                android:text="@string/virtual"
+                android:textColor="@color/black"
+                app:strokeColor="@color/normal"
+                android:fontFamily="@font/source_sans_pro"
+                app:icon="@drawable/outline_laptop_24"
+                app:iconTint="@color/black"
+                android:insetRight="0dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnInperson"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+                android:layout_width="170dp"
+                android:layout_height="70dp"
+                android:layout_alignParentEnd="true"
+                app:cornerRadius="20dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:insetLeft="0dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="10dp"
+                app:strokeColor="@color/normal"
+                android:layout_marginStart="10dp"
+                android:layout_below="@+id/tvShowMatchesFor"
+                android:layout_toEndOf="@+id/btnVirtual"
+                android:text="@string/in_person"
+                android:textColor="@color/black"
+                android:fontFamily="@font/source_sans_pro"
+                app:icon="@drawable/outline_emoji_people_20"
+                app:iconTint="@color/black"
+
+                android:insetRight="0dp" />
+
+            <TextView
+                android:id="@+id/tvSortby"
+                android:layout_below="@id/btnVirtual"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:text="Sort by"
+                android:textStyle="bold" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/cgSortBy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:singleSelection="true"
+                android:layout_below="@+id/tvSortby"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp">
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipFeatured"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:text="Featured"
+                    android:fontFamily="@font/source_sans_pro"/>
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipDistance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:text="Distance"
+                    android:fontFamily="@font/source_sans_pro"/>
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipNewest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:text="Newest"
+                    android:fontFamily="@font/source_sans_pro"/>
+            </com.google.android.material.chip.ChipGroup>
+
+            <TextView
+                android:id="@+id/tvDistance"
+                android:layout_below="@id/cgSortBy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:text="Distance (mi)"
+                android:textStyle="bold" />
+
+            <com.google.android.material.slider.Slider
+                android:id="@+id/slider"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:value="20.0"
+                android:valueFrom="0.0"
+                android:valueTo="50.0"
+                android:layout_below="@+id/tvDistance"/>
+
+            <TextView
+                android:id="@+id/startMile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/slider"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="13dp"
+                android:layout_marginTop="-17dp"
+                android:fontFamily="@font/source_sans_pro"
+                android:text="0" />
+
+            <TextView
+                android:id="@+id/endMile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/slider"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="12dp"
+                android:layout_marginTop="-17dp"
+                android:fontFamily="@font/source_sans_pro"
+                android:text="50" />
+
+            <TextView
+                android:id="@+id/tvFilter"
+                android:layout_below="@id/endMile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:text="Filter by"
+                android:textStyle="bold" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:id="@+id/AutoGroupSize"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:hint="Group Size"
+                app:startIconDrawable="@drawable/outline_group_24"
+                android:layout_below="@id/tvFilter"
+                android:layout_margin="10dp">
+
+                <AutoCompleteTextView
+                    android:id="@+id/autoCompleteTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:inputType="none"
+                    android:text="Auto"
+                    android:fontFamily="@font/source_sans_pro"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:id="@+id/AutoSchool"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:hint="School"
+                app:startIconDrawable="@drawable/outline_school_24"
+                android:layout_below="@id/AutoGroupSize"
+                android:layout_margin="10dp">
+
+                <AutoCompleteTextView
+                    android:id="@+id/autoCompleteSchool"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:inputType="none"
+                    android:text="Auto"
+                    android:fontFamily="@font/source_sans_pro"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.hootsuite.nachos.NachoTextView
+                android:id="@+id/nTopics"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/AutoSchool"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="15dp"
+                android:fontFamily="@font/source_sans_pro"
+                android:hint="Study Topics"
+                android:textSize="12sp"
+                app:chipTextColor="#4E99F4" />
+
+            <com.hootsuite.nachos.NachoTextView
+                android:id="@+id/nAdditionalTopics"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/nTopics"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="15dp"
+                android:fontFamily="@font/source_sans_pro"
+                android:layout_marginBottom="80dp"
+                android:hint="@string/additional_topics_class_names_i_e_chem101"
+                android:textSize="12sp"
+                app:chipTextColor="#4E99F4" />
+
+        </RelativeLayout>
+    </ScrollView>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/Apply"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
-        android:text="Filter by"
-        android:textStyle="bold" />
-
-
-
-
+        app:cornerRadius="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="Apply"
+        android:fontFamily="@font/source_sans_pro"
+        android:textSize="13sp"
+        android:backgroundTint="#CD3B3B"
+        />
 
 </RelativeLayout>
