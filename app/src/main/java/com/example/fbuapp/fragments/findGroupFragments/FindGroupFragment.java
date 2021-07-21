@@ -31,10 +31,13 @@ import android.widget.Toast;
 import com.example.fbuapp.R;
 import com.example.fbuapp.adapters.SwipeAdapter;
 import com.example.fbuapp.databinding.FragmentFindGroupBinding;
+import com.example.fbuapp.managers.GroupManager;
 import com.example.fbuapp.models.Group;
 import com.example.fbuapp.models.School;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.chip.Chip;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.slider.Slider;
 import com.hootsuite.nachos.NachoTextView;
 import com.hootsuite.nachos.terminator.ChipTerminatorHandler;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
@@ -44,27 +47,36 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static com.example.fbuapp.managers.GroupManager.getDistanceToGroup;
 
 
 public class FindGroupFragment extends Fragment {
 
     public boolean virtual;
+    public boolean allTypes;
+    public boolean sortByDistance;
+    public boolean sortByCreatedAt;
+    public boolean large;
+    public boolean small;
+    public boolean average;
+    public Map<String, School> potentialSchools;
     FragmentFindGroupBinding binding;
-    private ArrayList<String> al;
     public static final String TAG = "FindGroupFragment";
-    private ArrayAdapter arrayAdapter;
-    private int i;
-    private LinearLayout layoutFindIndicators;
-    private double maxDistance;
-    private ArrayList<String> topics;
-    private ArrayList<String> preferences;
-    private ArrayList<Group> potentialGroups;
+    public float maxDistance;
+    public School school;
+    public ArrayList<String> potentialTopics;
+    public List<Group> potentialGroups;
     ViewPager viewPager;
-    SwipeAdapter adapter;
-    Integer[] colors = null;
-    ArgbEvaluator argbEvaluator = new ArgbEvaluator();
+    public SwipeAdapter adapter;
     MaterialButton btnFilter;
 
 
@@ -84,6 +96,12 @@ public class FindGroupFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        virtual = allTypes = sortByCreatedAt = sortByDistance = small = average = large = false;
+        maxDistance = 50;
+        potentialSchools = new HashMap<String, School>();
+        school = new School();
+        potentialTopics = new ArrayList<>();
+
         btnFilter = binding.btnFilter;
         btnFilter.bringToFront();
         btnFilter.setOnClickListener(new View.OnClickListener() {
@@ -92,6 +110,7 @@ public class FindGroupFragment extends Fragment {
                 showFilterDialog(view);
             }
         });
+
         potentialGroups = new ArrayList<>();
         adapter = new SwipeAdapter(potentialGroups, getContext());
         findPotentialMatches();
@@ -195,6 +214,7 @@ public class FindGroupFragment extends Fragment {
                     School university = (School) school;
                     String schoolName = university.getName();
                     schools.add(schoolName);
+                    potentialSchools.put(schoolName, university);
                 }
                 // Create dropdown for schools users textview
                 ArrayAdapter<String> adapterSchool =
@@ -207,6 +227,7 @@ public class FindGroupFragment extends Fragment {
 
         // Initialize topics tag
         NachoTextView acTopics = dialog.findViewById(R.id.nTopics);
+        NachoTextView nAdditionalTopics = dialog.findViewById(R.id.nAdditionalTopics);
         String[] topics = getResources().getStringArray(R.array.topics_array);
         ArrayAdapter<String> adapterTopics =
                 new ArrayAdapter<String>(getContext(), R.layout.drop_down_item, topics);
@@ -224,18 +245,55 @@ public class FindGroupFragment extends Fragment {
             }
         });
 
+
         // Show the dialog
         dialog.show();
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.getWindow().setGravity(Gravity.BOTTOM);
+
+        // Slide for distance get
+        ((Slider) dialog.findViewById(R.id.slider)).addOnChangeListener(new Slider.OnChangeListener() {
+            @Override
+            public void onValueChange(@NonNull @NotNull Slider slider, float value, boolean fromUser) {
+                maxDistance = value;
+            }
+        });
         
         // Set onclick listener to apply selected filters
         MaterialButton apply = dialog.findViewById(R.id.Apply);
         apply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if ((btnInPerson.getStrokeColor() == ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.normal))) &&
+                        (btnVirtual.getStrokeColor() == ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.normal)))) {
+                    allTypes = true;
+                } else if (btnVirtual.getStrokeColor() == ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.filter))) {
+                    virtual = true;
+                }
+
+                // Figure out if we need to sort by a certain feature
+                if (((Chip) dialog.findViewById(R.id.chipDistance)).isChecked()) sortByDistance = true;
+                if (((Chip) dialog.findViewById(R.id.chipNewest)).isChecked()) sortByCreatedAt = true;
+
+                // Get the school
+                if (!((AutoCompleteTextView) dialog.findViewById(R.id.autoCompleteSchool)).equals("Auto")) {
+                    school = potentialSchools.get(((AutoCompleteTextView) dialog.findViewById(R.id.autoCompleteSchool)).getText().toString());
+                }
+
+                // Get group size
+                String tvSize = ((AutoCompleteTextView) dialog.findViewById(R.id.autoCompleteTextView)).getText().toString();
+                if (tvSize.equals(getString(R.string.small))) small = true;
+                else if (tvSize.equals(getString(R.string.large))) large = true;
+                else if (tvSize.equals(getString(R.string.avg))) average = true;
+
+                for (com.hootsuite.nachos.chip.Chip chip : acTopics.getAllChips()) {
+                    potentialTopics.add(chip.getText().toString());
+                }
+                for (com.hootsuite.nachos.chip.Chip chip : nAdditionalTopics.getAllChips()) {
+                    potentialTopics.add(chip.getText().toString());
+                }
                 dialog.dismiss();
                 goApplyFilters();
             }
@@ -243,6 +301,95 @@ public class FindGroupFragment extends Fragment {
     }
 
     private void goApplyFilters() {
-        ParseQuery<Group> filterQuery = new ParseQuery<Group>(Group.class);
+        List<Group> found = new ArrayList<>();
+        for (int i = 0; i < potentialGroups.size(); i++) {
+            Group currentGroup = potentialGroups.get(i);
+
+            if (allTypes == false) {
+                if (virtual && !currentGroup.isVirtual() || (!virtual && currentGroup.isVirtual())) {
+                    found.add(currentGroup);
+                    continue;
+                }
+            }
+
+            // Check if group is within distance
+            if (!currentGroup.isVirtual()) {
+                try {
+                    double distance = GroupManager.getDistanceToGroup(currentGroup);
+                    float f = (float) distance;
+                    if (f > maxDistance) {
+                        found.add(currentGroup);
+                        continue;
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            // Check if the group is the correct size
+            int members = GroupManager.getMemberCount(currentGroup);
+            if ((small && members > 10) || (large && members < 20) || (average && members > 20) || (average && members < 10)) {
+                found.add(currentGroup);
+                continue;
+            }
+
+            ParseQuery<School> currentSchoolQuery = new ParseQuery<School>(School.class);
+            currentSchoolQuery.include(School.KEY_NAME);
+            currentSchoolQuery.whereEqualTo("objectId", currentGroup.getSchool().getObjectId());
+            try {
+                School curSchools = currentSchoolQuery.getFirst();
+                // Check if the school is correct
+                if (school != null && (!curSchools.getName().equals(school.getName()))) {
+                    found.add(currentGroup);
+                    continue;
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            // Check if at least one topics is present in list
+            if ((potentialTopics.size() != 0) && Collections.disjoint(potentialTopics, currentGroup.getTopics())) {
+                // No topics in common
+                found.add(currentGroup);
+                continue;
+            }
+        }
+
+        // Remove found collections
+        potentialGroups.removeAll(found);
+
+        // Sort by correct field
+        if (sortByCreatedAt) {
+            Collections.sort(potentialGroups, new CustomComparator());
+            Collections.reverse(potentialGroups);
+        }
+
+        if (sortByDistance) {
+            Collections.sort(potentialGroups, new Comparator<Group>() {
+                @Override
+                public int compare(Group u1, Group u2) {
+                    double d1 = 0;
+                    double d2 = 0;
+                    if (u1.isVirtual() || u2.isVirtual()) return 0;
+                    try {
+                        d1 = GroupManager.getDistanceToGroup(u1);
+                        d2 = GroupManager.getDistanceToGroup(u2);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    return (int) (d1 - d2);
+                }
+            });
+        }
+
+        adapter.notifyDataSetChanged();
+        viewPager.setAdapter(adapter);
+    }
+
+    public class CustomComparator implements Comparator<Group> {
+        @Override
+        public int compare(Group g1, Group g2) {
+            return g1.getCreatedAt().compareTo(g2.getCreatedAt());
+        }
     }
 }

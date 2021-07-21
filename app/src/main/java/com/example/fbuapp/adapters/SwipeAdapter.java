@@ -34,6 +34,11 @@ public class SwipeAdapter extends PagerAdapter {
         this.context = context;
     }
 
+    public void myRemove(int position){
+        groups.remove(position);
+        SwipeAdapter.super.notifyDataSetChanged();
+    }
+
     @Override
     public int getCount() {
         return groups.size();

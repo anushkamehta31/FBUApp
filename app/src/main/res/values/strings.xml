@@ -38,6 +38,9 @@
     <string name="members">members</string>
     <string name="vg">Virtual Group</string>
     <string name="meetingID">\"meetingID: \"</string>
+    <string name="small">Small (less than 10)</string>
+    <string name="large">Large (20 or more)</string>
+    <string name="avg">Average (10-20)</string>
 
     <string-array name="topics_array">
         <item>Accounting</item>

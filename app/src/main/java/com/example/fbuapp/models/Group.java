@@ -3,6 +3,7 @@ package com.example.fbuapp.models;
 import android.os.Parcelable;
 import android.util.Log;
 
+import com.example.fbuapp.managers.GroupManager;
 import com.parse.FindCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
