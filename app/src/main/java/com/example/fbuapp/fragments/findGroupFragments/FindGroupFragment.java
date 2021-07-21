@@ -1,6 +1,9 @@
 package com.example.fbuapp.fragments.findGroupFragments;
 
 import android.animation.ArgbEvaluator;
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,9 +14,11 @@ import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,6 +28,7 @@ import com.example.fbuapp.R;
 import com.example.fbuapp.adapters.SwipeAdapter;
 import com.example.fbuapp.databinding.FragmentFindGroupBinding;
 import com.example.fbuapp.models.Group;
+import com.google.android.material.button.MaterialButton;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -49,6 +55,8 @@ public class FindGroupFragment extends Fragment {
     SwipeAdapter adapter;
     Integer[] colors = null;
     ArgbEvaluator argbEvaluator = new ArgbEvaluator();
+    MaterialButton btnFilter;
+
 
 
     public FindGroupFragment() {
@@ -66,11 +74,18 @@ public class FindGroupFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        btnFilter = binding.btnFilter;
+        btnFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showFilterDialog();
+            }
+        });
         // Virtual or In-Person Group
         // If in person what is the radius?
         // Group type preferences
         // Preset topics and additional topics preferences
-        potentialGroups = new ArrayList<>();
+        /*potentialGroups = new ArrayList<>();
         adapter = new SwipeAdapter(potentialGroups, getContext());
         findPotentialMatches();
 
@@ -114,7 +129,7 @@ public class FindGroupFragment extends Fragment {
             public void onPageScrollStateChanged(int state) {
 
             }
-        });
+        });*/
         // showPotentialMatches();
     }
 
@@ -199,5 +214,23 @@ public class FindGroupFragment extends Fragment {
                 Toast.makeText(getContext(), "Click!", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void showFilterDialog() {
+        final Dialog dialog = new Dialog(getContext());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.filter_dialog_layout);
+
+        // TODO: Grab references to every view in the dialog here and set on click listeners to perform actions
+        MaterialButton btnVirtual = dialog.findViewById(R.id.btnVirtual);
+
+        // Show the dialog
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
+
+
     }
 }

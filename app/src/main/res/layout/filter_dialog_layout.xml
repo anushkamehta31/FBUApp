@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/filter_dialog_bg">
+
+    <TextView
+        android:id="@+id/tvShowMatchesFor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="40dp"
+        android:text="Show results for"
+        android:textStyle="bold" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnVirtual"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+        android:layout_width="180dp"
+        android:layout_height="70dp"
+        app:cornerRadius="20dp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:insetLeft="0dp"
+        android:layout_margin="10dp"
+        android:layout_below="@+id/tvShowMatchesFor"
+        android:text="@string/virtual"
+        android:textColor="@color/black"
+        android:fontFamily="@font/source_sans_pro"
+        app:icon="@drawable/outline_laptop_24"
+        app:iconTint="@color/black"
+        android:insetRight="0dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnInperson"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+        android:layout_width="178dp"
+        android:layout_height="70dp"
+        app:cornerRadius="20dp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:insetLeft="0dp"
+        android:layout_margin="10dp"
+        android:layout_below="@+id/tvShowMatchesFor"
+        android:layout_toEndOf="@+id/btnVirtual"
+        android:text="@string/in_person"
+        android:textColor="@color/black"
+        android:fontFamily="@font/source_sans_pro"
+        app:icon="@drawable/outline_emoji_people_20"
+        app:iconTint="@color/black"
+
+        android:insetRight="0dp" />
+
+    <TextView
+        android:id="@+id/tvSortby"
+        android:layout_below="@id/btnVirtual"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:text="Sort by"
+        android:textStyle="bold" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/cgSortBy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:singleSelection="true"
+        android:layout_below="@+id/tvSortby"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp">
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipFeatured"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.Chip.Filter"
+            android:text="Featured"/>
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipDistance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.Chip.Filter"
+            android:text="Distance"/>
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipNewest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.Chip.Filter"
+            android:text="Newest"/>
+    </com.google.android.material.chip.ChipGroup>
+
+    <TextView
+        android:id="@+id/tvDistance"
+        android:layout_below="@id/cgSortBy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:text="Distance (mi)"
+        android:textStyle="bold" />
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/slider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:value="20.0"
+        android:valueFrom="0.0"
+        android:valueTo="50.0"
+        android:layout_below="@+id/tvDistance"/>
+
+    <TextView
+        android:id="@+id/startMile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/slider"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="-17dp"
+        android:fontFamily="@font/source_sans_pro"
+        android:text="0" />
+
+    <TextView
+        android:id="@+id/endMile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/slider"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="12dp"
+        android:layout_marginTop="-17dp"
+        android:fontFamily="@font/source_sans_pro"
+        android:text="50" />
+
+    <TextView
+        android:id="@+id/tvFilter"
+        android:layout_below="@id/endMile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:text="Filter by"
+        android:textStyle="bold" />
+
+
+
+
+
+</RelativeLayout>

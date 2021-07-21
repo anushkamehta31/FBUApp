@@ -54,12 +54,19 @@ public class GroupManager {
         return members;
     }
 
-    public static double getDistanceToGroup(Group group) {
-        ParseUser user = ParseUser.getCurrentUser();
-        // ParseGeoPoint userLocation = ((Location) user.get(KEY_LOCATION)).getLocation(); //.getLocation();
-        // ParseGeoPoint groupLocation = group.getLocation().getLocation();
-        // return userLocation.distanceInMilesTo(groupLocation);
-        return 0;
+    public static double getDistanceToGroup(Group group) throws ParseException {
+        //ParseUser user = ParseUser.getCurrentUser();
+        //String userLocation = ((Location) user.get(KEY_LOCATION)).getObjectId();
+        ParseQuery<Location> query = ParseQuery.getQuery(Location.class);
+        query.include(KEY_LOCATION);
+        query.whereEqualTo("objectId", ((Location) ParseUser.getCurrentUser().get(KEY_LOCATION)).getObjectId());
+        Location userLocation = query.find().get(0);
+
+        ParseQuery<Location> queryGroup = ParseQuery.getQuery(Location.class);
+        queryGroup.include(KEY_LOCATION);
+        query.whereEqualTo("objectId", ((Location) group.get(KEY_LOCATION)).getObjectId());
+        Location groupLocation = query.find().get(0);
+        return userLocation.getLocation().distanceInMilesTo(groupLocation.getLocation());
     }
 
     public void createGroup(Group group, boolean isVirtual, String groupName, School school, Location meetingLocation,

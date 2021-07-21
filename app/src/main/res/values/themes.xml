@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.FBUApp" parent="Theme.MaterialComponents.Light.DarkActionBar">
+    <style name="Theme.FBUApp" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
@@ -19,6 +19,7 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+
     <style name="Theme.FBUApp.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.FBUApp.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
@@ -27,5 +28,10 @@
         <item name="chipBackgroundColor">@color/chip_background_color</item>
         <item name="android:textColor">@color/chip_text_color</item>
         <item name="checkedIconTint">@color/white</item>
+    </style>
+
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@animator/slide_in_bottom</item>
+        <item name="android:windowExitAnimation">@animator/slide_out_bottom</item>
     </style>
 </resources>

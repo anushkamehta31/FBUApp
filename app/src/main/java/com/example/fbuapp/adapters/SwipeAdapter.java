@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.example.fbuapp.R;
 import com.example.fbuapp.managers.GroupManager;
 import com.example.fbuapp.models.Group;
+import com.parse.ParseException;
 import com.parse.ParseFile;
 
 import org.jetbrains.annotations.NotNull;
@@ -72,7 +73,11 @@ public class SwipeAdapter extends PagerAdapter {
         if (group.isVirtual()) {
             tvDistance.setText(R.string.vg);
         } else {
-            tvDistance.setText(String.valueOf(GroupManager.getDistanceToGroup(group)));
+            try {
+                tvDistance.setText(String.valueOf(GroupManager.getDistanceToGroup(group)));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
 
         container.addView(view, 0);

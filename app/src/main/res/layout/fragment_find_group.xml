@@ -7,15 +7,34 @@
     tools:context=".fragments.findGroupFragments.FindGroupFragment"
     >
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnFilter"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+        android:layout_width="50dp"
+        android:layout_height="35dp"
+        app:cornerRadius="20dp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:insetLeft="0dp"
+        android:layout_margin="10dp"
+        android:insetRight="0dp"
+        app:icon="@drawable/outline_filter_list_24"
+        app:strokeColor="@color/color1"
+        app:iconTint="@color/black"/>
+
+
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPagerFind"
-        android:foregroundGravity="center"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:overScrollMode="never"
-        android:clipToPadding="false"/>
-
+        android:layout_height="678dp"
+        android:layout_below="@+id/btnFilter"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:clipToPadding="false"
+        android:foregroundGravity="center"
+        android:overScrollMode="never" />
 
     <com.lorentzos.flingswipe.SwipeFlingAdapterView
         android:id="@+id/swipeFrame"

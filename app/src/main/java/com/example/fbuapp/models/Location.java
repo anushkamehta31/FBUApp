@@ -29,7 +29,7 @@ public class Location extends ParseObject implements Parcelable {
 
     // Need to define getters and setters for each Key that we have defined (names of Parse columns)
     public ParseGeoPoint getLocation() {
-        return this.getParseGeoPoint("location");
+        return this.getParseGeoPoint(KEY_LOCATION);
     }
 
     public void setLocation(LatLng location) {
