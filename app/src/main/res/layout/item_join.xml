@@ -1,102 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:gravity="center_vertical">
+    android:gravity="bottom">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:cardCornerRadius="30dp"
         android:layout_margin="8dp"
-        app:cardCornerRadius="20dp">
+        app:strokeColor="@color/black"
+        app:strokeWidth="2dp"
+        >
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:padding="15dp"
+            android:layout_height="match_parent">
 
-            <!-- Media -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardHeading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_centerHorizontal="true"
+                app:strokeColor="@color/black"
+                app:strokeWidth="2dp"
+                app:cardCornerRadius="10dp">
+                <RelativeLayout
+                    android:padding="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:id="@+id/tvMembers"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        tools:text="4 members"
+                        android:fontFamily="@font/source_sans_pro"
+                        />
+
+                    <TextView
+                        android:id="@+id/tvLocation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tvMembers"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="@font/lora_bold"
+                        android:textSize="20sp"
+                        tools:text="Location: Iribe Center" />
+                </RelativeLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/tvNameItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/cardHeading"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/lora_bold"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                tools:text="COMM101 Group" />
 
             <ImageView
                 android:id="@+id/ivImage"
                 android:layout_width="match_parent"
-                android:layout_height="194dp"
+                android:layout_height="150dp"
+                tools:src="@tools:sample/avatars"
+                android:layout_below="@id/tvNameItem"
+                android:layout_marginTop="20dp"
                 android:scaleType="centerCrop"
-                tools:src="@tools:sample/avatars" />
+                android:layout_marginBottom="10dp"
+                />
 
-            <RelativeLayout
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp"
-                android:layout_marginTop="50dp">
+                android:layout_margin="10dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/ivImage"
+                app:cardCornerRadius="10dp"
+                app:strokeColor="@color/black"
+                app:strokeWidth="2dp">
+                <RelativeLayout
+                    android:padding="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:id="@+id/tvDistance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        tools:text="0.2 miles from you"
+                        android:fontFamily="@font/source_sans_pro"
+                        />
 
-                <!-- Title, secondary and supporting text -->
-                <TextView
-                    android:id="@+id/tvNameItem"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:text="Group Name"
-                    android:textAppearance="?attr/textAppearanceHeadline6"
-                    />
+                    <TextView
+                        android:id="@+id/tvDescriptionItem"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tvDistance"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="@font/lora_bold"
+                        android:textSize="10sp"
+                        tools:text="COMM101 is a group dedicated to..." />
+                </RelativeLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-                <TextView
-                    android:id="@+id/tvDistance"
-                    android:layout_width="244dp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="3dp"
-                    android:layout_toEndOf="@+id/tvNameItem"
-                    android:textAppearance="?attr/textAppearanceBody2"
-                    android:textColor="?android:attr/textColorSecondary"
-                    tools:text="0.3 miles from you" />
-
-                <TextView
-                    android:id="@+id/tvMembers"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    tools:text="Members: 6"
-                    android:layout_below="@id/tvNameItem"
-                    android:textAppearance="?attr/textAppearanceBody2"
-                    android:textColor="?android:attr/textColorSecondary"
-                    />
-
-                <TextView
-                    android:id="@+id/tvDescriptionItem"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    tools:text="Group Description"
-                    android:layout_below="@+id/tvMembers"
-                    android:textAppearance="?attr/textAppearanceBody2"
-                    android:textColor="?android:attr/textColorSecondary"
-                    />
-
-            </RelativeLayout>
-
-            <!-- Buttons -->
-            <LinearLayout
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnJoin"
+                app:cornerRadius="20dp"
+                android:layout_below="@+id/cardDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:orientation="horizontal">
-                <com.google.android.material.button.MaterialButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/join"
-                    style="?attr/borderlessButtonStyle"
-                    />
-            </LinearLayout>
+                android:backgroundTint="#65DF92"
+                android:text="join"
+                android:fontFamily="@font/source_sans_pro"
+                android:layout_centerHorizontal="true"/>
 
-        </LinearLayout>
+
+
+        </RelativeLayout>
 
     </com.google.android.material.card.MaterialCardView>
 
-</LinearLayout>
+</RelativeLayout>

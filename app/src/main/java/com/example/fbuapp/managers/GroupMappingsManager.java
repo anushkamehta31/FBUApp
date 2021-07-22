@@ -26,4 +26,16 @@ public class GroupMappingsManager {
         mappings.setUser(ParseUser.getCurrentUser());
         mappings.save();
     }
+
+    public void setUserMapping(ParseUser user, Group group) {
+        GroupMappings groupMapping = new GroupMappings();
+        groupMapping.setUser(user);
+        groupMapping.setGroup(group);
+        groupMapping.setIsMember(true);
+        try {
+            groupMapping.save();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
 }

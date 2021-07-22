@@ -2,6 +2,8 @@ package com.example.fbuapp.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,19 +17,29 @@ import androidx.viewpager.widget.PagerAdapter;
 import com.bumptech.glide.Glide;
 import com.example.fbuapp.R;
 import com.example.fbuapp.managers.GroupManager;
+import com.example.fbuapp.managers.GroupMappingsManager;
 import com.example.fbuapp.models.Group;
+import com.example.fbuapp.models.GroupMappings;
+import com.example.fbuapp.models.Location;
+import com.google.android.material.button.MaterialButton;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public class SwipeAdapter extends PagerAdapter {
 
     private List<Group> groups;
     private LayoutInflater layoutInflater;
     private Context context;
+    public static final String TAG = "SwipeAdapter";
 
     public SwipeAdapter(List<Group> groups, Context context) {
         this.groups = groups;
@@ -49,7 +61,7 @@ public class SwipeAdapter extends PagerAdapter {
         return view.equals(object);
     }
 
-    @SuppressLint({"SetTextI18n", "CutPasteId"})
+    @SuppressLint({"SetTextI18n", "CutPasteId", "ResourceAsColor"})
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
@@ -58,17 +70,21 @@ public class SwipeAdapter extends PagerAdapter {
 
         Group group = groups.get(position);
         ImageView imageView;
-        TextView tvName, tvDescription, tvDistance, tvMembers;
+        TextView tvName, tvDescription, tvDistance, tvMembers, tvLocation;
+        MaterialButton btnJoin;
 
         imageView = view.findViewById(R.id.ivImage);
         tvName = view.findViewById(R.id.tvNameItem);
         tvDescription = view.findViewById(R.id.tvDescriptionItem);
         tvDistance = view.findViewById(R.id.tvDistance);
         tvMembers = view.findViewById(R.id.tvMembers);
+        tvLocation = view.findViewById(R.id.tvLocation);
+        btnJoin = view.findViewById(R.id.btnJoin);
 
         ParseFile image = group.getImage();
         if (image != null) {
-            Glide.with(context).load(image.getUrl()).centerCrop().into(imageView);
+            Glide.with(context).load(image.getUrl()).centerCrop()
+                    .transform(new RoundedCornersTransformation(60,20)).into(imageView);
         }
 
         tvName.setText(group.getName());
@@ -79,11 +95,25 @@ public class SwipeAdapter extends PagerAdapter {
             tvDistance.setText(R.string.vg);
         } else {
             try {
-                tvDistance.setText(String.valueOf(GroupManager.getDistanceToGroup(group)));
+                ParseQuery<Location> query = new ParseQuery<Location>(Location.class);
+                query.include("name");
+                query.whereEqualTo("objectId", group.getLocation().getObjectId());
+                String locName = query.getFirst().getName();
+                tvLocation.setText(locName);
+                tvDistance.setText(String.format("%.2f",GroupManager.getDistanceToGroup(group)) + " miles from you");
             } catch (ParseException e) {
                 e.printStackTrace();
             }
         }
+
+        btnJoin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnJoin.setText("Joined");
+                GroupMappingsManager groupManager = new GroupMappingsManager();
+                groupManager.setUserMapping(ParseUser.getCurrentUser(), group);
+            }
+        });
 
         container.addView(view, 0);
 
