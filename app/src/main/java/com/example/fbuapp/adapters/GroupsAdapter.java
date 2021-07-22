@@ -1,6 +1,7 @@
 package com.example.fbuapp.adapters;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.fbuapp.MainActivity;
 import com.example.fbuapp.R;
+import com.example.fbuapp.fragments.groupFragments.GroupDetailsFragment;
 import com.example.fbuapp.fragments.groupFragments.ViewGroupFragment;
 import com.example.fbuapp.models.Group;
 import com.parse.ParseFile;
@@ -67,8 +69,12 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.ViewHolder
                 public void onClick(View v) {
                     MainActivity activity = (MainActivity) mContext;
                     FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
-                    ViewGroupFragment fragment = ViewGroupFragment.newInstance(mGroups.get(getAdapterPosition()));
-                    ft.replace(R.id.flContainer, fragment);
+                    // GroupDetailsFragment fragment = ViewGroupFragment.newInstance(mGroups.get(getAdapterPosition()));
+                    Bundle bundle = new Bundle();
+                    GroupDetailsFragment detailsFragment = new GroupDetailsFragment();
+                    bundle.putParcelable("itemGroup", mGroups.get(getAdapterPosition()));
+                    detailsFragment.setArguments(bundle);
+                    ft.replace(R.id.flContainer, detailsFragment);
                     ft.commit();
                 }
             });

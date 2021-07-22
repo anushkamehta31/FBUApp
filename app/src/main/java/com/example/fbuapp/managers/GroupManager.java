@@ -61,7 +61,6 @@ public class GroupManager {
         query.include(KEY_LOCATION);
         query.whereEqualTo("objectId", ((Location) ParseUser.getCurrentUser().get(KEY_LOCATION)).getObjectId());
         Location userLocation = query.find().get(0);
-
         ParseQuery<Location> queryGroup = ParseQuery.getQuery(Location.class);
         queryGroup.include(KEY_LOCATION);
         query.whereEqualTo("objectId", ((Location) group.get(KEY_LOCATION)).getObjectId());

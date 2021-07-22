@@ -334,6 +334,7 @@ public class FindGroupFragment extends Fragment {
                 continue;
             }
 
+
             ParseQuery<School> currentSchoolQuery = new ParseQuery<School>(School.class);
             currentSchoolQuery.include(School.KEY_NAME);
             currentSchoolQuery.whereEqualTo("objectId", currentGroup.getSchool().getObjectId());
@@ -381,6 +382,7 @@ public class FindGroupFragment extends Fragment {
                     return (int) (d1 - d2);
                 }
             });
+            Collections.reverse(potentialGroups);
         }
 
         adapter.notifyDataSetChanged();

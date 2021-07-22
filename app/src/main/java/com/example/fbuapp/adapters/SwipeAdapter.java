@@ -40,6 +40,7 @@ public class SwipeAdapter extends PagerAdapter {
     private LayoutInflater layoutInflater;
     private Context context;
     public static final String TAG = "SwipeAdapter";
+    public static final String KEY_LOCATION = "location";
 
     public SwipeAdapter(List<Group> groups, Context context) {
         this.groups = groups;
@@ -84,7 +85,7 @@ public class SwipeAdapter extends PagerAdapter {
         ParseFile image = group.getImage();
         if (image != null) {
             Glide.with(context).load(image.getUrl()).centerCrop()
-                    .transform(new RoundedCornersTransformation(60,20)).into(imageView);
+                    .transform(new RoundedCornersTransformation(30,10)).into(imageView);
         }
 
         tvName.setText(group.getName());
@@ -94,16 +95,27 @@ public class SwipeAdapter extends PagerAdapter {
         if (group.isVirtual()) {
             tvDistance.setText(R.string.vg);
         } else {
-            try {
-                ParseQuery<Location> query = new ParseQuery<Location>(Location.class);
-                query.include("name");
-                query.whereEqualTo("objectId", group.getLocation().getObjectId());
-                String locName = query.getFirst().getName();
-                tvLocation.setText(locName);
-                tvDistance.setText(String.format("%.2f",GroupManager.getDistanceToGroup(group)) + " miles from you");
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+            ParseQuery<Location> query = new ParseQuery<Location>(Location.class);
+            query.include("name");
+            query.whereEqualTo("objectId", group.getLocation().getObjectId());
+            query.getFirstInBackground(new GetCallback<Location>() {
+                @Override
+                public void done(Location location, ParseException e) {
+                    String locName = location.getName();
+                    tvLocation.setVisibility(View.VISIBLE);
+                    tvLocation.setText(locName);
+                    ParseQuery<Location> queryLoc = ParseQuery.getQuery(Location.class);
+                    queryLoc.include(KEY_LOCATION);
+                    queryLoc.whereEqualTo("objectId", ((Location) ParseUser.getCurrentUser().get(KEY_LOCATION)).getObjectId());
+                    queryLoc.getFirstInBackground(new GetCallback<Location>() {
+                        @Override
+                        public void done(Location userLocation, ParseException e) {
+                            double distance = userLocation.getLocation().distanceInMilesTo(location.getLocation());
+                            tvDistance.setText(String.format("%.1f", distance) + " miles from you");
+                        }
+                    });
+                }
+            });
         }
 
         btnJoin.setOnClickListener(new View.OnClickListener() {
