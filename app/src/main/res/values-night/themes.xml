@@ -3,7 +3,7 @@
     <style name="Theme.FBUApp" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">#673AB7</item>
-        <item name="colorPrimaryVariant">#512dA8</item>
+        <item name="colorPrimaryVariant">#2196F3</item>
         <item name="colorOnPrimary">#FF4081</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>

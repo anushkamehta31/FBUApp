@@ -9,8 +9,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -22,6 +24,14 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.example.fbuapp.MainActivity;
 import com.example.fbuapp.R;
+import com.example.fbuapp.fragments.resources.AgendaFragment;
+import com.example.fbuapp.fragments.resources.ChatFragment;
+import com.example.fbuapp.fragments.resources.FilesFragment;
+import com.example.fbuapp.fragments.resources.ImagesFragment;
+import com.example.fbuapp.fragments.resources.LinksFragment;
+import com.example.fbuapp.fragments.resources.NotesFragment;
+import com.example.fbuapp.fragments.resources.SettingsFragment;
+import com.example.fbuapp.fragments.resources.VideosFragment;
 import com.example.fbuapp.models.Group;
 import com.google.android.material.navigation.NavigationView;
 import com.parse.ParseUser;
@@ -90,24 +100,38 @@ public class GroupDetailsFragment extends Fragment {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
+                Fragment fragment = null;
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("itemGroup", group);
                 switch(id){
                     case R.id.images:
+                        fragment = new ImagesFragment();
                         break;
                     case R.id.notes:
+                        fragment = new NotesFragment();
                         break;
                     case R.id.videos:
+                        fragment = new VideosFragment();
                         break;
                     case R.id.agenda:
+                        fragment = new AgendaFragment();
                         break;
                     case R.id.links:
+                        fragment = new LinksFragment();
+                        break;
+                    case R.id.files:
+                        fragment = new FilesFragment();
                         break;
                     case R.id.chat:
+                        fragment = new ChatFragment();
                         break;
                     case R.id.settings:
+                        fragment = new SettingsFragment();
                         break;
                     default:
                         return true;
                 }
+                loadFragment(fragment, bundle);
                 return true;
             }
         });
@@ -126,6 +150,14 @@ public class GroupDetailsFragment extends Fragment {
             }
         });
 
+    }
+
+    private void loadFragment(Fragment fragment, Bundle bundle) {
+        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+        fragment.setArguments(bundle);
+        ft.replace(R.id.frame, fragment).commit();
+        drawerLayout.closeDrawer(GravityCompat.START);
+        ft.addToBackStack(null);
     }
 
     public void initializeSdk(Context context) {
