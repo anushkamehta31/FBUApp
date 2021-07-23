@@ -1,44 +1,73 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.drawerlayout.widget.DrawerLayout android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#fff"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start"
+    android:id="@+id/drawer"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <ImageView
-        android:id="@+id/ivImage"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:scaleType="centerCrop"
-        tools:srcCompat="@tools:sample/avatars"/>
+        android:layout_marginTop="50dp"
+        android:layout_height="match_parent">
 
-    <TextView
+        <ImageView
+            android:id="@+id/ivImage"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:scaleType="centerCrop"
+            tools:srcCompat="@tools:sample/avatars"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Type: "
+            android:id="@+id/tvType"
+            android:layout_below="@+id/ivImage"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"/>
+
+        <Button
+            android:id="@+id/btnVirtual"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ivImage"
+            android:text="@string/virtual"
+            android:layout_toEndOf="@+id/tvType"
+            android:layout_margin="5dp"/>
+
+
+        <Button
+            android:id="@+id/join_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/join_meeting"
+            android:layout_below="@+id/btnVirtual"
+            android:layout_margin="5dp"
+            />
+    </RelativeLayout>
+
+
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/resource_bar_main"/>
+
+    <com.google.android.material.navigation.NavigationView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Type: "
-        android:id="@+id/tvType"
-        android:layout_below="@+id/ivImage"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="10dp"/>
+        android:layout_height="match_parent"
+        android:id="@+id/navigationView"
+        android:background="#0E66B9"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/nav_header"
+        app:menu="@menu/resource_menu"
+        app:itemBackground="@drawable/menu_item_padding"
+        app:itemIconTint="@color/white"
+        app:itemHorizontalPadding="40dp"
+        app:itemTextColor="@color/white"
+        app:itemTextAppearance="@style/TextViewStyle"
+        />
 
-    <Button
-        android:id="@+id/btnVirtual"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ivImage"
-        android:text="@string/virtual"
-        android:layout_toEndOf="@+id/tvType"
-        android:layout_margin="5dp"/>
-
-
-    <Button
-        android:id="@+id/join_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/join_meeting"
-        android:layout_below="@+id/btnVirtual"
-        android:layout_margin="5dp"
-         />
-
-</RelativeLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

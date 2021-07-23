@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <dimen name="card_corner_radius">8dp</dimen>
     <dimen name="card_elevation">8dp</dimen>
@@ -15,5 +15,8 @@
     <dimen name="appbar_padding">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="appbar_padding_top">8dp</dimen>
+
+    <dimen tools:override="truw"
+        name="design_navigation_separator_vertical_padding">20dp</dimen>
 
 </resources>

@@ -26,12 +26,12 @@
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPagerFind"
         android:layout_width="match_parent"
-        android:layout_height="678dp"
+        android:layout_height="633dp"
         android:layout_below="@+id/btnFilter"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="45dp"
         android:clipToPadding="false"
         android:foregroundGravity="center"
         android:overScrollMode="never" />

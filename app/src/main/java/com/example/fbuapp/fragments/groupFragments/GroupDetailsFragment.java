@@ -6,18 +6,27 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.example.fbuapp.MainActivity;
 import com.example.fbuapp.R;
 import com.example.fbuapp.models.Group;
+import com.google.android.material.navigation.NavigationView;
 import com.parse.ParseUser;
+
+import org.jetbrains.annotations.NotNull;
 
 import us.zoom.sdk.JoinMeetingOptions;
 import us.zoom.sdk.JoinMeetingParams;
@@ -32,6 +41,11 @@ public class GroupDetailsFragment extends Fragment {
     public static final String TAG = "GroupDetailsFragment";
     Button btnType;
     ImageView ivImage;
+    DrawerLayout drawerLayout;
+    ActionBarDrawerToggle toggle;
+    Toolbar toolbar;
+    NavigationView navigationView;
+
 
     public GroupDetailsFragment() {
         // Required empty public constructor
@@ -61,6 +75,43 @@ public class GroupDetailsFragment extends Fragment {
         initializeSdk(getContext());
         btnType = view.findViewById(R.id.btnVirtual);
         ivImage = view.findViewById(R.id.ivImage);
+
+        // Set up navigation drawer for resources
+        drawerLayout = view.findViewById(R.id.drawer);
+        toolbar = view.findViewById(R.id.toolbar);
+        ((AppCompatActivity) getContext()).setSupportActionBar(toolbar);
+        toggle=new ActionBarDrawerToggle(getActivity(),drawerLayout,toolbar,R.string.open,R.string.close);
+        drawerLayout.addDrawerListener(toggle);
+        drawerLayout.bringToFront();
+        toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.black));
+        toggle.syncState();
+        navigationView = view.findViewById(R.id.navigationView);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+                switch(id){
+                    case R.id.images:
+                        break;
+                    case R.id.notes:
+                        break;
+                    case R.id.videos:
+                        break;
+                    case R.id.agenda:
+                        break;
+                    case R.id.links:
+                        break;
+                    case R.id.chat:
+                        break;
+                    case R.id.settings:
+                        break;
+                    default:
+                        return true;
+                }
+                return true;
+            }
+        });
+
 
         if (!group.isVirtual()) btnType.setText(R.string.in_person);
         if (group.getImage() != null) {

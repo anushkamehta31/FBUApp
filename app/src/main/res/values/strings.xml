@@ -42,6 +42,8 @@
     <string name="large">Large (20 or more)</string>
     <string name="avg">Average (10-20)</string>
     <string name="miles">\" miles from you\"</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
 
     <string-array name="topics_array">
         <item>Accounting</item>
