@@ -17,7 +17,7 @@ public class LocationManager {
     public static final String KEY_ID = "objectId";
     public static final String KEY_ADDRESS = "address";
 
-    public void getShoolFromGroup (TextView tvLocation, String locationID) {
+    public void getSchoolFromGroup(TextView tvLocation, String locationID) {
         ParseQuery<Location> query = ParseQuery.getQuery(Location.class);
         query.whereEqualTo(KEY_ID, locationID);
         query.include(KEY_NAME);

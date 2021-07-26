@@ -13,18 +13,20 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewOutlineProvider;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.fbuapp.R;
+import com.example.fbuapp.adapters.GroupMemberAdapter;
 import com.example.fbuapp.fragments.resources.AgendaFragment;
 import com.example.fbuapp.fragments.resources.ChatFragment;
 import com.example.fbuapp.fragments.resources.FilesFragment;
@@ -33,18 +35,18 @@ import com.example.fbuapp.fragments.resources.LinksFragment;
 import com.example.fbuapp.fragments.resources.NotesFragment;
 import com.example.fbuapp.fragments.resources.SettingsFragment;
 import com.example.fbuapp.fragments.resources.VideosFragment;
+import com.example.fbuapp.managers.GroupMappingsManager;
 import com.example.fbuapp.managers.LocationManager;
 import com.example.fbuapp.managers.SchoolManager;
 import com.example.fbuapp.models.Group;
-import com.example.fbuapp.models.School;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.navigation.NavigationView;
-import com.parse.ParseFile;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import us.zoom.sdk.JoinMeetingOptions;
 import us.zoom.sdk.JoinMeetingParams;
@@ -71,6 +73,9 @@ public class GroupDetailsFragment extends Fragment {
     Toolbar toolbar;
     NavigationView navigationView;
     ChipGroup chipGroup;
+    RecyclerView rvMembers;
+    public GroupMemberAdapter adapter;
+    public List<ParseUser> groupMembers;
 
 
     public GroupDetailsFragment() {
@@ -116,6 +121,7 @@ public class GroupDetailsFragment extends Fragment {
         ((AppCompatActivity) getContext()).setSupportActionBar(toolbar);
         toggle=new ActionBarDrawerToggle(getActivity(),drawerLayout,toolbar,R.string.open,R.string.close);
         drawerLayout.addDrawerListener(toggle);
+        rvMembers = view.findViewById(R.id.rvMembers);
         drawerLayout.bringToFront();
         toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.black));
         toggle.syncState();
@@ -168,7 +174,7 @@ public class GroupDetailsFragment extends Fragment {
             btnJoinMeeting.setVisibility(View.VISIBLE);
         } else {
             LocationManager locationManager = new LocationManager();
-            locationManager.getShoolFromGroup(tvLocation, group.getLocation().getObjectId());
+            locationManager.getSchoolFromGroup(tvLocation, group.getLocation().getObjectId());
             ibMap.setVisibility(View.VISIBLE);
             // TODO: set an onclick listener that opens map and gives directions if the user selects it
         }
@@ -199,6 +205,14 @@ public class GroupDetailsFragment extends Fragment {
             chipGroup.addView(chip);
         }
 
+        // Get group members
+        rvMembers.bringToFront();
+        GroupMappingsManager groupManager = new GroupMappingsManager();
+        groupMembers = new ArrayList<>();
+        adapter = new GroupMemberAdapter(getContext(), groupMembers);
+        rvMembers.setAdapter(adapter);
+        rvMembers.setLayoutManager(new LinearLayoutManager(getContext()));
+        groupManager.getGroupMembers(adapter, groupMembers, group);
     }
 
     private void loadFragment(Fragment fragment, Bundle bundle) {

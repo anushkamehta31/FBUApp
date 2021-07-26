@@ -16,6 +16,7 @@ import android.widget.ImageButton;
 
 import com.example.fbuapp.R;
 import com.example.fbuapp.adapters.GridAdapter;
+import com.example.fbuapp.managers.ResourceManager;
 import com.example.fbuapp.models.Group;
 import com.example.fbuapp.models.Image;
 import com.parse.FindCallback;
@@ -30,10 +31,10 @@ import java.util.List;
 
 public class ImagesFragment extends Fragment {
 
-    private Group group;
-    protected List<Image> groupImages;
+    public Group group;
+    public List<Image> groupImages;
     GridView gvPosts;
-    GridAdapter adapter;
+    public GridAdapter adapter;
     ImageButton btnAddPhoto;
     ImageButton btnUpload;
     public static final String TAG = "ImagesFragment";
@@ -66,33 +67,15 @@ public class ImagesFragment extends Fragment {
         // btnUpload = view.findViewById(R.id.btnUploadPhoto);
         // btnAddPhoto = view.findViewById(R.id.btnAdd);
         gvPosts.setAdapter(adapter);
-        queryImages();
+
+        // Query the images
+        ResourceManager resourceManager = new ResourceManager();
+        resourceManager.queryImages(group, groupImages, adapter);
 
     }
 
     private void launchCamera() {
     }
 
-    protected void queryImages() {
-        // Specify which class to query
-        ParseQuery<Image> query = ParseQuery.getQuery(Image.class);
-        // Specify what other data we would like to get back
-        query.include(Image.KEY_GROUP);
-        // Get current users posts only
-        query.whereEqualTo(Image.KEY_GROUP, group);
-        // Get most recent posts at top
-        query.addDescendingOrder(Image.KEY_CREATED_AT);
-        // Get all the posts
-        query.findInBackground(new FindCallback<Image>() {
-            @Override
-            public void done(List<Image> images, ParseException e) {
-                if (e != null) {
-                    Log.e(TAG, "Issue with getting posts", e);
-                    return;
-                }
-                groupImages.addAll(images);
-                adapter.notifyDataSetChanged();
-            }
-        });
-    }
+
 }

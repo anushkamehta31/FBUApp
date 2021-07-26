@@ -2,6 +2,7 @@
 <resources>
     <array name="preloaded_fonts" translatable="false">
         <item>@font/lora_bold</item>
+        <item>@font/quicksand_bold</item>
         <item>@font/roboto</item>
         <item>@font/roboto_thin</item>
         <item>@font/source_sans_pro</item>

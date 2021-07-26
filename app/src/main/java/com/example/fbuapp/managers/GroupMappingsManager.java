@@ -1,15 +1,27 @@
 package com.example.fbuapp.managers;
 
+import android.util.Log;
+
+import com.example.fbuapp.adapters.GroupMemberAdapter;
 import com.example.fbuapp.models.Group;
 import com.example.fbuapp.models.GroupMappings;
+import com.example.fbuapp.models.School;
 import com.hootsuite.nachos.NachoTextView;
+import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class GroupMappingsManager {
+    public static final String KEY_GROUP = "groupID";
+    public static final String KEY_USER_ID = "userID";
+    public static final String KEY_MEMBER = "isMember";
+    public static final String TAG = "GroupMappingsManager";
 
     public void setUserMappings(Map<String, ParseUser> map, NachoTextView nUsers, Group group) throws ParseException {
         for (com.hootsuite.nachos.chip.Chip chip : nUsers.getAllChips()) {
@@ -37,5 +49,42 @@ public class GroupMappingsManager {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+    }
+
+    public void getGroupMembers(GroupMemberAdapter groupMemberAdapter, List<ParseUser> groupMembers, Group group) {
+        ParseQuery<GroupMappings> query = ParseQuery.getQuery(GroupMappings.class);
+        // Specify what other data we would like to get back
+        query.include("objectId");
+        query.whereEqualTo(KEY_GROUP, group);
+        query.whereEqualTo(KEY_MEMBER, true);
+        // query.whereEqualTo(KEY_MEMBER, true);
+        // Specify what other data we would like to get back
+        query.findInBackground(new FindCallback<GroupMappings>() {
+            @Override
+            public void done(List<GroupMappings> mappings, ParseException e) {
+                if (e != null) {
+                    Log.i(TAG, "Error while fetching group members");
+                    return;
+                }
+
+                for (GroupMappings memberMapped : mappings) {
+                   ParseQuery userQuery = ParseQuery.getQuery(ParseUser.class);
+                   userQuery.include("objectId");
+                   userQuery.whereEqualTo("objectId", memberMapped.getUser().getObjectId());
+                   userQuery.findInBackground(new FindCallback<ParseUser>() {
+                       @Override
+                       public void done(List<ParseUser> users, ParseException e) {
+                           if (e != null) {
+                               Log.i(TAG, "Error getting usernames");
+                               return;
+                           }
+                           ParseUser user = users.get(0);
+                           groupMembers.add(user);
+                           groupMemberAdapter.notifyDataSetChanged();
+                       }
+                   });
+                }
+            }
+        });
     }
 }

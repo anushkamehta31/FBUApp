@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.fbuapp.MainActivity;
 import com.example.fbuapp.R;
+import com.example.fbuapp.adapters.GroupMemberAdapter;
 import com.example.fbuapp.fragments.groupFragments.CreateGroupFragment;
 import com.example.fbuapp.fragments.groupFragments.GroupsFragment;
 import com.example.fbuapp.models.Group;
@@ -41,7 +42,7 @@ public class GroupManager {
     public static int getMemberCount(Group group) {
         ParseQuery<GroupMappings> query = ParseQuery.getQuery(GroupMappings.class);
         // Specify what other data we would like to get back
-        query.include("objectID");
+        query.include("objectId");
         query.whereEqualTo(KEY_GROUP, group);
         query.whereEqualTo(KEY_MEMBER, true);
         int members = 0;
@@ -109,4 +110,5 @@ public class GroupManager {
             }
         });
     }
+
 }
