@@ -18,11 +18,12 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.view.ViewOutlineProvider;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.fbuapp.MainActivity;
 import com.example.fbuapp.R;
 import com.example.fbuapp.fragments.resources.AgendaFragment;
 import com.example.fbuapp.fragments.resources.ChatFragment;
@@ -32,11 +33,18 @@ import com.example.fbuapp.fragments.resources.LinksFragment;
 import com.example.fbuapp.fragments.resources.NotesFragment;
 import com.example.fbuapp.fragments.resources.SettingsFragment;
 import com.example.fbuapp.fragments.resources.VideosFragment;
+import com.example.fbuapp.managers.LocationManager;
+import com.example.fbuapp.managers.SchoolManager;
 import com.example.fbuapp.models.Group;
+import com.example.fbuapp.models.School;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.navigation.NavigationView;
+import com.parse.ParseFile;
 import com.parse.ParseUser;
 
-import org.jetbrains.annotations.NotNull;
+import java.util.ArrayList;
 
 import us.zoom.sdk.JoinMeetingOptions;
 import us.zoom.sdk.JoinMeetingParams;
@@ -49,12 +57,20 @@ public class GroupDetailsFragment extends Fragment {
 
     private Group group;
     public static final String TAG = "GroupDetailsFragment";
-    Button btnType;
+    public TextView tvLocation;
+    public ImageButton ibMap;
+    TextView tvDay;
+    TextView tvDescription;
+    TextView tvTitle;
+    TextView tvTime;
+    TextView tvSchool;
     ImageView ivImage;
+    MaterialButton btnJoinMeeting;
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle toggle;
     Toolbar toolbar;
     NavigationView navigationView;
+    ChipGroup chipGroup;
 
 
     public GroupDetailsFragment() {
@@ -83,11 +99,19 @@ public class GroupDetailsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         // Call this method to initialize the SDK
         initializeSdk(getContext());
-        btnType = view.findViewById(R.id.btnVirtual);
-        ivImage = view.findViewById(R.id.ivImage);
 
+        ivImage = view.findViewById(R.id.ivImage);
+        btnJoinMeeting = view.findViewById(R.id.btnJoinMeeting);
+        ibMap = view.findViewById(R.id.ibMap);
+        tvDescription = view.findViewById(R.id.tvDescription);
+        tvLocation = view.findViewById(R.id.tvLocation);
+        tvTitle = view.findViewById(R.id.tvName);
+        tvSchool = view.findViewById(R.id.tvSchoolName);
         // Set up navigation drawer for resources
         drawerLayout = view.findViewById(R.id.drawer);
+        chipGroup = view.findViewById(R.id.chipGroupTopics);
+        tvDay = view.findViewById(R.id.tvDay);
+        tvTime = view.findViewById(R.id.tvTime);
         toolbar = view.findViewById(R.id.toolbar);
         ((AppCompatActivity) getContext()).setSupportActionBar(toolbar);
         toggle=new ActionBarDrawerToggle(getActivity(),drawerLayout,toolbar,R.string.open,R.string.close);
@@ -136,19 +160,44 @@ public class GroupDetailsFragment extends Fragment {
             }
         });
 
+        tvDescription.setText(group.getDescription());
+        tvTitle.setText(group.getName());
 
-        if (!group.isVirtual()) btnType.setText(R.string.in_person);
+        if (group.isVirtual()) {
+            tvLocation.setText("Zoom Meeting");
+            btnJoinMeeting.setVisibility(View.VISIBLE);
+        } else {
+            LocationManager locationManager = new LocationManager();
+            locationManager.getShoolFromGroup(tvLocation, group.getLocation().getObjectId());
+            ibMap.setVisibility(View.VISIBLE);
+            // TODO: set an onclick listener that opens map and gives directions if the user selects it
+        }
+
+        SchoolManager schoolManager = new SchoolManager();
+        schoolManager.getSchoolName(group.getSchool().getObjectId(), tvSchool);
+
+        tvDay.setText(group.getMeetingDays());
+        tvTime.setText(group.getMeetingTime());
+
+
         if (group.getImage() != null) {
             Glide.with(getContext()).load(group.getImage().getUrl()).into(ivImage);
         }
 
 
-        view.findViewById(R.id.join_button).setOnClickListener(new View.OnClickListener() {
+        btnJoinMeeting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 joinMeeting(getContext(), group.getMeetingID(), group.getPassword());
             }
         });
+
+        ArrayList<String> topics = group.getTopics();
+        for (String topic : topics) {
+            Chip chip = new Chip(getContext());
+            chip.setText(topic);
+            chipGroup.addView(chip);
+        }
 
     }
 

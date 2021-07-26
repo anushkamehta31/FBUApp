@@ -121,7 +121,7 @@
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnJoin"
+                android:id="@+id/btnJoinMeeting"
                 app:cornerRadius="20dp"
                 android:layout_below="@+id/cardDescription"
                 android:layout_width="wrap_content"

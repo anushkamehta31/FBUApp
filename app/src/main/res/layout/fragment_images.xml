@@ -10,24 +10,13 @@
 
     <ImageButton
         android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="20dp"
-        android:id="@+id/btnAdd"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="10dp"
-        android:backgroundTint="@color/zm_transparent"
-        android:src="@drawable/outline_add_circle_outline_24"
-        />
-
-    <ImageButton
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="10dp"
         android:id="@+id/btnUploadPhoto"
-        android:layout_toEndOf="@id/btnAdd"
+        android:layout_height="30dp"
+        android:layout_marginEnd="10dp"
+        android:src="@drawable/outline_add_24"
         android:backgroundTint="@color/zm_transparent"
-        android:src="@drawable/outline_file_upload_24"
-        android:layout_alignTop="@id/btnAdd"/>
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"/>
 
 
     <GridView

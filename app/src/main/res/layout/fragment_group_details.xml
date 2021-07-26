@@ -16,39 +16,184 @@
         <ImageView
             android:id="@+id/ivImage"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="200dp"
             android:scaleType="centerCrop"
             tools:srcCompat="@tools:sample/avatars"/>
 
         <TextView
+            android:id="@+id/tvName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Type: "
-            android:id="@+id/tvType"
+            tools:text="COMM101"
+            android:fontFamily="@font/source_sans_pro"
             android:layout_below="@+id/ivImage"
-            android:layout_marginTop="10dp"
+            android:layout_margin="10dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvDescription"
+            tools:text="English study group for concepts covered in ENGL101 at UMD"
+            android:fontFamily="@font/source_sans_pro"
+            android:layout_below="@+id/tvName"
+            android:textSize="15sp"
+            android:layout_marginEnd="10dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:layout_marginStart="10dp"/>
 
-        <Button
-            android:id="@+id/btnVirtual"
+        <TextView
+            android:id="@+id/tvSchoolName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/ivImage"
-            android:text="@string/virtual"
-            android:layout_toEndOf="@+id/tvType"
-            android:layout_margin="5dp"/>
+            android:fontFamily="@font/source_sans_pro"
+            android:layout_below="@id/tvDescription"
+            android:layout_margin="10dp"
+            android:layout_marginEnd="10dp"
+            android:paddingEnd="10dp"
+            android:textSize="10sp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            tools:text="University of Maryland"/>
 
-
-        <Button
-            android:id="@+id/join_button"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/join_meeting"
-            android:layout_below="@+id/btnVirtual"
-            android:layout_margin="5dp"
+            android:id="@+id/meeting"
+            android:fontFamily="@font/source_sans_pro"
+            android:text="Meeting Details"
+            android:layout_below="@id/tvSchoolName"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="10dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.SearchResult.Subtitle"
             />
-    </RelativeLayout>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/LocTitle"
+            android:text="Location: "
+            android:fontFamily="@font/source_sans_pro"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            android:layout_below="@id/meeting"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvLocation"
+            android:layout_marginStart="3dp"
+            android:fontFamily="@font/source_sans_pro"
+            tools:text="Zoom Meeting"
+            android:layout_toEndOf="@+id/LocTitle"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            android:layout_alignBottom="@+id/LocTitle"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/DayTitle"
+            android:text="Day: "
+            android:fontFamily="@font/source_sans_pro"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            android:layout_below="@id/tvLocation"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="3dp"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvDay"
+            tools:text="Monday"
+            android:layout_toEndOf="@+id/DayTitle"
+            android:layout_alignTop="@+id/DayTitle"
+            android:fontFamily="@font/source_sans_pro"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            android:layout_below="@+id/tvLocation"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/TimeTitle"
+            android:text="Time: "
+            android:fontFamily="@font/source_sans_pro"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            android:layout_below="@id/DayTitle"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="3dp"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvTime"
+            tools:text="4:00 PM"
+            android:layout_toEndOf="@+id/TimeTitle"
+            android:layout_alignTop="@+id/TimeTitle"
+            android:fontFamily="@font/source_sans_pro"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            android:layout_below="@+id/DayTitle"
+            />
+
+        <ImageButton
+            android:id="@+id/ibMap"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/outline_map_24"
+            android:backgroundTint="@color/zm_transparent"
+            android:layout_toEndOf="@+id/tvLocation"
+            android:layout_marginStart="3dp"
+            android:layout_below="@+id/meeting"
+            android:visibility="gone"
+            app:tint="@color/filter" />
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnJoinMeeting"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            app:cornerRadius="40dp"
+            android:text="Join Meeting"
+            android:fontFamily="@font/source_sans_pro"
+            android:textColor="#1F78E6"
+            android:layout_below="@+id/tvTime"
+            android:layout_marginStart="10dp"
+            android:visibility="gone"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/StudyTopics"
+            android:fontFamily="@font/source_sans_pro"
+            android:text="Study Topics"
+            android:layout_below="@id/btnJoinMeeting"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="10dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.SearchResult.Subtitle"
+            />
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_below="@+id/StudyTopics"
+            >
+            <com.google.android.material.chip.ChipGroup
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/chipGroupTopics"
+                app:singleLine="true">
+
+            </com.google.android.material.chip.ChipGroup>
+        </HorizontalScrollView>
+
+    </RelativeLayout>
 
     <include
         android:layout_width="match_parent"

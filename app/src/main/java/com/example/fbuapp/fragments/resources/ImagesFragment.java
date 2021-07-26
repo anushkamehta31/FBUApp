@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -62,24 +63,14 @@ public class ImagesFragment extends Fragment {
         gvPosts = view.findViewById(R.id.gvPosts);
         groupImages = new ArrayList<>();
         adapter = new GridAdapter(getContext(), groupImages);
-        btnUpload = view.findViewById(R.id.btnUploadPhoto);
-        btnAddPhoto = view.findViewById(R.id.btnAdd);
+        // btnUpload = view.findViewById(R.id.btnUploadPhoto);
+        // btnAddPhoto = view.findViewById(R.id.btnAdd);
         gvPosts.setAdapter(adapter);
         queryImages();
 
-        btnAddPhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Allow user to choose a photo
-            }
-        });
+    }
 
-        btnUpload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Allow the user to choose a photo
-            }
-        });
+    private void launchCamera() {
     }
 
     protected void queryImages() {

@@ -2,8 +2,6 @@ package com.example.fbuapp.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.bumptech.glide.Glide;
@@ -19,7 +16,6 @@ import com.example.fbuapp.R;
 import com.example.fbuapp.managers.GroupManager;
 import com.example.fbuapp.managers.GroupMappingsManager;
 import com.example.fbuapp.models.Group;
-import com.example.fbuapp.models.GroupMappings;
 import com.example.fbuapp.models.Location;
 import com.google.android.material.button.MaterialButton;
 import com.parse.GetCallback;
@@ -27,8 +23,6 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -80,7 +74,7 @@ public class SwipeAdapter extends PagerAdapter {
         tvDistance = view.findViewById(R.id.tvDistance);
         tvMembers = view.findViewById(R.id.tvMembers);
         tvLocation = view.findViewById(R.id.tvLocation);
-        btnJoin = view.findViewById(R.id.btnJoin);
+        btnJoin = view.findViewById(R.id.btnJoinMeeting);
 
         ParseFile image = group.getImage();
         if (image != null) {
