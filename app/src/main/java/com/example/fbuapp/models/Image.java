@@ -25,12 +25,12 @@ public class Image extends ParseObject {
     }
 
     // Get group
-    public ParseUser getUser() {
-        return getParseUser(KEY_GROUP);
+    public Group getGroup() {
+        return (Group) get(KEY_GROUP);
     }
 
     // Set the group
-    public void setUser(ParseUser user) {
-        put(KEY_GROUP, user);
+    public void setGroup(Group group) {
+        put(KEY_GROUP, group);
     }
 }

@@ -44,6 +44,7 @@
     <string name="miles">\" miles from you\"</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
+    <string name="code_path">com.codepath.fileprovider</string>
 
     <string-array name="topics_array">
         <item>Accounting</item>

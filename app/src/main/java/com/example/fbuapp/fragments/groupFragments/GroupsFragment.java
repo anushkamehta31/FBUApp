@@ -113,7 +113,6 @@ public class GroupsFragment extends Fragment {
                 Log.i(TAG, "final Size"+ userGroups.size());
             }
         });
-
     }
 
 }
