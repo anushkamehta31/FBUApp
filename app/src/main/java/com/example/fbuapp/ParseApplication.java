@@ -8,6 +8,7 @@ import com.example.fbuapp.models.Image;
 import com.example.fbuapp.models.Location;
 import com.example.fbuapp.models.Resources;
 import com.example.fbuapp.models.School;
+import com.example.fbuapp.models.Video;
 import com.parse.Parse;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
@@ -24,6 +25,7 @@ public class ParseApplication extends Application {
         ParseObject.registerSubclass(Group.class);
         ParseObject.registerSubclass(Resources.class);
         ParseObject.registerSubclass(GroupMappings.class);
+        ParseObject.registerSubclass(Video.class);
         ParseObject.registerSubclass(Image.class);
 
         Parse.initialize(new Parse.Configuration.Builder(this)

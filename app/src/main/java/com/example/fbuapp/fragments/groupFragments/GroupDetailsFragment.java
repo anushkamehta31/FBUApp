@@ -27,6 +27,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.fbuapp.R;
 import com.example.fbuapp.adapters.GroupMemberAdapter;
+import com.example.fbuapp.databinding.FragmentGroupDetailsBinding;
+import com.example.fbuapp.databinding.FragmentImagesBinding;
 import com.example.fbuapp.fragments.resources.AgendaFragment;
 import com.example.fbuapp.fragments.resources.ChatFragment;
 import com.example.fbuapp.fragments.resources.FilesFragment;
@@ -74,6 +76,7 @@ public class GroupDetailsFragment extends Fragment {
     NavigationView navigationView;
     ChipGroup chipGroup;
     RecyclerView rvMembers;
+    FragmentGroupDetailsBinding binding;
     public GroupMemberAdapter adapter;
     public List<ParseUser> groupMembers;
 
@@ -87,8 +90,8 @@ public class GroupDetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        // TODO: Switch to view binding
-        return inflater.inflate(R.layout.fragment_group_details, container, false);
+        binding = FragmentGroupDetailsBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
@@ -105,27 +108,27 @@ public class GroupDetailsFragment extends Fragment {
         // Call this method to initialize the SDK
         initializeSdk(getContext());
 
-        ivImage = view.findViewById(R.id.ivImage);
-        btnJoinMeeting = view.findViewById(R.id.btnJoinMeeting);
-        ibMap = view.findViewById(R.id.ibMap);
-        tvDescription = view.findViewById(R.id.tvDescription);
-        tvLocation = view.findViewById(R.id.tvLocation);
-        tvTitle = view.findViewById(R.id.tvName);
-        tvSchool = view.findViewById(R.id.tvSchoolName);
+        ivImage = binding.ivImage;
+        btnJoinMeeting = binding.btnJoinMeeting;
+        ibMap = binding.ibMap;
+        tvDescription = binding.tvDescription;
+        tvLocation = binding.tvLocation;
+        tvTitle = binding.tvName;
+        tvSchool = binding.tvSchoolName;
         // Set up navigation drawer for resources
-        drawerLayout = view.findViewById(R.id.drawer);
-        chipGroup = view.findViewById(R.id.chipGroupTopics);
-        tvDay = view.findViewById(R.id.tvDay);
-        tvTime = view.findViewById(R.id.tvTime);
+        drawerLayout = binding.drawer;
+        chipGroup = binding.chipGroupTopics;
+        tvDay = binding.tvDay;
+        tvTime = binding.tvTime;
         toolbar = view.findViewById(R.id.toolbar);
         ((AppCompatActivity) getContext()).setSupportActionBar(toolbar);
-        toggle=new ActionBarDrawerToggle(getActivity(),drawerLayout,toolbar,R.string.open,R.string.close);
+        toggle = new ActionBarDrawerToggle(getActivity(),drawerLayout,toolbar,R.string.open,R.string.close);
         drawerLayout.addDrawerListener(toggle);
-        rvMembers = view.findViewById(R.id.rvMembers);
+        rvMembers = binding.rvMembers;
         drawerLayout.bringToFront();
         toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.black));
         toggle.syncState();
-        navigationView = view.findViewById(R.id.navigationView);
+        navigationView = binding.navigationView;
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {

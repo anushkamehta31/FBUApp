@@ -5,8 +5,10 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.fbuapp.adapters.GridAdapter;
+import com.example.fbuapp.adapters.VideoAdapter;
 import com.example.fbuapp.models.Group;
 import com.example.fbuapp.models.Image;
+import com.example.fbuapp.models.Video;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -55,6 +57,23 @@ public class ResourceManager {
                     Log.e(TAG, "Error while saving image", e);
                 }
                 groupImages.add(img);
+                adapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    public void queryVideos(Group group, List<Video> videos, VideoAdapter adapter) {
+        ParseQuery<Video> query = ParseQuery.getQuery(Video.class);
+        query.include(Video.KEY_GROUP);
+        query.whereEqualTo(Video.KEY_GROUP, group);
+        query.findInBackground(new FindCallback<Video>() {
+            @Override
+            public void done(List<Video> groupVideos, ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Issue with getting posts", e);
+                    return;
+                }
+                videos.addAll(groupVideos);
                 adapter.notifyDataSetChanged();
             }
         });

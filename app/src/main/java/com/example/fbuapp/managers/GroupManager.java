@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentManager;
 import com.example.fbuapp.MainActivity;
 import com.example.fbuapp.R;
 import com.example.fbuapp.adapters.GroupMemberAdapter;
+import com.example.fbuapp.adapters.GroupsAdapter;
 import com.example.fbuapp.fragments.groupFragments.CreateGroupFragment;
 import com.example.fbuapp.fragments.groupFragments.GroupsFragment;
 import com.example.fbuapp.models.Group;
@@ -18,8 +19,10 @@ import com.example.fbuapp.models.Location;
 import com.example.fbuapp.models.School;
 import com.google.android.material.chip.Chip;
 import com.hootsuite.nachos.NachoTextView;
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -69,6 +72,20 @@ public class GroupManager {
         return userLocation.getLocation().distanceInMilesTo(groupLocation.getLocation());
     }
 
+    public static double getDistanceToGroupUser(Group group, ParseUser user) throws ParseException {
+        //ParseUser user = ParseUser.getCurrentUser();
+        //String userLocation = ((Location) user.get(KEY_LOCATION)).getObjectId();
+        ParseQuery<Location> query = ParseQuery.getQuery(Location.class);
+        query.include(KEY_LOCATION);
+        query.whereEqualTo("objectId", ((Location) user.get(KEY_LOCATION)).getObjectId());
+        Location userLocation = query.find().get(0);
+        ParseQuery<Location> queryGroup = ParseQuery.getQuery(Location.class);
+        queryGroup.include(KEY_LOCATION);
+        query.whereEqualTo("objectId", ((Location) group.get(KEY_LOCATION)).getObjectId());
+        Location groupLocation = query.find().get(0);
+        return userLocation.getLocation().distanceInMilesTo(groupLocation.getLocation());
+    }
+
     public void createGroup(Group group, boolean isVirtual, String groupName, School school, Location meetingLocation,
                             String description, String day, String time, ArrayList<String> topics, Map<String, ParseUser> map,
                             NachoTextView nUsers, Fragment fragment, Context context) throws ParseException {
@@ -109,6 +126,51 @@ public class GroupManager {
                 dialogFragment.dismiss();
             }
         });
+    }
+
+    public void queryGroups(GroupsAdapter adapter, List<Group> userGroups) {
+        // Specify which class to query
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("GroupMappings");
+        query.include(Group.KEY_GROUP_ID);
+        // Get current users groups only
+        query.whereEqualTo(Group.KEY_USER_ID, ParseUser.getCurrentUser());
+        // Make sure user is a member of a group (not a pending invitation)
+        query.whereEqualTo(Group.KEY_IS_MEMBER, true);
+        // Get all the groups and add to the array
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> userMappings, ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Issue with getting groups", e);
+                    return;
+                }
+                for (ParseObject mapping : userMappings) {
+                    Group group = (Group) mapping.getParseObject(Group.KEY_GROUP_ID);
+                    Log.i(TAG, "Group: " + group.getName());
+                    adapter.notifyDataSetChanged();
+                    userGroups.add(group);
+                }
+                Log.i(TAG, "final Size"+ userGroups.size());
+            }
+        });
+    }
+
+    public double getUserGroupCount() {
+        // Specify which class to query
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("GroupMappings");
+        query.include(Group.KEY_GROUP_ID);
+        // Get current users groups only
+        query.whereEqualTo(Group.KEY_USER_ID, ParseUser.getCurrentUser());
+        // Make sure user is a member of a group (not a pending invitation)
+        query.whereEqualTo(Group.KEY_IS_MEMBER, true);
+        // Get all the groups and add to the array
+        try {
+            List<ParseObject> userMappings = query.find();
+            return userMappings.size();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
 }

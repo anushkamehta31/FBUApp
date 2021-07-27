@@ -35,6 +35,8 @@ public class Group extends ParseObject implements Parcelable {
     public static final String KEY_USER_ID = "userID";
     public static final String KEY_IS_MEMBER = "isMember";
     public static final String TAG = "Group";
+    public static final String KEY_PASSES = "passes";
+    public static final String KEY_LIKES = "likes";
 
     public Group() {
     }
@@ -133,5 +135,21 @@ public class Group extends ParseObject implements Parcelable {
 
     public void setPassword(String password) {
         put(KEY_PASSWORD, password);
+    }
+
+    public void addPass() {
+        put(KEY_PASSES, ((int) get(KEY_PASSES))+1);
+    }
+
+    public int getPasses() {
+        return (int) get(KEY_PASSES);
+    }
+
+    public void addLike() {
+        put(KEY_LIKES, ((int) get(KEY_LIKES))+1);
+    }
+
+    public int getLikes() {
+        return (int) get(KEY_LIKES);
     }
 }

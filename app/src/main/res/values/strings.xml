@@ -205,4 +205,14 @@
         <item>Average (10-20)</item>
     </string-array>
 
+    <plurals name="memberTest">
+        <item quantity="one">member</item>
+        <item quantity="other">members</item>
+    </plurals>
+
+    <plurals name="milesTest">
+        <item quantity="one">mile from you</item>
+        <item quantity="other">mile from you</item>
+    </plurals>
+
 </resources>

@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.fbuapp.databinding.ActivityMainBinding;
-import com.example.fbuapp.fragments.findGroupFragments.FindGroupFragment;
+import com.example.fbuapp.fragments.findGroupFragments.SearchGroupFragment;
 import com.example.fbuapp.fragments.groupFragments.GroupsFragment;
 import com.example.fbuapp.fragments.HomeFragment;
 import com.example.fbuapp.fragments.NotificationsFragment;
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.action_find:
                         Toast.makeText(MainActivity.this, "Find a Group!", Toast.LENGTH_SHORT).show();
-                        fragment = new FindGroupFragment();
+                        fragment = new SearchGroupFragment();
                         break;
                     case R.id.action_notifications:
                         Toast.makeText(MainActivity.this, "Notifications!", Toast.LENGTH_SHORT).show();

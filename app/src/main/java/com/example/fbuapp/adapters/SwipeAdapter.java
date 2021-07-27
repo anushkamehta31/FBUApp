@@ -73,7 +73,7 @@ public class SwipeAdapter extends PagerAdapter {
         tvDescription = view.findViewById(R.id.tvDescriptionItem);
         tvDistance = view.findViewById(R.id.tvDistance);
         tvMembers = view.findViewById(R.id.tvMembers);
-        tvLocation = view.findViewById(R.id.tvLocation);
+        tvLocation = view.findViewById(R.id.tvLocationItem);
         btnJoin = view.findViewById(R.id.btnJoinMeeting);
 
         ParseFile image = group.getImage();
@@ -84,7 +84,8 @@ public class SwipeAdapter extends PagerAdapter {
 
         tvName.setText(group.getName());
         tvDescription.setText(group.getDescription());
-        tvMembers.setText(GroupManager.getMemberCount(group) + " " + context.getString(R.string.members));
+        int members = GroupManager.getMemberCount(group);
+        tvMembers.setText(GroupManager.getMemberCount(group) + " " + context.getResources().getQuantityString(R.plurals.memberTest, members));
 
         if (group.isVirtual()) {
             tvDistance.setText(R.string.vg);

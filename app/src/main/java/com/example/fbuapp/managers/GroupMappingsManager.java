@@ -1,8 +1,10 @@
 package com.example.fbuapp.managers;
 
 import android.util.Log;
+import android.widget.ArrayAdapter;
 
 import com.example.fbuapp.adapters.GroupMemberAdapter;
+import com.example.fbuapp.adapters.SwipeAdapter;
 import com.example.fbuapp.models.Group;
 import com.example.fbuapp.models.GroupMappings;
 import com.example.fbuapp.models.School;
@@ -10,6 +12,7 @@ import com.hootsuite.nachos.NachoTextView;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -87,4 +90,53 @@ public class GroupMappingsManager {
             }
         });
     }
+
+    public void findPotentialMatches(List<Group> potentialGroups, SwipeAdapter adapter) {
+        ParseQuery<Group> queryGroup = new ParseQuery<Group>(Group.class);
+        queryGroup.findInBackground(new FindCallback<Group>() {
+            @Override
+            public void done(List<Group> groups, ParseException e) {
+                if (e != null) {
+                    Log.i(TAG, "Error finding groups");
+                    return;
+                }
+                potentialGroups.addAll(groups);
+                // Remove the groups that the user is part of
+                // Specify which class to query
+                ParseQuery<ParseObject> query = ParseQuery.getQuery("GroupMappings");
+                query.include(Group.KEY_GROUP_ID);
+                // Get current users groups only
+                query.whereEqualTo(Group.KEY_USER_ID, ParseUser.getCurrentUser());
+                // Make sure user is a member of a group (not a pending invitation)
+                query.whereEqualTo(Group.KEY_IS_MEMBER, true);
+                // Get all the groups and add to the array
+                query.findInBackground(new FindCallback<ParseObject>() {
+                    @Override
+                    public void done(List<ParseObject> userMappings, ParseException e) {
+                        if (e != null) {
+                            Log.e(TAG, "Issue with getting groups", e);
+                            return;
+                        }
+                        for (ParseObject mapping : userMappings) {
+                            Group group = (Group) mapping.getParseObject(Group.KEY_GROUP_ID);
+                            for (int i=0; i < potentialGroups.size(); i++) {
+                                if (potentialGroups.get(i).getObjectId().equals(group.getObjectId())) {
+                                    potentialGroups.remove(i);
+                                }
+                            }
+                        }
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+            }
+        });
+    }
+
+
+
+
+    // TODO: Use Gale-Shapley algorithm to order to sort the groups based on stable matching
+    // Predictively determine the user's preference list (based on location, interests, school and general compatibility)
+    // Use general compatibility of a group to determine group preferene order
+    // Calculate
 }

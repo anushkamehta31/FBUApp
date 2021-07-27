@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -19,7 +20,9 @@ import android.view.ViewGroup;
 import com.example.fbuapp.MainActivity;
 import com.example.fbuapp.R;
 import com.example.fbuapp.adapters.GroupsAdapter;
+import com.example.fbuapp.managers.GroupManager;
 import com.example.fbuapp.models.Group;
+import com.example.fbuapp.models.GroupMappings;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -34,8 +37,8 @@ public class GroupsFragment extends Fragment {
 
     protected RecyclerView rvGroups;
     public static final String TAG = "GroupsFragment";
-    private List<Group> userGroups;
-    private GroupsAdapter adapter;
+    public List<Group> userGroups;
+    public GroupsAdapter adapter;
     FloatingActionButton btnCreate;
 
     public GroupsFragment() {
@@ -60,10 +63,11 @@ public class GroupsFragment extends Fragment {
 
         rvGroups.setAdapter(adapter);
 
-        GridLayoutManager layout = new GridLayoutManager(getContext(), 2);
+        LinearLayoutManager layout = new LinearLayoutManager(getContext());
         rvGroups.setLayoutManager(layout);
         // Get the groups
-        queryGroups();
+        GroupManager groupManager = new GroupManager();
+        groupManager.queryGroups(adapter, userGroups);
 
         // Create group button initialization
         btnCreate = view.findViewById(R.id.btnCreate);
@@ -87,32 +91,5 @@ public class GroupsFragment extends Fragment {
         fragment.show(ft, "fragment_create_group");
     }
 
-
-    private void queryGroups() {
-        // Specify which class to query
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("GroupMappings");
-        query.include(Group.KEY_GROUP_ID);
-        // Get current users groups only
-        query.whereEqualTo(Group.KEY_USER_ID, ParseUser.getCurrentUser());
-        // Make sure user is a member of a group (not a pending invitation)
-        query.whereEqualTo(Group.KEY_IS_MEMBER, true);
-        // Get all the groups and add to the array
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> userMappings, ParseException e) {
-                if (e != null) {
-                    Log.e(TAG, "Issue with getting groups", e);
-                    return;
-                }
-                for (ParseObject mapping : userMappings) {
-                    Group group = (Group) mapping.getParseObject(Group.KEY_GROUP_ID);
-                    Log.i(TAG, "Group: " + group.getName());
-                    adapter.notifyDataSetChanged();
-                    userGroups.add(group);
-                }
-                Log.i(TAG, "final Size"+ userGroups.size());
-            }
-        });
-    }
 
 }
