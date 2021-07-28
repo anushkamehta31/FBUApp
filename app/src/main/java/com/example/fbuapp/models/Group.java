@@ -37,6 +37,7 @@ public class Group extends ParseObject implements Parcelable {
     public static final String TAG = "Group";
     public static final String KEY_PASSES = "passes";
     public static final String KEY_LIKES = "likes";
+    public static final String KEY_TIMESTAMP = "timestamp";
 
     public Group() {
     }
@@ -151,5 +152,13 @@ public class Group extends ParseObject implements Parcelable {
 
     public int getLikes() {
         return (int) get(KEY_LIKES);
+    }
+
+    public void setTimeStamp(long timestamp) {
+        put(KEY_TIMESTAMP, timestamp);
+    }
+
+    public void getTimeStamp() {
+        getNumber(KEY_TIMESTAMP);
     }
 }

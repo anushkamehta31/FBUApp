@@ -88,7 +88,7 @@ public class GroupManager {
 
     public void createGroup(Group group, boolean isVirtual, String groupName, School school, Location meetingLocation,
                             String description, String day, String time, ArrayList<String> topics, Map<String, ParseUser> map,
-                            NachoTextView nUsers, Fragment fragment, Context context) throws ParseException {
+                            NachoTextView nUsers, Fragment fragment, Context context, long timestamp) throws ParseException {
         if (isVirtual) group.setIsVirtual(true);
         else {
             group.setLocation(meetingLocation);
@@ -102,6 +102,7 @@ public class GroupManager {
         group.setMeetingDay(day);
         group.setMeetingTime(time);
         group.setTopics(topics);
+        group.setTimeStamp(timestamp);
         // Save to parse
         group.saveInBackground(new SaveCallback() {
             @Override

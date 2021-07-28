@@ -76,7 +76,7 @@ public class GroupMemberAdapter extends RecyclerView.Adapter<GroupMemberAdapter.
             String imageURL;
             int placeholder;
 
-            ParseFile image = ParseUser.getCurrentUser().getParseFile("profileImage");
+            ParseFile image = user.getParseFile("profileImage");
             if (image != null) {
                 Glide.with(context).load(image.getUrl()).fitCenter().centerCrop().into(ivProfile);
             } else {

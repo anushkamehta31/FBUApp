@@ -29,13 +29,25 @@ public class SchoolManager {
     public static final String KEY_ID = "objectId";
     public static final String TAG = "SchoolManager";
 
-    public School querySchool(School school) throws ParseException {
+    public School querySchool(School school) {
         ParseQuery<School> query = ParseQuery.getQuery(School.class);
         // Specify what other data we would like to get back
         query.whereEqualTo(School.KEY_NAME, school.getName());
-        School temp = query.getFirst();
-        if (temp != null) return temp;
-        else return school;
+        School temp = null;
+        try {
+            temp = query.getFirst();
+            if (temp != null) {
+                return temp;
+            }
+        } catch (ParseException e) {
+            try {
+                school.save();
+                return school;
+            } catch (ParseException parseException) {
+                parseException.printStackTrace();
+            }
+        }
+        return null;
     }
 
     public void getSchoolName(String schoolID, TextView tvSchoolName) {

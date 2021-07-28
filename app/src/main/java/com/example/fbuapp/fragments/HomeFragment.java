@@ -18,6 +18,8 @@ import com.parse.ParseUser;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Calendar;
+
 public class HomeFragment extends Fragment {
 
     public static final String TAG = "HomeTag";
@@ -43,6 +45,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        GaleShapley bestPairs = new GaleShapley();
+        long currentTime = System.currentTimeMillis() / 1000L;
+
     }
 }

@@ -106,7 +106,7 @@ public class SwipeAdapter extends PagerAdapter {
                         @Override
                         public void done(Location userLocation, ParseException e) {
                             double distance = userLocation.getLocation().distanceInMilesTo(location.getLocation());
-                            tvDistance.setText(String.format("%.1f", distance) + " miles from you");
+                            tvDistance.setText(String.format("%.1f", distance) + " " + context.getString(R.string.miles_from_user));
                         }
                     });
                 }

@@ -83,7 +83,9 @@ import java.security.Key;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -119,6 +121,7 @@ public class CreateGroupFragment extends DialogFragment {
     private Chip cTimes;
     private ChipGroup chipGroupTimes;
     private ChipGroup chipGroupDay;
+    Calendar combinedCal;
     private TextView tvLocation;
     private TextView tvSchool;
     private ImageView ivProfile;
@@ -183,6 +186,7 @@ public class CreateGroupFragment extends DialogFragment {
         meetingID = new StringBuffer(getString(R.string.empty_string));
         password = new StringBuffer(getString(R.string.empty_string));
         users = new HashMap<String, ParseUser>();
+        combinedCal = new GregorianCalendar(TimeZone.getDefault());
         MainActivity activity = (MainActivity) getContext();
         dialogFragment = (CreateGroupFragment) activity.getSupportFragmentManager().findFragmentByTag("fragment_create_group");
         specifyDialogParameters(view);
@@ -270,13 +274,15 @@ public class CreateGroupFragment extends DialogFragment {
         for (com.hootsuite.nachos.chip.Chip chip : nAdditionalTopics.getAllChips()) {
             topics.add(chip.getText().toString());
         }
+        // Unix timestamp
+        long timestamp = combinedCal.getTimeInMillis() / 1000L;;
         if (cVirtual.isChecked()) {
             try {
-                // If the group is virtual, first generate the room and then create the group
+                        // If the group is virtual, first generate the room and then create the group
                 ZoomManager zoomManager = new ZoomManager();
                 zoomManager.generateZoomRoom(getContext(), cVirtual.isChecked(), groupName.getText().toString(), school, meetingLocation,
                         tvDescription.getText().toString(), ((Chip) chipGroupDay.getChildAt(0)).getText().toString(),
-                        ((Chip) chipGroupTimes.getChildAt(0)).getText().toString(), topics, users, nUsers, getTargetFragment());
+                        ((Chip) chipGroupTimes.getChildAt(0)).getText().toString(), topics, users, nUsers, getTargetFragment(), timestamp);
                 // generateZoomRoom();
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -289,7 +295,7 @@ public class CreateGroupFragment extends DialogFragment {
                 GroupManager groupManager = new GroupManager();
                 groupManager.createGroup(group, cVirtual.isChecked(), groupName.getText().toString(), school, meetingLocation,
                         tvDescription.getText().toString(), ((Chip) chipGroupDay.getChildAt(0)).getText().toString(),
-                        ((Chip) chipGroupTimes.getChildAt(0)).getText().toString(), topics, users, nUsers, getTargetFragment(), getContext());
+                        ((Chip) chipGroupTimes.getChildAt(0)).getText().toString(), topics, users, nUsers, getTargetFragment(), getContext(), timestamp);
                 // createGroup();
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -303,6 +309,7 @@ public class CreateGroupFragment extends DialogFragment {
         MaterialDatePicker materialDatePicker = builder.build();
         materialDatePicker.show(getChildFragmentManager(), TAG);
         materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
+
             @Override
             public void onPositiveButtonClick(Long selection) {
                 // user has selected a date
@@ -315,6 +322,7 @@ public class CreateGroupFragment extends DialogFragment {
                 SimpleDateFormat simpledateformat = new SimpleDateFormat("EEEE");
                 SimpleDateFormat simpleFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
                 Date date = new Date(selection + offsetFromUTC);
+                combinedCal.set(date.getYear(), date.getMonth(), date.getDay());
                 // Get day of week
                 String dayOfWeek = simpledateformat.format(date);
                 // Create a new chip and add it to the chip group
@@ -344,6 +352,8 @@ public class CreateGroupFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 int hour = picker.getHour();
+                combinedCal.set(Calendar.HOUR_OF_DAY, hour);
+                combinedCal.set(Calendar.MINUTE, picker.getMinute());
                 String am_pm = (hour < 12) ? "AM" : "PM";
                 if (hour > 12) hour -= 12;
                 int minute = picker.getMinute();
@@ -495,5 +505,6 @@ public class CreateGroupFragment extends DialogFragment {
             return;
         }
     }
+
 
 }

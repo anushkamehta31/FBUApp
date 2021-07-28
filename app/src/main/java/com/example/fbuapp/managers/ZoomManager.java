@@ -35,7 +35,7 @@ public class ZoomManager {
     // Create Zoom room and set password and meetingID
     public void generateZoomRoom(Context context, boolean isVirtual, String groupName, School school, Location meetingLocation,
                                  String description, String day, String time, ArrayList<String> topics, Map<String, ParseUser> map,
-                                 NachoTextView nUsers, Fragment fragment) throws JSONException {
+                                 NachoTextView nUsers, Fragment fragment, long timestamp) throws JSONException {
 
         StringBuffer meetingID = new StringBuffer(context.getString(R.string.empty_string));
         StringBuffer password = new StringBuffer(context.getString(R.string.empty_string));
@@ -79,7 +79,7 @@ public class ZoomManager {
                 GroupManager groupManager = new GroupManager();
                 try {
                     groupManager.createGroup(group, isVirtual, groupName, school, meetingLocation, description, day, time,
-                            topics, map, nUsers, fragment, context);
+                            topics, map, nUsers, fragment, context, timestamp);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
