@@ -186,7 +186,7 @@ public class CreateGroupFragment extends DialogFragment {
         meetingID = new StringBuffer(getString(R.string.empty_string));
         password = new StringBuffer(getString(R.string.empty_string));
         users = new HashMap<String, ParseUser>();
-        combinedCal = new GregorianCalendar(TimeZone.getDefault());
+        combinedCal = Calendar.getInstance();
         MainActivity activity = (MainActivity) getContext();
         dialogFragment = (CreateGroupFragment) activity.getSupportFragmentManager().findFragmentByTag("fragment_create_group");
         specifyDialogParameters(view);
@@ -275,7 +275,8 @@ public class CreateGroupFragment extends DialogFragment {
             topics.add(chip.getText().toString());
         }
         // Unix timestamp
-        long timestamp = combinedCal.getTimeInMillis() / 1000L;;
+        long timestamp = combinedCal.getTimeInMillis() / 1000L;
+        Log.i(TAG, "UTC timestamp "+ String.valueOf(timestamp));
         if (cVirtual.isChecked()) {
             try {
                         // If the group is virtual, first generate the room and then create the group
@@ -322,7 +323,9 @@ public class CreateGroupFragment extends DialogFragment {
                 SimpleDateFormat simpledateformat = new SimpleDateFormat("EEEE");
                 SimpleDateFormat simpleFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
                 Date date = new Date(selection + offsetFromUTC);
-                combinedCal.set(date.getYear(), date.getMonth(), date.getDay());
+                combinedCal.setTime(new Date(selection + offsetFromUTC));
+                // Set the timezone to the default timezone the system is running on
+                combinedCal.setTimeZone(TimeZone.getDefault());
                 // Get day of week
                 String dayOfWeek = simpledateformat.format(date);
                 // Create a new chip and add it to the chip group
@@ -354,6 +357,9 @@ public class CreateGroupFragment extends DialogFragment {
                 int hour = picker.getHour();
                 combinedCal.set(Calendar.HOUR_OF_DAY, hour);
                 combinedCal.set(Calendar.MINUTE, picker.getMinute());
+                combinedCal.set(Calendar.SECOND, 0);
+                combinedCal.set(Calendar.MILLISECOND, 0);
+                long timestamp = combinedCal.getTimeInMillis() / 1000L;
                 String am_pm = (hour < 12) ? "AM" : "PM";
                 if (hour > 12) hour -= 12;
                 int minute = picker.getMinute();

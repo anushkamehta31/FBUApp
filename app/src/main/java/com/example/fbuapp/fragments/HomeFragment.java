@@ -45,6 +45,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        // Get the current time in milliseconds and convert to UTC timestamp (time in seconds)
         long currentTime = System.currentTimeMillis() / 1000L;
 
     }
