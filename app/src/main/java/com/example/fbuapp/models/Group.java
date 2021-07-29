@@ -12,6 +12,8 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import org.parceler.Parcel;
+
 import java.nio.file.attribute.UserDefinedFileAttributeView;
 import java.util.ArrayList;
 import java.util.List;
@@ -158,7 +160,7 @@ public class Group extends ParseObject implements Parcelable {
         put(KEY_TIMESTAMP, timestamp);
     }
 
-    public void getTimeStamp() {
-        getNumber(KEY_TIMESTAMP);
+    public long getTimeStamp() {
+        return ((Number) getNumber(KEY_TIMESTAMP)).longValue();
     }
 }

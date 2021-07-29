@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fbuapp.MainActivity;
 import com.example.fbuapp.R;
@@ -129,7 +130,7 @@ public class GroupManager {
         });
     }
 
-    public void queryGroups(GroupsAdapter adapter, List<Group> userGroups) {
+    public void queryGroups(RecyclerView.Adapter adapter, List<Group> userGroups) {
         // Specify which class to query
         ParseQuery<ParseObject> query = ParseQuery.getQuery("GroupMappings");
         query.include(Group.KEY_GROUP_ID);

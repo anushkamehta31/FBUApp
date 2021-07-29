@@ -47,6 +47,9 @@
     <string name="code_path">com.codepath.fileprovider</string>
     <string name="youtube_api_key">AIzaSyBeQA1ThnPsxaT9ByS_uO97VpZcSS5CRP8</string>
     <string name="miles_from_user"> miles from you</string>
+    <string name="prior">prior</string>
+    <string name="ongoing">ongoing</string>
+    <string name="finished">finished</string>
 
     <string-array name="topics_array">
         <item>Accounting</item>
