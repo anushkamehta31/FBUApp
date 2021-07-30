@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
 
+
         // layout of activity is stored in root property
         View view = binding.getRoot();
         setContentView(view);
@@ -64,10 +65,6 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.action_find:
                         Toast.makeText(MainActivity.this, "Find a Group!", Toast.LENGTH_SHORT).show();
                         fragment = new SearchGroupFragment();
-                        break;
-                    case R.id.action_notifications:
-                        Toast.makeText(MainActivity.this, "Notifications!", Toast.LENGTH_SHORT).show();
-                        fragment = new NotificationsFragment();
                         break;
                     case R.id.action_profile:
                     default:

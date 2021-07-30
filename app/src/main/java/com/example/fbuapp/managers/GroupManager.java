@@ -12,6 +12,7 @@ import com.example.fbuapp.MainActivity;
 import com.example.fbuapp.R;
 import com.example.fbuapp.adapters.GroupMemberAdapter;
 import com.example.fbuapp.adapters.GroupsAdapter;
+import com.example.fbuapp.adapters.PendingInvitesAdapter;
 import com.example.fbuapp.fragments.groupFragments.CreateGroupFragment;
 import com.example.fbuapp.fragments.groupFragments.GroupsFragment;
 import com.example.fbuapp.models.Group;
@@ -216,4 +217,30 @@ public class GroupManager {
         return 0;
     }
 
+    public void queryPendingGroups(PendingInvitesAdapter pendingInvitesAdapter, List<Group> pendingGroups) {
+        // Specify which class to query
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("GroupMappings");
+        query.include(Group.KEY_GROUP_ID);
+        // Get current users groups only
+        query.whereEqualTo(Group.KEY_USER_ID, ParseUser.getCurrentUser());
+        // Make sure user is a member of a group (not a pending invitation)
+        query.whereEqualTo(Group.KEY_IS_MEMBER, false);
+        // Get all the groups and add to the array
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> userMappings, ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Issue with getting groups", e);
+                    return;
+                }
+                for (ParseObject mapping : userMappings) {
+                    Group group = (Group) mapping.getParseObject(Group.KEY_GROUP_ID);
+                    Log.i(TAG, "Group: " + group.getName());
+                    pendingGroups.add(group);
+                    pendingInvitesAdapter.notifyDataSetChanged();
+                }
+                Log.i(TAG, "final Size"+ pendingGroups.size());
+            }
+        });
+    }
 }

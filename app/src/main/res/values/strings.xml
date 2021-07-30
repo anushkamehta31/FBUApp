@@ -11,6 +11,7 @@
     <string name="missing_field">Missing fields!</string>
     <string name="zoom_key">kELCxDTHRq3YQj3nDuWt9W0gi9kPeeo9tkyv</string>
     <string name="zoom_secret_key">Ogqb5PEMFQhzIvL0BQGGPSjv9Y0Sc7Bg8Mtj</string>
+    <string name="maps_api_key">AIzaSyC0zdpoE05GkuXJRDYztxvFBOG-H7kO8Xo</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_group">GroupActivity</string>
@@ -220,5 +221,6 @@
         <item quantity="one">mile from you</item>
         <item quantity="other">mile from you</item>
     </plurals>
+    <string name="title_activity_maps">Map</string>
 
 </resources>

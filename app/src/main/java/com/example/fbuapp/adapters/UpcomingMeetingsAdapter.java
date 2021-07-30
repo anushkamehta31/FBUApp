@@ -81,8 +81,6 @@ public class UpcomingMeetingsAdapter extends RecyclerView.Adapter<UpcomingMeetin
         private ImageButton ibMap;
         private MaterialButton btnJoinMeeting;
 
-        // TODO: Grab references to every view in row of recycler
-
         @SuppressLint("ResourceType")
         public ViewHolder(View itemView) {
             super(itemView);
@@ -95,7 +93,6 @@ public class UpcomingMeetingsAdapter extends RecyclerView.Adapter<UpcomingMeetin
             ibMap = itemView.findViewById(R.id.ibMap);
             btnJoinMeeting = itemView.findViewById(R.id.btnJoinMeeting);
             tvMeetingTime = itemView.findViewById(R.id.tvTime);
-            // TODO: Instantiate all of the references to different views
 
             layout =(RelativeLayout) itemView.findViewById(R.layout.item_upcoming_meeting);
             params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
@@ -132,7 +129,6 @@ public class UpcomingMeetingsAdapter extends RecyclerView.Adapter<UpcomingMeetin
 
             // If we are within five minutes of the meeting, display the countdown time from now till meeting
             if (currentTime < timestamp && (timestamp - currentTime) <= 300) {
-                // TODO: display countdown timer until timestamp
                 double secondsRemaining = timestamp - currentTime;
                 double minutesRemaining = Math.ceil(secondsRemaining / 60);
                 rootView.setVisibility(View.VISIBLE);
@@ -147,7 +143,6 @@ public class UpcomingMeetingsAdapter extends RecyclerView.Adapter<UpcomingMeetin
 
             // If the meeting is currently going on, within 60 minutes (or duration) of meeting display ongoing chip
             if (currentTime > timestamp && currentTime < timestamp + 3600) {
-                // TODO: Display ongoing chip and join/map button to join meeting
                 rootView.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(GONE);
                 tvUpcomingMeeting.setVisibility(GONE);
@@ -172,93 +167,6 @@ public class UpcomingMeetingsAdapter extends RecyclerView.Adapter<UpcomingMeetin
                     });
                 }
             }
-
-            // Initially, we want to make the object invisible until it is five minutes before the meeting
-
-            /*
-            Timer timer = new Timer();
-            TimerTask timerTask = new TimerTask() {
-                @Override
-                public void run() {
-
-                    MainActivity activity = (MainActivity) mContext;
-                    ((MainActivity) mContext).runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            long timestamp = group.getTimeStamp();
-                            long currentTime = System.currentTimeMillis() / 1000L;
-
-                            // If current time is past five minutes after meeting, update the timestamp and clear the view
-                            if (currentTime > (timestamp + 3900)) {
-                                while (currentTime > timestamp) {
-                                    timestamp += 604800;
-                                }
-                                rootView.setVisibility(GONE);
-                            }
-
-                            // If meeting ended within the past 5 minutes, display expired for 5 minutes and then make view invisible
-                            if (currentTime > timestamp && (currentTime - timestamp) <= 300) {
-                                rootView.setVisibility(View.VISIBLE);
-                                progressBar.setVisibility(GONE);
-                                tvUpcomingMeeting.setVisibility(GONE);
-                                chipOngoing.setVisibility(GONE);
-                                chipExpired.setVisibility(View.VISIBLE);
-                                ibMap.setVisibility(GONE);
-                                btnJoinMeeting.setVisibility(GONE);
-                            }
-
-                            // If we are within five minutes of the meeting, display the countdown time from now till meeting
-                            if (currentTime < timestamp && (timestamp - currentTime) <= 300) {
-                                // TODO: display countdown timer until timestamp
-                                double secondsRemaining = timestamp - currentTime;
-                                double minutesRemaining = Math.ceil(secondsRemaining / 60);
-                                rootView.setVisibility(View.VISIBLE);
-                                progressBar.setVisibility(View.VISIBLE);
-                                tvUpcomingMeeting.setVisibility(View.VISIBLE);
-                                int progress = 5 - ((int) Math.round(minutesRemaining/5));
-                                progressBar.setProgress(progress);
-                                tvUpcomingMeeting.setText(minutesRemaining + " min.");
-                                ibMap.setVisibility(GONE);
-                                btnJoinMeeting.setVisibility(GONE);
-                            }
-
-                            // If the meeting is currently going on, within 60 minutes (or duration) of meeting display ongoing chip
-                            if (currentTime > timestamp && currentTime < timestamp + 3600) {
-                                // TODO: Display ongoing chip and join/map button to join meeting
-                                rootView.setVisibility(View.VISIBLE);
-                                progressBar.setVisibility(GONE);
-                                tvUpcomingMeeting.setVisibility(GONE);
-                                chipOngoing.setVisibility(View.VISIBLE);
-                                chipExpired.setVisibility(GONE);
-
-                                if (group.isVirtual()) {
-                                    btnJoinMeeting.setVisibility(View.VISIBLE);
-                                    btnJoinMeeting.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            zoomManager.joinMeeting(mContext, group.getMeetingID(), group.getPassword());
-                                        }
-                                    });
-                                } else {
-                                    ibMap.setVisibility(View.VISIBLE);
-                                    ibMap.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            // TODO: Directions API
-                                        }
-                                    });
-                                }
-                            }
-                        }
-                    });
-
-                }
-            };
-
-            // Set task to run every 10 seconds and update UI
-            timer.scheduleAtFixedRate(timerTask, 0, 10000);
-
-             */
         }
 
     }

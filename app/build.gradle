@@ -1,5 +1,6 @@
 plugins {
     id 'com.android.application'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
 
 android {
@@ -87,5 +88,11 @@ dependencies {
 
     implementation 'org.parceler:parceler-api:1.1.12'
     annotationProcessor 'org.parceler:parceler:1.1.12'
+
+    implementation 'com.google.android.gms:play-services-maps:17.0.1'
+
+    // Directions Google Maps SDK
+    implementation 'com.google.maps:google-maps-services:0.19.0'
+    implementation 'org.slf4j:slf4j-simple:1.7.25'
 
 }

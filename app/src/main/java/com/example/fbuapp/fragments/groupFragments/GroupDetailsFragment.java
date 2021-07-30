@@ -25,10 +25,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.fbuapp.MainActivity;
 import com.example.fbuapp.R;
 import com.example.fbuapp.adapters.GroupMemberAdapter;
 import com.example.fbuapp.databinding.FragmentGroupDetailsBinding;
-import com.example.fbuapp.databinding.FragmentImagesBinding;
+import com.example.fbuapp.fragments.DirectionsFragment;
 import com.example.fbuapp.fragments.resources.AgendaFragment;
 import com.example.fbuapp.fragments.resources.ChatFragment;
 import com.example.fbuapp.fragments.resources.FilesFragment;
@@ -132,7 +133,6 @@ public class GroupDetailsFragment extends Fragment {
         toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.black));
         toggle.syncState();
         navigationView = binding.navigationView;
-
         zoomManager.initializeSdk(getContext());
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -186,6 +186,20 @@ public class GroupDetailsFragment extends Fragment {
             locationManager.getSchoolFromGroup(tvLocation, group.getLocation().getObjectId());
             ibMap.setVisibility(View.VISIBLE);
             // TODO: set an onclick listener that opens map and gives directions if the user selects it
+            ibMap.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MainActivity activity = (MainActivity) getContext();
+                    FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+                    // GroupDetailsFragment fragment = ViewGroupFragment.newInstance(mGroups.get(getAdapterPosition()));
+                    Bundle bundle = new Bundle();
+                    DirectionsFragment fragment = new DirectionsFragment();
+                    bundle.putParcelable("itemGroup", group);
+                    fragment.setArguments(bundle);
+                    ft.replace(R.id.flContainer, fragment);
+                    ft.commit();
+                }
+            });
         }
 
         SchoolManager schoolManager = new SchoolManager();
