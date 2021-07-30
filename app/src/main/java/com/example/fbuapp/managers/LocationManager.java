@@ -3,11 +3,14 @@ package com.example.fbuapp.managers;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.example.fbuapp.models.Group;
 import com.example.fbuapp.models.Location;
 import com.example.fbuapp.models.School;
 import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 public class LocationManager {
 
@@ -35,5 +38,35 @@ public class LocationManager {
                 tvLocation.setText(location.getName());
             }
         });
+    }
+
+    public ParseGeoPoint getUserLocation() {
+        ParseQuery<Location> query = ParseQuery.getQuery(Location.class);
+        query.whereEqualTo(KEY_ID, ((Location) ParseUser.getCurrentUser().get(KEY_LOCATION)).getObjectId());
+        query.include(KEY_NAME);
+        query.include(KEY_LOCATION);
+        query.include(KEY_ADDRESS);
+        try {
+            Location location = query.getFirst();
+            return location.getLocation();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public ParseGeoPoint getGroupLocation(Group group) {
+        ParseQuery<Location> query = ParseQuery.getQuery(Location.class);
+        query.whereEqualTo(KEY_ID, ((Location) group.get(KEY_LOCATION)).getObjectId());
+        query.include(KEY_NAME);
+        query.include(KEY_LOCATION);
+        query.include(KEY_ADDRESS);
+        try {
+            Location location = query.getFirst();
+            return location.getLocation();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

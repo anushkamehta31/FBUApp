@@ -191,7 +191,6 @@ public class GroupDetailsFragment extends Fragment {
                 public void onClick(View v) {
                     MainActivity activity = (MainActivity) getContext();
                     FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
-                    // GroupDetailsFragment fragment = ViewGroupFragment.newInstance(mGroups.get(getAdapterPosition()));
                     Bundle bundle = new Bundle();
                     DirectionsFragment fragment = new DirectionsFragment();
                     bundle.putParcelable("itemGroup", group);
