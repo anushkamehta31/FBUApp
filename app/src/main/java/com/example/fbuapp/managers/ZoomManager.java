@@ -27,6 +27,12 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import okhttp3.Headers;
+import us.zoom.sdk.JoinMeetingOptions;
+import us.zoom.sdk.JoinMeetingParams;
+import us.zoom.sdk.MeetingService;
+import us.zoom.sdk.ZoomSDK;
+import us.zoom.sdk.ZoomSDKInitParams;
+import us.zoom.sdk.ZoomSDKInitializeListener;
 
 public class ZoomManager {
 
@@ -90,6 +96,39 @@ public class ZoomManager {
                 Toast.makeText(context, errorResponse, Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    public void initializeSdk(Context context) {
+        ZoomSDK sdk = ZoomSDK.getInstance();
+        // Fr the purpose of this demo app, we are storing the credentials in the client app itself.
+        //  However, you should not use hard-coded values for your key/secret in your app in production.
+        ZoomSDKInitParams params = new ZoomSDKInitParams();
+        params.appKey = context.getString(R.string.zoom_key);
+        params.appSecret = context.getString(R.string.zoom_secret_key);
+        params.domain = context.getString(R.string.zoom);
+        params.enableLog = true;
+        // TODO: Add functionality to this listener (e.g. logs for debugging)
+        ZoomSDKInitializeListener listener = new ZoomSDKInitializeListener() {
+            /**
+             * @param errorCode {@link us.zoom.sdk.ZoomError#ZOOM_ERROR_SUCCESS} if the SDK has been initialized successfully.
+             */
+            @Override
+            public void onZoomSDKInitializeResult(int errorCode, int internalErrorCode) { }
+
+            @Override
+            public void onZoomAuthIdentityExpired() { }
+        };
+        sdk.initialize(context, listener, params);
+    }
+
+    public void joinMeeting(Context context, String meetingNumber, String password) {
+        MeetingService meetingService = ZoomSDK.getInstance().getMeetingService();
+        JoinMeetingOptions options = new JoinMeetingOptions();
+        JoinMeetingParams params = new JoinMeetingParams();
+        params.displayName = ParseUser.getCurrentUser().getUsername();
+        params.meetingNo = meetingNumber;
+        params.password = password;
+        meetingService.joinMeetingWithParams(context, params, options);
     }
 
 }

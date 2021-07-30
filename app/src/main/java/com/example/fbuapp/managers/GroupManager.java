@@ -149,13 +149,45 @@ public class GroupManager {
                 for (ParseObject mapping : userMappings) {
                     Group group = (Group) mapping.getParseObject(Group.KEY_GROUP_ID);
                     Log.i(TAG, "Group: " + group.getName());
-                    adapter.notifyDataSetChanged();
                     userGroups.add(group);
+                    adapter.notifyDataSetChanged();
                 }
                 Log.i(TAG, "final Size"+ userGroups.size());
             }
         });
     }
+
+    public void queryGroupsUpcoming(RecyclerView.Adapter adapter, List<Group> userGroups) {
+        // Specify which class to query
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("GroupMappings");
+        query.include(Group.KEY_GROUP_ID);
+        // Get current users groups only
+        query.whereEqualTo(Group.KEY_USER_ID, ParseUser.getCurrentUser());
+        // Make sure user is a member of a group (not a pending invitation)
+        query.whereEqualTo(Group.KEY_IS_MEMBER, true);
+        // Get all the groups and add to the array
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> userMappings, ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Issue with getting groups", e);
+                    return;
+                }
+                for (ParseObject mapping : userMappings) {
+                    Group group = (Group) mapping.getParseObject(Group.KEY_GROUP_ID);
+                    Log.i(TAG, "Group: " + group.getName());
+
+                    long timestamp = group.getTimeStamp();
+                    long currentTime = System.currentTimeMillis() / 1000L;
+
+                    userGroups.add(group);
+                    adapter.notifyDataSetChanged();
+                }
+                Log.i(TAG, "final Size"+ userGroups.size());
+            }
+        });
+    }
+
 
     public double getUserGroupCount() {
         // Specify which class to query

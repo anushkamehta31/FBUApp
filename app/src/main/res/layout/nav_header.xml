@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="180dp"
-    android:background="#0E66B9"
+    android:background="@color/black"
     android:paddingTop="16dp"
     android:paddingStart="16dp"
     android:paddingEnd="16dp"
@@ -11,7 +11,7 @@
     <androidx.constraintlayout.utils.widget.ImageFilterView
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:src="@drawable/notebook"
+        android:src="@drawable/outline_backpack_24"
         android:layout_marginTop="20dp"
         android:layout_marginStart="10dp"
         android:layout_centerVertical="true"
@@ -24,6 +24,7 @@
         android:layout_centerVertical="true"
         android:layout_marginStart="10dp"
         android:id="@+id/tvResources"
+        android:fontFamily="@font/source_sans_pro"
         android:text="Resources"
         android:textColor="@color/white"
         android:textSize="14sp"/>

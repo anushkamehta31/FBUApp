@@ -1,34 +1,32 @@
 package com.example.fbuapp.adapters;
 
 import android.annotation.SuppressLint;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.app.Service;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.CountDownTimer;
-import android.os.IBinder;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fbuapp.MainActivity;
 import com.example.fbuapp.R;
+import com.example.fbuapp.managers.ZoomManager;
 import com.example.fbuapp.models.Group;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.chip.Chip;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -68,23 +66,48 @@ public class UpcomingMeetingsAdapter extends RecyclerView.Adapter<UpcomingMeetin
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
+        private RelativeLayout layout;
+        LinearLayout.LayoutParams params;
+
+
         private View rootView;
         private TextView tvUpcomingMeeting;
         private TextView tvGroupName;
+        private TextView tvMeetingTime;
+        private ProgressBar progressBar;
+        private Chip chipOngoing;
+        private Chip chipExpired;
+        private ImageButton ibMap;
+        private MaterialButton btnJoinMeeting;
 
         // TODO: Grab references to every view in row of recycler
 
+        @SuppressLint("ResourceType")
         public ViewHolder(View itemView) {
             super(itemView);
             rootView = itemView;
             tvUpcomingMeeting = itemView.findViewById(R.id.tvTimeUntil);
             tvGroupName = itemView.findViewById(R.id.tvGroupName);
+            progressBar = itemView.findViewById(R.id.progressBar);
+            chipOngoing = itemView.findViewById(R.id.chipOnGoing);
+            chipExpired = itemView.findViewById(R.id.chipExpired);
+            ibMap = itemView.findViewById(R.id.ibMap);
+            btnJoinMeeting = itemView.findViewById(R.id.btnJoinMeeting);
+            tvMeetingTime = itemView.findViewById(R.id.tvTime);
             // TODO: Instantiate all of the references to different views
+
+            layout =(RelativeLayout) itemView.findViewById(R.layout.item_upcoming_meeting);
+            params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
         }
 
         public void bind(Group group) {
             rootView.setVisibility(GONE);
             tvGroupName.setText(group.getName());
+            tvMeetingTime.setText("Today @ " + group.getMeetingTime());
+            ZoomManager zoomManager = new ZoomManager();
+            zoomManager.initializeSdk(mContext);
+
             // Initially, we want to make the object invisible until it is five minutes before the meeting
 
             Timer timer = new Timer();
@@ -98,10 +121,9 @@ public class UpcomingMeetingsAdapter extends RecyclerView.Adapter<UpcomingMeetin
                         public void run() {
                             long timestamp = group.getTimeStamp();
                             long currentTime = System.currentTimeMillis() / 1000L;
-                            TextView tvTimeUntil = rootView.findViewById(R.id.tvTimeUntil);
 
                             // If current time is past five minutes after meeting, update the timestamp and clear the view
-                            if (currentTime > timestamp + 3900) {
+                            if (currentTime > (timestamp + 3900)) {
                                 while (currentTime > timestamp) {
                                     timestamp += 604800;
                                 }
@@ -111,7 +133,12 @@ public class UpcomingMeetingsAdapter extends RecyclerView.Adapter<UpcomingMeetin
                             // If meeting ended within the past 5 minutes, display expired for 5 minutes and then make view invisible
                             if (currentTime > timestamp && (currentTime - timestamp) <= 300) {
                                 rootView.setVisibility(View.VISIBLE);
-                                tvTimeUntil.setText("EXPIRED");
+                                progressBar.setVisibility(GONE);
+                                tvUpcomingMeeting.setVisibility(GONE);
+                                chipOngoing.setVisibility(GONE);
+                                chipExpired.setVisibility(View.VISIBLE);
+                                ibMap.setVisibility(GONE);
+                                btnJoinMeeting.setVisibility(GONE);
                             }
 
                             // If we are within five minutes of the meeting, display the countdown time from now till meeting
@@ -120,14 +147,41 @@ public class UpcomingMeetingsAdapter extends RecyclerView.Adapter<UpcomingMeetin
                                 double secondsRemaining = timestamp - currentTime;
                                 double minutesRemaining = Math.ceil(secondsRemaining / 60);
                                 rootView.setVisibility(View.VISIBLE);
-                                tvTimeUntil.setText(minutesRemaining + " min until meeting");
+                                progressBar.setVisibility(View.VISIBLE);
+                                tvUpcomingMeeting.setVisibility(View.VISIBLE);
+                                int progress = 5 - ((int) Math.round(minutesRemaining/5));
+                                progressBar.setProgress(progress);
+                                tvUpcomingMeeting.setText(minutesRemaining + " min.");
+                                ibMap.setVisibility(GONE);
+                                btnJoinMeeting.setVisibility(GONE);
                             }
 
                             // If the meeting is currently going on, within 60 minutes (or duration) of meeting display ongoing chip
                             if (currentTime > timestamp && currentTime < timestamp + 3600) {
                                 // TODO: Display ongoing chip and join/map button to join meeting
                                 rootView.setVisibility(View.VISIBLE);
-                                tvTimeUntil.setText("ONGOING");
+                                progressBar.setVisibility(GONE);
+                                tvUpcomingMeeting.setVisibility(GONE);
+                                chipOngoing.setVisibility(View.VISIBLE);
+                                chipExpired.setVisibility(GONE);
+
+                                if (group.isVirtual()) {
+                                    btnJoinMeeting.setVisibility(View.VISIBLE);
+                                    btnJoinMeeting.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            zoomManager.joinMeeting(mContext, group.getMeetingID(), group.getPassword());
+                                        }
+                                    });
+                                } else {
+                                    ibMap.setVisibility(View.VISIBLE);
+                                    ibMap.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            // TODO: Directions API
+                                        }
+                                    });
+                                }
                             }
                         }
                     });
@@ -139,6 +193,7 @@ public class UpcomingMeetingsAdapter extends RecyclerView.Adapter<UpcomingMeetin
             timer.scheduleAtFixedRate(timerTask, 0, 10000);
 
         }
+
     }
 
 

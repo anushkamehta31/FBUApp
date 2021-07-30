@@ -14,25 +14,109 @@
         android:layout_height="wrap_content"
         android:layout_margin="4dp">
 
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:padding="15dp"
             android:layout_height="match_parent">
 
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="90dp"
+                android:max="5"
+                android:visibility="gone"
+                android:background="@drawable/zm_transparent"
+                android:indeterminate="false"
+                android:indeterminateTint="@color/quantum_pink"
+                android:layout_height="90dp"/>
+
             <TextView
+                android:id="@+id/tvTimeUntil"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="5 minutes until meeting"
-                android:id="@+id/tvTimeUntil"/>
+                android:layout_marginStart="26dp"
+                android:layout_marginTop="34dp"
+                android:fontFamily="@font/nunito_sans"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                android:textColor="@color/quantum_pink"
+                android:textSize="10sp"
+                android:visibility="gone"
+                android:textStyle="bold"
+                tools:text="5 min" />
 
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipOnGoing"
+                android:layout_width="wrap_content"
+                android:text="@string/ongoing_capital"
+                android:fontFamily="@font/nunito_sans"
+                android:visibility="gone"
+                android:textColor="@color/zm_green"
+                app:chipStrokeColor="@color/zm_green"
+                android:outlineSpotShadowColor="@color/zm_transparent"
+                android:backgroundTint="#C7ECD5"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipExpired"
+                android:layout_width="wrap_content"
+                android:text="@string/expired"
+                android:fontFamily="@font/nunito_sans"
+                android:visibility="gone"
+                android:outlineSpotShadowColor="@color/zm_transparent"
+                tools:visibility="visible"
+                android:textColor="#E12929"
+                android:backgroundTint="#F1DADA"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/tvTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="110dp"
+                android:textSize="12sp"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                android:fontFamily="@font/nunito_sans"
+                tools:text="June 6 @ 4:00 PM - 5:00 PM"
+                />
 
             <TextView
                 android:id="@+id/tvGroupName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/tvTimeUntil"
-                android:layout_marginStart="20dp"
-                tools:text="COMM101"
+                android:layout_below="@id/tvTime"
+                android:layout_marginStart="110dp"
+                android:fontFamily="@font/nunito_sans"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                tools:text="COMM101" />
+
+            <ImageButton
+                android:id="@+id/ibMap"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/outline_map_24"
+                android:backgroundTint="@color/zm_transparent"
+                android:layout_marginStart="60dp"
+                android:layout_marginTop="10dp"
+                android:visibility="gone"
+                android:layout_toEndOf="@id/tvTime"
+                app:tint="@color/filter" />
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnJoinMeeting"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                app:cornerRadius="40dp"
+                android:text="Join"
+                android:fontFamily="@font/source_sans_pro"
+                android:textColor="#1F78E6"
+                android:layout_alignTop="@+id/chipExpired"
+                tools:visibility="visible"
+                android:layout_marginStart="80dp"
+                android:layout_alignParentEnd="true"
+                android:visibility="gone"
                 />
 
         </RelativeLayout>

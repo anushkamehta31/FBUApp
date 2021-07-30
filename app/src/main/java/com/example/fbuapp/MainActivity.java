@@ -9,6 +9,8 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.example.fbuapp.databinding.ActivityMainBinding;
@@ -33,6 +35,14 @@ public class MainActivity extends AppCompatActivity {
         // layout of activity is stored in root property
         View view = binding.getRoot();
         setContentView(view);
+
+        // Change status bar color
+        if (android.os.Build.VERSION.SDK_INT >= 21){
+            Window window = this.getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.setStatusBarColor(getResources().getColor(R.color.black));
+        }
 
 
         bottomNavigationView = binding.bottomNavigation;

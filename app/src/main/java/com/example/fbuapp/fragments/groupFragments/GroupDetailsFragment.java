@@ -40,6 +40,7 @@ import com.example.fbuapp.fragments.resources.VideosFragment;
 import com.example.fbuapp.managers.GroupMappingsManager;
 import com.example.fbuapp.managers.LocationManager;
 import com.example.fbuapp.managers.SchoolManager;
+import com.example.fbuapp.managers.ZoomManager;
 import com.example.fbuapp.models.Group;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
@@ -79,6 +80,7 @@ public class GroupDetailsFragment extends Fragment {
     FragmentGroupDetailsBinding binding;
     public GroupMemberAdapter adapter;
     public List<ParseUser> groupMembers;
+    ZoomManager zoomManager;
 
 
     public GroupDetailsFragment() {
@@ -108,6 +110,7 @@ public class GroupDetailsFragment extends Fragment {
         // Call this method to initialize the SDK
         initializeSdk(getContext());
 
+        zoomManager = new ZoomManager();
         ivImage = binding.ivImage;
         btnJoinMeeting = binding.btnJoinMeeting;
         ibMap = binding.ibMap;
@@ -129,6 +132,9 @@ public class GroupDetailsFragment extends Fragment {
         toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.black));
         toggle.syncState();
         navigationView = binding.navigationView;
+
+        zoomManager.initializeSdk(getContext());
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -197,7 +203,7 @@ public class GroupDetailsFragment extends Fragment {
         btnJoinMeeting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                joinMeeting(getContext(), group.getMeetingID(), group.getPassword());
+                zoomManager.joinMeeting(getContext(), group.getMeetingID(), group.getPassword());
             }
         });
 

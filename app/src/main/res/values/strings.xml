@@ -50,6 +50,8 @@
     <string name="prior">prior</string>
     <string name="ongoing">ongoing</string>
     <string name="finished">finished</string>
+    <string name="ongoing_capital">ONGOING</string>
+    <string name="expired">EXPIRED</string>
 
     <string-array name="topics_array">
         <item>Accounting</item>
