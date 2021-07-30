@@ -32,6 +32,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static android.view.View.GONE;
+
 public class GroupManager {
 
     public static final String KEY_GROUP = "groupID";
@@ -173,15 +175,22 @@ public class GroupManager {
                     Log.e(TAG, "Issue with getting groups", e);
                     return;
                 }
+                userGroups.clear();
                 for (ParseObject mapping : userMappings) {
                     Group group = (Group) mapping.getParseObject(Group.KEY_GROUP_ID);
-                    Log.i(TAG, "Group: " + group.getName());
 
                     long timestamp = group.getTimeStamp();
                     long currentTime = System.currentTimeMillis() / 1000L;
-
-                    userGroups.add(group);
-                    adapter.notifyDataSetChanged();
+                    if (currentTime > (timestamp + 3900)) {
+                        while (currentTime > timestamp) {
+                            timestamp += 604800;
+                        }
+                    }
+                    if ((currentTime >= (group.getTimeStamp()) - 300) && currentTime <= (group.getTimeStamp() + 3900)) {
+                        Log.i(TAG, group.getName());
+                        userGroups.add(group);
+                        adapter.notifyDataSetChanged();
+                    }
                 }
                 Log.i(TAG, "final Size"+ userGroups.size());
             }
