@@ -22,6 +22,24 @@
         app:strokeColor="@color/color1"
         app:iconTint="@color/black"/>
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnMap"
+        android:layout_width="50dp"
+        android:layout_height="35dp"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+        app:cornerRadius="20dp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:insetLeft="0dp"
+        android:layout_margin="10dp"
+        android:insetRight="0dp"
+        android:layout_toEndOf="@+id/btnFilter"
+        app:icon="@drawable/outline_map_24"
+        app:strokeColor="@color/color1"
+        app:iconTint="@color/black"
+        />
+
+
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPagerFind"

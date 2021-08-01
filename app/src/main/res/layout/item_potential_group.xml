@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:cardCornerRadius="10dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp">
+
+            <ImageView
+                android:id="@+id/ivImage"
+                tools:src="@tools:sample/avatars"
+                android:layout_width="50dp"
+                android:layout_height="50dp"/>
+
+            <TextView
+                android:id="@+id/tvGroupName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="COMM101"
+                android:fontFamily="@font/alata_ref"
+                android:layout_toEndOf="@+id/ivImage"
+                android:layout_marginStart="5dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                android:textSize="15sp"
+                />
+
+            <TextView
+                android:id="@+id/tvSchoolName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/source_sans_pro"
+                tools:text="University of Maryland"
+                android:layout_below="@+id/tvGroupName"
+                android:layout_alignStart="@+id/tvGroupName"
+                android:textSize="10sp"
+                android:layout_marginTop="3dp"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"/>
+
+            <TextView
+                android:id="@+id/tvLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/source_sans_pro"
+                tools:text="Princeton Public Library"
+                android:layout_below="@+id/tvSchoolName"
+                android:layout_alignStart="@+id/tvSchoolName"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                android:textSize="10sp"/>
+
+            <ImageView
+                android:id="@+id/ivNearMe"
+                android:layout_width="15sp"
+                android:layout_height="15sp"
+                android:src="@drawable/outline_near_me_24"
+                android:layout_marginTop="6dp"
+                android:layout_alignTop="@+id/tvGroupName"
+                android:layout_toStartOf="@+id/tvDistance"
+                android:layout_marginEnd="3dp"
+                />
+
+            <TextView
+                android:id="@+id/tvDistance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="22.2 mi"
+                android:fontFamily="@font/source_sans_pro"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_alignTop="@id/tvGroupName"
+                />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnJoin"
+                app:cornerRadius="20dp"
+                android:layout_below="@+id/tvLocation"
+                android:layout_width="60dp"
+                android:layout_height="30dp"
+                android:backgroundTint="#65DF92"
+                android:text="join"
+                android:textSize="10sp"
+                android:fontFamily="@font/source_sans_pro"
+                android:layout_alignStart="@id/tvLocation"
+                />
+        </RelativeLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</RelativeLayout>

@@ -16,8 +16,11 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -36,6 +39,8 @@ import com.example.fbuapp.models.Group;
 import com.google.android.material.behavior.SwipeDismissBehavior;
 import com.google.android.material.snackbar.Snackbar;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +56,7 @@ public class HomeFragment extends Fragment {
     JobInfo jobInfo;
     AlarmManager alarmManager;
     PendingIntent pendingIntent;
-
+    Toolbar toolbar;
     public ViewPager viewPager;
     public static PendingInvitesAdapter pendingInvitesAdapter;
     public static List<Group> pendingGroups;
@@ -107,6 +112,10 @@ public class HomeFragment extends Fragment {
         viewPager.setPadding(15, 0, 200, 0);
 
         groupManager.queryPendingGroups(pendingInvitesAdapter, pendingGroups);
+
+
+
+
 
 
         // Set an alarm to query the user's groups every five minutes and check if there are any changes

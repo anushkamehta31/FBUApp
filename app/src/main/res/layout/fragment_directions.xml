@@ -5,10 +5,35 @@
     android:layout_height="match_parent"
     tools:context=".fragments.DirectionsFragment">
 
+    <ImageButton
+        android:id="@+id/ibClose"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="5dp"
+        android:src="@drawable/outline_close_24"
+        android:translationZ="90dp"
+        android:backgroundTint="@color/zm_transparent"
+        />
+
     <com.google.android.gms.maps.MapView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/mapView"/>
+        android:id="@+id/mapView">
+
+    </com.google.android.gms.maps.MapView>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPagerPotential"
+        android:translationZ="90dp"
+        android:layout_width="wrap_content"
+        android:layout_height="150dp"
+        android:clipToPadding="false"
+        android:foregroundGravity="bottom"
+        android:layout_marginTop="580dp"
+        android:overScrollMode="never"
+        android:visibility="visible"
+        />
 
 
 </RelativeLayout>

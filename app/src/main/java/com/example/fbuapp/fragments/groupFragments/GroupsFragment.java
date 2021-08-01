@@ -64,6 +64,7 @@ public class GroupsFragment extends Fragment {
         rvGroups.setAdapter(adapter);
 
         LinearLayoutManager layout = new LinearLayoutManager(getContext());
+        // final GridLayoutManager layout = new GridLayoutManager(getContext(), 2);
         rvGroups.setLayoutManager(layout);
         // Get the groups
         GroupManager groupManager = new GroupManager();

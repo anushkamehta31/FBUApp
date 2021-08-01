@@ -11,8 +11,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -23,9 +25,11 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 
+import com.example.fbuapp.MainActivity;
 import com.example.fbuapp.R;
 import com.example.fbuapp.adapters.SwipeAdapter;
 import com.example.fbuapp.databinding.FragmentFindGroupBinding;
+import com.example.fbuapp.fragments.DirectionsFragment;
 import com.example.fbuapp.managers.GroupManager;
 import com.example.fbuapp.managers.GroupMappingsManager;
 import com.example.fbuapp.managers.SchoolManager;
@@ -68,6 +72,7 @@ public class SearchGroupFragment extends Fragment {
     ViewPager viewPager;
     public SwipeAdapter adapter;
     MaterialButton btnFilter;
+    MaterialButton btnMap;
     private List<Group> likedGroups;
 
 
@@ -93,6 +98,7 @@ public class SearchGroupFragment extends Fragment {
         school = new School();
         potentialTopics = new ArrayList<>();
 
+        // Add on click listener to button to add search filters
         btnFilter = binding.btnFilter;
         btnFilter.bringToFront();
         btnFilter.setOnClickListener(new View.OnClickListener() {
@@ -101,6 +107,17 @@ public class SearchGroupFragment extends Fragment {
                 showFilterDialog(view);
             }
         });
+
+        // Add on click listener to button to view groups on the map
+        btnMap = binding.btnMap;
+        btnMap.bringToFront();
+        btnMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goFindGroupMap();
+            }
+        });
+
 
         potentialGroups = new ArrayList<>();
         likedGroups = new ArrayList<>();
@@ -114,6 +131,17 @@ public class SearchGroupFragment extends Fragment {
         viewPager.setPadding(130, 0, 130, 0);
 
 
+    }
+
+    private void goFindGroupMap() {
+        MainActivity activity = (MainActivity) getContext();
+        FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+        Bundle bundle = new Bundle();
+        DirectionsFragment fragment = new DirectionsFragment();
+        bundle.putParcelableArrayList("potentialGroups", (ArrayList<? extends Parcelable>) potentialGroups);
+        fragment.setArguments(bundle);
+        ft.replace(R.id.flContainer, fragment);
+        ft.commit();
     }
 
 

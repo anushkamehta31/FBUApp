@@ -1,10 +1,15 @@
 package com.example.fbuapp.fragments;
 
+import android.app.Dialog;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.ViewPager;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -12,16 +17,25 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
+import com.example.fbuapp.MainActivity;
 import com.example.fbuapp.R;
+import com.example.fbuapp.adapters.MapPotentialGroupsAdapter;
+import com.example.fbuapp.adapters.PendingInvitesAdapter;
 import com.example.fbuapp.databinding.FragmentDirectionsBinding;
 import com.example.fbuapp.databinding.FragmentGroupDetailsBinding;
+import com.example.fbuapp.fragments.findGroupFragments.SearchGroupFragment;
+import com.example.fbuapp.fragments.groupFragments.GroupDetailsFragment;
 import com.example.fbuapp.managers.LocationManager;
 import com.example.fbuapp.models.Group;
 import com.example.fbuapp.models.Location;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -45,8 +59,9 @@ public class DirectionsFragment extends Fragment implements OnMapReadyCallback {
 
     FragmentDirectionsBinding binding;
     GoogleMap mGoogleMap;
-    List<Group> groups;
+    List<Group> potentialGroups;
     Group group;
+    ImageButton ibClose;
     private GeoApiContext mGeoApiContext;
     public static final String TAG = "DirectionsFragment";
 
@@ -56,6 +71,10 @@ public class DirectionsFragment extends Fragment implements OnMapReadyCallback {
     LocationManager locationManager;
     ParseGeoPoint userPosition;
     ParseGeoPoint groupLocation;
+
+    public ViewPager viewPager;
+    public MapPotentialGroupsAdapter adapter;
+    public List<Group> potentialInPersonGroups;
 
     public DirectionsFragment() {
         // Required empty public constructor
@@ -70,6 +89,9 @@ public class DirectionsFragment extends Fragment implements OnMapReadyCallback {
             if (getArguments().getParcelable("itemGroup") != null) {
                 group = (Group) getArguments().getParcelable("itemGroup");
             }
+            if (getArguments().getParcelableArrayList("potentialGroups") != null) {
+                potentialGroups = getArguments().getParcelableArrayList("potentialGroups");
+            }
         }
     }
 
@@ -81,9 +103,50 @@ public class DirectionsFragment extends Fragment implements OnMapReadyCallback {
         initGoogleMap(savedInstanceState);
         locationManager = new LocationManager();
         userPosition = locationManager.getUserLocation();
-        groupLocation = locationManager.getGroupLocation(group);
+        if (group != null) {
+            groupLocation = locationManager.getGroupLocation(group);
+        }
+
+        potentialInPersonGroups = new ArrayList<>();
+        adapter = new MapPotentialGroupsAdapter(potentialInPersonGroups, getContext());
+        viewPager = binding.viewPagerPotential;
+        viewPager.setAdapter(adapter);
+        viewPager.setPadding(15, 0, 200, 0);
+
+        ibClose = binding.ibClose;
+        ibClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (potentialGroups != null) {
+                    goSearchFragment();
+                } else if (group != null) {
+                    goDetailsFragment();
+                }
+            }
+        });
         return binding.getRoot();
     }
+
+    private void goDetailsFragment() {
+        MainActivity activity = (MainActivity) getContext();
+        FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+        Bundle bundle = new Bundle();
+        GroupDetailsFragment detailsFragment = new GroupDetailsFragment();
+        bundle.putParcelable("itemGroup", group);
+        detailsFragment.setArguments(bundle);
+        ft.replace(R.id.flContainer, detailsFragment);
+        ft.commit();
+    }
+
+    private void goSearchFragment() {
+        MainActivity activity = (MainActivity) getContext();
+        FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+        SearchGroupFragment fragment = new SearchGroupFragment();
+        ft.replace(R.id.flContainer, fragment);
+        ft.commit();
+    }
+
+
 
     private void initGoogleMap(Bundle savedInstanceState) {
 
@@ -98,6 +161,7 @@ public class DirectionsFragment extends Fragment implements OnMapReadyCallback {
         if (mGeoApiContext == null) {
             mGeoApiContext = new GeoApiContext.Builder().apiKey(getString(R.string.google_maps_key)).build();
         }
+
 
     }
 
@@ -128,11 +192,53 @@ public class DirectionsFragment extends Fragment implements OnMapReadyCallback {
         if (group != null) {
             calculateDirections();
             googleMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(userPosition.getLatitude(), userPosition.getLongitude()))
+                    .position(new LatLng(groupLocation.getLatitude(), groupLocation.getLongitude()))
                     .title("Marker"));
+
+            googleMap.addCircle(new CircleOptions().center(new LatLng(userPosition.getLatitude(), userPosition.getLongitude())).radius(10)
+                    .strokeColor(Color.BLUE)
+                    .fillColor(Color.BLUE));
         }
 
+        if (potentialGroups != null) {
+            // Set up the sliding viewpager and the markers
+            initSearchMap();
+        }
+
+
+        CameraUpdate cameraUpdate = CameraUpdateFactory
+                .newLatLngZoom(new LatLng(userPosition.getLatitude(), userPosition.getLongitude()), 17);
+        googleMap.animateCamera(cameraUpdate);
+
     }
+
+    private void initSearchMap() {
+        // Create markers for every group that is in person
+        // Add each group that is in person to the view pager
+        int i = 0;
+        for (Group potentialGroup : potentialGroups) {
+            if (!potentialGroup.isVirtual()) {
+                ParseGeoPoint curGroupLocation = locationManager.getGroupLocation(potentialGroup);
+                Marker groupMarker = mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(curGroupLocation.getLatitude(),
+                        curGroupLocation.getLongitude())).title(potentialGroup.getName()));
+                potentialInPersonGroups.add(potentialGroup);
+                adapter.notifyDataSetChanged();
+                groupMarker.setTag(i);
+                i++;
+            }
+        }
+
+        mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(@NonNull @NotNull Marker marker) {
+                int position = (int) marker.getTag();
+                viewPager.setCurrentItem(position, true);
+                return false;
+            }
+        });
+
+    }
+
 
     @Override
     public void onPause() {
