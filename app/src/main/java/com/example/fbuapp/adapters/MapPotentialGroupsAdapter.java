@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.example.fbuapp.R;
@@ -59,6 +60,8 @@ public class MapPotentialGroupsAdapter extends PagerAdapter {
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         container.removeView((View)object);
     }
+
+
 
     @NonNull
     @Override
@@ -138,4 +141,5 @@ public class MapPotentialGroupsAdapter extends PagerAdapter {
         cardContentLayout.setAlpha(1.0f);
         cardContentLayout.requestLayout();
     }
+
 }

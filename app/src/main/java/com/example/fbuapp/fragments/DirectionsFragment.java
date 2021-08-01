@@ -2,6 +2,7 @@ package com.example.fbuapp.fragments;
 
 import android.app.Dialog;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -76,6 +77,8 @@ public class DirectionsFragment extends Fragment implements OnMapReadyCallback {
     public MapPotentialGroupsAdapter adapter;
     public List<Group> potentialInPersonGroups;
 
+    public List<Marker> allMarkers;
+
     public DirectionsFragment() {
         // Required empty public constructor
     }
@@ -108,6 +111,7 @@ public class DirectionsFragment extends Fragment implements OnMapReadyCallback {
         }
 
         potentialInPersonGroups = new ArrayList<>();
+        allMarkers = new ArrayList<>();
         adapter = new MapPotentialGroupsAdapter(potentialInPersonGroups, getContext());
         viewPager = binding.viewPagerPotential;
         viewPager.setAdapter(adapter);
@@ -198,17 +202,16 @@ public class DirectionsFragment extends Fragment implements OnMapReadyCallback {
             googleMap.addCircle(new CircleOptions().center(new LatLng(userPosition.getLatitude(), userPosition.getLongitude())).radius(10)
                     .strokeColor(Color.BLUE)
                     .fillColor(Color.BLUE));
+
+            CameraUpdate cameraUpdate = CameraUpdateFactory
+                    .newLatLngZoom(new LatLng(userPosition.getLatitude(), userPosition.getLongitude()), 10);
+            googleMap.animateCamera(cameraUpdate);
         }
 
         if (potentialGroups != null) {
             // Set up the sliding viewpager and the markers
             initSearchMap();
         }
-
-
-        CameraUpdate cameraUpdate = CameraUpdateFactory
-                .newLatLngZoom(new LatLng(userPosition.getLatitude(), userPosition.getLongitude()), 17);
-        googleMap.animateCamera(cameraUpdate);
 
     }
 
@@ -223,6 +226,7 @@ public class DirectionsFragment extends Fragment implements OnMapReadyCallback {
                         curGroupLocation.getLongitude())).title(potentialGroup.getName()));
                 potentialInPersonGroups.add(potentialGroup);
                 adapter.notifyDataSetChanged();
+                allMarkers.add(i, groupMarker);
                 groupMarker.setTag(i);
                 i++;
             }
@@ -236,6 +240,34 @@ public class DirectionsFragment extends Fragment implements OnMapReadyCallback {
                 return false;
             }
         });
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                Marker marker = allMarkers.get(position);
+                CameraUpdate cameraUpdate = CameraUpdateFactory
+                        .newLatLngZoom(marker.getPosition(), 10);
+                mGoogleMap.animateCamera(cameraUpdate);
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+        // Start the camera at the first group position
+        Marker marker = allMarkers.get(0);
+        CameraUpdate cameraUpdate = CameraUpdateFactory
+                .newLatLngZoom(marker.getPosition(), 10);
+        mGoogleMap.animateCamera(cameraUpdate);
+
+
 
     }
 
@@ -322,4 +354,5 @@ public class DirectionsFragment extends Fragment implements OnMapReadyCallback {
             }
         });
     }
+
 }
