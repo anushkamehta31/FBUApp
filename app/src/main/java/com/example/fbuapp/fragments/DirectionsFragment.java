@@ -1,13 +1,10 @@
 package com.example.fbuapp.fragments;
 
-import android.app.Dialog;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
@@ -23,14 +20,11 @@ import android.widget.ImageButton;
 import com.example.fbuapp.MainActivity;
 import com.example.fbuapp.R;
 import com.example.fbuapp.adapters.MapPotentialGroupsAdapter;
-import com.example.fbuapp.adapters.PendingInvitesAdapter;
 import com.example.fbuapp.databinding.FragmentDirectionsBinding;
-import com.example.fbuapp.databinding.FragmentGroupDetailsBinding;
-import com.example.fbuapp.fragments.findGroupFragments.SearchGroupFragment;
+import com.example.fbuapp.fragments.searchFragments.SearchGroupFragment;
 import com.example.fbuapp.fragments.groupFragments.GroupDetailsFragment;
 import com.example.fbuapp.managers.LocationManager;
 import com.example.fbuapp.models.Group;
-import com.example.fbuapp.models.Location;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -204,7 +198,7 @@ public class DirectionsFragment extends Fragment implements OnMapReadyCallback {
                     .fillColor(Color.BLUE));
 
             CameraUpdate cameraUpdate = CameraUpdateFactory
-                    .newLatLngZoom(new LatLng(userPosition.getLatitude(), userPosition.getLongitude()), 10);
+                    .newLatLngZoom(new LatLng(userPosition.getLatitude(), userPosition.getLongitude()), 13);
             googleMap.animateCamera(cameraUpdate);
         }
 
@@ -246,7 +240,7 @@ public class DirectionsFragment extends Fragment implements OnMapReadyCallback {
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 Marker marker = allMarkers.get(position);
                 CameraUpdate cameraUpdate = CameraUpdateFactory
-                        .newLatLngZoom(marker.getPosition(), 10);
+                        .newLatLngZoom(marker.getPosition(), 13);
                 mGoogleMap.animateCamera(cameraUpdate);
             }
 
@@ -266,8 +260,6 @@ public class DirectionsFragment extends Fragment implements OnMapReadyCallback {
         CameraUpdate cameraUpdate = CameraUpdateFactory
                 .newLatLngZoom(marker.getPosition(), 10);
         mGoogleMap.animateCamera(cameraUpdate);
-
-
 
     }
 
@@ -328,6 +320,7 @@ public class DirectionsFragment extends Fragment implements OnMapReadyCallback {
         });
     }
 
+    // Method to draw the lines between
     private void addPolylinesToMap(final DirectionsResult result) {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
 

@@ -222,5 +222,12 @@
         <item quantity="other">mile from you</item>
     </plurals>
     <string name="title_activity_maps">Map</string>
+    <string name="link_description">Link description</string>
+    <string name="paste_link_here">Paste link here...</string>
+    <string name="add_a_new_link">Add a new link</string>
+    <string name="ok">OK</string>
+    <string name="decline_group_invite">Decline group invite</string>
+    <string name="don_t_want_to_join_this_group">Don\'t want to join this group?</string>
+    <string name="accept">Accept Group Invite</string>
 
 </resources>

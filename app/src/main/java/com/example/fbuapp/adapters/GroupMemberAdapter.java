@@ -37,7 +37,7 @@ public class GroupMemberAdapter extends RecyclerView.Adapter<GroupMemberAdapter.
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        // Pass in a context and inflates item_movie.xml
+        // Pass in a context and inflates item_member.xml
         View memberView = LayoutInflater.from(context).inflate(R.layout.item_member, parent, false);
         // Wrap return value inside of a viewholder
         return new ViewHolder(memberView);

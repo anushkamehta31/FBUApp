@@ -14,10 +14,9 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.example.fbuapp.databinding.ActivityMainBinding;
-import com.example.fbuapp.fragments.findGroupFragments.SearchGroupFragment;
+import com.example.fbuapp.fragments.searchFragments.SearchGroupFragment;
 import com.example.fbuapp.fragments.groupFragments.GroupsFragment;
-import com.example.fbuapp.fragments.HomeFragment;
-import com.example.fbuapp.fragments.NotificationsFragment;
+import com.example.fbuapp.fragments.homeFragments.HomeFragment;
 import com.example.fbuapp.fragments.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;

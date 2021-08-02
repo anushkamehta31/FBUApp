@@ -72,7 +72,7 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <receiver android:name=".fragments.HomeFragment$AlarmReceiver" />
+        <receiver android:name=".fragments.homeFragments.HomeFragment$AlarmReceiver" />
     </application>
 
 </manifest>

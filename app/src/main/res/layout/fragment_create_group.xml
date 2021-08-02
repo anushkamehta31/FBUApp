@@ -73,6 +73,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/CustomChipStyle"
+                android:fontFamily="@font/source_sans_pro"
                 android:text="@string/virtual" />
 
             <com.google.android.material.chip.Chip
@@ -80,6 +81,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/CustomChipStyle"
+                android:fontFamily="@font/source_sans_pro"
                 android:text="@string/in_person"/>
 
         </com.google.android.material.chip.ChipGroup>
@@ -93,6 +95,7 @@
             android:paddingBottom="25dp"
             android:layout_margin="15dp"
             android:textSize="12sp"
+            android:fontFamily="@font/source_sans_pro"
             />
 
         <EditText
@@ -104,6 +107,7 @@
             android:paddingBottom="25dp"
             android:layout_margin="15dp"
             android:textSize="12sp"
+            android:fontFamily="@font/source_sans_pro"
             />
 
         <TextView
@@ -115,6 +119,7 @@
             android:padding="5dp"
             android:layout_margin="15dp"
             android:textSize="12sp"
+            android:fontFamily="@font/source_sans_pro"
             />
 
         <TextView
@@ -125,13 +130,14 @@
             android:hint="@string/school"
             android:padding="5dp"
             android:layout_margin="15dp"
+            android:fontFamily="@font/source_sans_pro"
             android:textSize="12sp"/>
 
         <TextView
             android:id="@+id/tvCreate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto"
+            android:fontFamily="@font/alata_ref"
             android:text="@string/create_your_group_below"
             android:textColor="#8F8F8F"
             android:textSize="18sp"
@@ -148,7 +154,7 @@
             android:layout_below="@+id/tvSchool"
             android:layout_marginStart="15dp"
             app:chipIcon="@drawable/outline_date_range_24"
-            android:fontFamily="@font/roboto"
+            android:fontFamily="@font/source_sans_pro"
             style="@style/Widget.MaterialComponents.Chip.Action"/>
 
         <com.google.android.material.chip.ChipGroup
@@ -188,6 +194,7 @@
             android:layout_marginTop="15dp"
             android:layout_marginEnd="15dp"
             android:layout_marginBottom="15dp"
+            android:fontFamily="@font/source_sans_pro"
             android:hint="@string/enter_study_topics_min_3"
             android:textSize="12sp"
             app:chipTextColor="#4E99F4" />
@@ -198,6 +205,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/nTopics"
             android:layout_marginStart="15dp"
+            android:fontFamily="@font/source_sans_pro"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="15dp"
             android:layout_marginBottom="15dp"
@@ -212,6 +220,7 @@
             android:layout_below="@+id/nAdditionalTopics"
             android:layout_marginStart="15dp"
             android:layout_marginTop="15dp"
+            android:fontFamily="@font/source_sans_pro"
             android:layout_marginEnd="15dp"
             android:layout_marginBottom="400dp"
             android:hint="Add group members"

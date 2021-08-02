@@ -132,11 +132,52 @@ public class GroupMappingsManager {
         });
     }
 
+    public void editUserGroupMapping(Group group, boolean isMember) {
+        ParseQuery<GroupMappings> query = ParseQuery.getQuery(GroupMappings.class);
+        // Specify what other data we would like to get back
+        query.include("objectId");
+        query.whereEqualTo(KEY_GROUP, group);
+        query.whereEqualTo(KEY_USER_ID, ParseUser.getCurrentUser());
+        query.getFirstInBackground(new GetCallback<GroupMappings>() {
+            @Override
+            public void done(GroupMappings mapping, ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Issue with getting group mapping", e);
+                    return;
+                }
+                mapping.setIsMember(isMember);
+                mapping.saveInBackground();
+            }
+        });
+    }
 
+    public void deleteMapping(Group group, ParseUser currentUser) {
+        ParseQuery<GroupMappings> query = ParseQuery.getQuery(GroupMappings.class);
+        // Specify what other data we would like to get back
+        query.include("objectId");
+        query.whereEqualTo(KEY_GROUP, group);
+        query.whereEqualTo(KEY_USER_ID, currentUser);
+        query.getFirstInBackground(new GetCallback<GroupMappings>() {
+            @Override
+            public void done(GroupMappings mapping, ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Issue with getting group mapping", e);
+                    return;
+                }
+                mapping.deleteInBackground();
+            }
+        });
+    }
 
-
-    // TODO: Use Gale-Shapley algorithm to order to sort the groups based on stable matching
-    // Predictively determine the user's preference list (based on location, interests, school and general compatibility)
-    // Use general compatibility of a group to determine group preferene order
-    // Calculate
+    public void setInviteMapping(ParseUser user, Group group) {
+        GroupMappings groupMapping = new GroupMappings();
+        groupMapping.setUser(user);
+        groupMapping.setGroup(group);
+        groupMapping.setIsMember(false);
+        try {
+            groupMapping.save();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
 }

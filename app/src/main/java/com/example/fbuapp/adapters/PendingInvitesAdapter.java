@@ -1,10 +1,16 @@
 package com.example.fbuapp.adapters;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,12 +21,15 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.example.fbuapp.R;
+import com.example.fbuapp.managers.GroupMappingsManager;
 import com.example.fbuapp.managers.LocationManager;
 import com.example.fbuapp.managers.SchoolManager;
 import com.example.fbuapp.models.Group;
+import com.example.fbuapp.models.GroupMappings;
 import com.example.fbuapp.models.Location;
 import com.example.fbuapp.models.School;
 import com.google.android.material.behavior.SwipeDismissBehavior;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.snackbar.Snackbar;
 import com.parse.GetCallback;
@@ -34,6 +43,7 @@ import org.w3c.dom.Text;
 
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 import static com.example.fbuapp.adapters.SwipeAdapter.KEY_LOCATION;
@@ -45,10 +55,17 @@ public class PendingInvitesAdapter extends PagerAdapter {
     private List<Group> pendingGroups;
     private LayoutInflater layoutInflater;
     private Context context;
+    OnClickListener clickListener;
 
-    public PendingInvitesAdapter(List<Group> pendingGroups, Context context) {
+    public PendingInvitesAdapter(List<Group> pendingGroups, Context context, OnClickListener clickListener) {
         this.pendingGroups = pendingGroups;
         this.context = context;
+        this.clickListener = clickListener;
+    }
+
+    // We need to define an interface that will communicate back to Main Activity and tell us which position was tapped
+    public interface OnClickListener {
+        void onItemClicked(int position);
     }
 
     @Override
@@ -68,7 +85,6 @@ public class PendingInvitesAdapter extends PagerAdapter {
         View view = layoutInflater.inflate(R.layout.item_pending_group, container, false);
 
 
-
         Group group = pendingGroups.get(position);
         LocationManager locationManager = new LocationManager();
         SchoolManager schoolManager = new SchoolManager();
@@ -77,6 +93,7 @@ public class PendingInvitesAdapter extends PagerAdapter {
         TextView tvLocation = view.findViewById(R.id.tvLocation);
         TextView tvSchoolName = view.findViewById(R.id.tvSchoolName);
         TextView tvDistance = view.findViewById(R.id.tvDistance);
+        ImageButton btnInfo = view.findViewById(R.id.btnInfo);
 
         ParseFile image = group.getImage();
         if (image != null) {
@@ -116,6 +133,13 @@ public class PendingInvitesAdapter extends PagerAdapter {
             });
         }
 
+        btnInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clickListener.onItemClicked(position);
+            }
+        });
+
         Log.i(TAG, group.getName() + "is pending");
         container.addView(view, 0);
         return view;
@@ -132,5 +156,10 @@ public class PendingInvitesAdapter extends PagerAdapter {
         params.setMargins(0, 0, 0, 0);
         cardContentLayout.setAlpha(1.0f);
         cardContentLayout.requestLayout();
+    }
+
+    @Override
+    public int getItemPosition(@NonNull @NotNull Object object) {
+        return POSITION_NONE;
     }
 }

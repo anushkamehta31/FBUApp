@@ -13,7 +13,7 @@
         android:layout_marginStart="20dp"
         android:text="Photos"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-        android:fontFamily="@font/quicksand_bold"/>
+        android:fontFamily="@font/alata_ref"/>
 
 
     <ImageButton

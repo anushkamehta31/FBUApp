@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="10dp"
+    tools:context=".fragments.resources.AddLinkFragment">
+
+    <TextView
+        android:id="@+id/tvLinkTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_a_new_link"
+        android:fontFamily="@font/alata_ref"
+        android:layout_centerHorizontal="true"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+        />
+
+    <EditText
+        android:id="@+id/etLinkName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/link_description"
+        android:layout_below="@+id/tvLinkTitle"
+        android:textSize="12sp"
+        android:fontFamily="@font/source_sans_pro"/>
+
+    <EditText
+        android:id="@+id/etLinkBody"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/paste_link_here"
+        android:fontFamily="@font/source_sans_pro"
+        android:textSize="12sp"
+        android:layout_below="@id/etLinkName"
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnGo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cornerRadius="20dp"
+        android:backgroundTint="@color/zm_transparent"
+        app:strokeColor="#44AEDF"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:text="@string/ok"
+        android:fontFamily="@font/source_sans_pro"
+        android:textColor="#44AEDF"
+        android:layout_below="@id/etLinkBody"
+        android:layout_centerHorizontal="true"
+        />
+
+</RelativeLayout>

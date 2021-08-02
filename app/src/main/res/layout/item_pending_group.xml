@@ -23,6 +23,7 @@
                 tools:src="@tools:sample/avatars" />
 
             <ImageButton
+                android:id="@+id/btnInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/zm_transparent"

@@ -1,4 +1,4 @@
-package com.example.fbuapp.fragments.findGroupFragments;
+package com.example.fbuapp.fragments.searchFragments;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;

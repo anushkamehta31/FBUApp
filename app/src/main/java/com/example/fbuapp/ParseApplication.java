@@ -5,6 +5,7 @@ import android.app.Application;
 import com.example.fbuapp.models.Group;
 import com.example.fbuapp.models.GroupMappings;
 import com.example.fbuapp.models.Image;
+import com.example.fbuapp.models.Link;
 import com.example.fbuapp.models.Location;
 import com.example.fbuapp.models.Resources;
 import com.example.fbuapp.models.School;
@@ -27,6 +28,7 @@ public class ParseApplication extends Application {
         ParseObject.registerSubclass(GroupMappings.class);
         ParseObject.registerSubclass(Video.class);
         ParseObject.registerSubclass(Image.class);
+        ParseObject.registerSubclass(Link.class);
 
         Parse.initialize(new Parse.Configuration.Builder(this)
                 .applicationId("NNqUGawKPZBgeFxVQR6DPrL7PGO8jRc1srjtJcC5")

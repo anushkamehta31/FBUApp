@@ -2,65 +2,109 @@ package com.example.fbuapp.fragments.resources;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
+import com.airbnb.lottie.L;
+import com.example.fbuapp.MainActivity;
 import com.example.fbuapp.R;
+import com.example.fbuapp.adapters.LinksAdapter;
+import com.example.fbuapp.databinding.FragmentImagesBinding;
+import com.example.fbuapp.databinding.FragmentLinksBinding;
+import com.example.fbuapp.fragments.groupFragments.CreateGroupFragment;
+import com.example.fbuapp.fragments.groupFragments.GroupsFragment;
+import com.example.fbuapp.managers.ResourceManager;
+import com.example.fbuapp.models.Group;
+import com.example.fbuapp.models.Image;
+import com.example.fbuapp.models.Link;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link LinksFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
 public class LinksFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    public Group group;
+    public List<Link> groupLinks;
+    FragmentLinksBinding binding;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    // Get references to views
+    RecyclerView rvLinks;
+    ImageButton btnAddLink;
 
-    public LinksFragment() {
-        // Required empty public constructor
-    }
+    // Reference to adapter
+    LinksAdapter adapter;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment LinksFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static LinksFragment newInstance(String param1, String param2) {
-        LinksFragment fragment = new LinksFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    // Resource manager to perform queries
+    ResourceManager resourceManager;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        // Retrieve arguments passed
+        group = (Group) getArguments().getParcelable("itemGroup");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_links, container, false);
+        binding = FragmentLinksBinding.inflate(inflater, container, false);
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        // Instantiate resource manager
+        resourceManager = new ResourceManager();
+
+        // Instantiate empty list
+        groupLinks = new ArrayList<>();
+
+        // instantiate view items
+        rvLinks = binding.rvLinks;
+        btnAddLink = binding.btnAddLink;
+
+        // instantiate adapter
+        adapter = new LinksAdapter(getContext(), groupLinks);
+        rvLinks.setAdapter(adapter);
+        rvLinks.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        // Query current group links
+        resourceManager.queryLinks(group, groupLinks, adapter);
+
+        btnAddLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goAddLink();
+            }
+        });
+    }
+
+    private void goAddLink() {
+        MainActivity activity = (MainActivity) getContext();
+        FragmentManager ft = activity.getSupportFragmentManager();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("itemGroup", group);
+        AddLinkFragment fragment = new AddLinkFragment();
+        fragment.setArguments(bundle);
+        // Launch create group dialog fragment and set the target fragment for later use when
+        // sending results
+        fragment.setTargetFragment(LinksFragment.this, 300);
+        fragment.show(ft, "fragment_add_link");
     }
 }

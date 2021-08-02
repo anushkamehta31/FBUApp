@@ -31,6 +31,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="40dp"
+                android:fontFamily="@font/alata_ref"
                 android:text="Show results for"
                 android:textStyle="bold" />
 
@@ -85,6 +86,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="20dp"
+                android:fontFamily="@font/alata_ref"
                 android:text="Sort by"
                 android:textStyle="bold" />
 
@@ -126,6 +128,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="20dp"
+                android:fontFamily="@font/alata_ref"
                 android:text="Distance (mi)"
                 android:textStyle="bold" />
 
@@ -168,6 +171,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="20dp"
                 android:text="Filter by"
+                android:fontFamily="@font/alata_ref"
                 android:textStyle="bold" />
 
             <com.google.android.material.textfield.TextInputLayout

@@ -1,18 +1,33 @@
 package com.example.fbuapp.managers;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.core.view.GravityCompat;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.example.fbuapp.MainActivity;
+import com.example.fbuapp.R;
 import com.example.fbuapp.adapters.GridAdapter;
+import com.example.fbuapp.adapters.LinksAdapter;
 import com.example.fbuapp.adapters.VideoAdapter;
+import com.example.fbuapp.fragments.groupFragments.GroupsFragment;
+import com.example.fbuapp.fragments.resources.LinksFragment;
 import com.example.fbuapp.models.Group;
 import com.example.fbuapp.models.Image;
+import com.example.fbuapp.models.Link;
 import com.example.fbuapp.models.Video;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.io.File;
@@ -75,6 +90,49 @@ public class ResourceManager {
                 }
                 videos.addAll(groupVideos);
                 adapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    public void queryLinks(Group group, List<Link> groupLinks, LinksAdapter adapter) {
+        ParseQuery<Link> query = ParseQuery.getQuery(Link.class);
+        query.include(Link.KEY_GROUP);
+        query.include(Link.KEY_USER);
+        query.whereEqualTo(Video.KEY_GROUP, group);
+        query.findInBackground(new FindCallback<Link>() {
+            @Override
+            public void done(List<Link> links, ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Issue getting links");
+                    return;
+                }
+                groupLinks.addAll(links);
+                adapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    public void saveLink(String description, String url, Group group, Context context, DialogFragment dialogFragment) {
+        Link link = new Link();
+        link.setDescription(description);
+        link.setGroup(group);
+        link.setURL(url);
+        link.setUser(ParseUser.getCurrentUser());
+        link.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Error while saving link", e);
+                }
+                MainActivity activity = (MainActivity) context;
+                Fragment fragment = new LinksFragment();;
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("itemGroup", group);
+                FragmentTransaction ft = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
+                fragment.setArguments(bundle);
+                ft.replace(R.id.frame, fragment).commit();
+                ft.addToBackStack(null);
+                dialogFragment.dismiss();
             }
         });
     }

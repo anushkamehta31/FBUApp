@@ -2,12 +2,16 @@ package com.example.fbuapp.managers;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.View;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.fbuapp.MainActivity;
 import com.example.fbuapp.R;
 import com.example.fbuapp.adapters.GroupMemberAdapter;
@@ -28,6 +32,8 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -160,7 +166,7 @@ public class GroupManager {
         });
     }
 
-    public void queryGroupsUpcoming(RecyclerView.Adapter adapter, List<Group> userGroups) {
+    public void queryGroupsUpcoming(RecyclerView.Adapter adapter, List<Group> userGroups, TextView tvNoMeetings, LottieAnimationView lottieAnimationView, TextView tvPendingInvites) {
         // Specify which class to query
         ParseQuery<ParseObject> query = ParseQuery.getQuery("GroupMappings");
         query.include(Group.KEY_GROUP_ID);
@@ -192,6 +198,19 @@ public class GroupManager {
                         userGroups.add(group);
                         adapter.notifyDataSetChanged();
                     }
+                }
+
+                // Update the UI with placeholder if there are no upcoming meetings
+                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) tvPendingInvites.getLayoutParams();
+
+                if (userGroups.size() == 0) {
+                    tvNoMeetings.setVisibility(View.VISIBLE);
+                    lottieAnimationView.setVisibility(View.VISIBLE);
+                    params.addRule(RelativeLayout.BELOW, R.id.tvNoMeetings);
+                } else {
+                    tvNoMeetings.setVisibility(GONE);
+                    lottieAnimationView.setVisibility(GONE);
+                    params.addRule(RelativeLayout.BELOW, R.id.rvUpcomingMeetings);
                 }
                 Log.i(TAG, "final Size"+ userGroups.size());
             }
@@ -233,6 +252,7 @@ public class GroupManager {
                     Log.e(TAG, "Issue with getting groups", e);
                     return;
                 }
+                pendingGroups.clear();
                 for (ParseObject mapping : userMappings) {
                     Group group = (Group) mapping.getParseObject(Group.KEY_GROUP_ID);
                     Log.i(TAG, "Group: " + group.getName());

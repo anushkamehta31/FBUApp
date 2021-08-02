@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragments.findGroupFragments.SearchGroupFragment"
+    tools:context=".fragments.searchFragments.SearchGroupFragment"
     >
 
     <com.google.android.material.button.MaterialButton
@@ -16,7 +16,8 @@
         android:insetTop="0dp"
         android:insetBottom="0dp"
         android:insetLeft="0dp"
-        android:layout_margin="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
         android:insetRight="0dp"
         app:icon="@drawable/outline_filter_list_24"
         app:strokeColor="@color/color1"

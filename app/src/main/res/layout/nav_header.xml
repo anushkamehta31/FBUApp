@@ -24,10 +24,11 @@
         android:layout_centerVertical="true"
         android:layout_marginStart="10dp"
         android:id="@+id/tvResources"
-        android:fontFamily="@font/source_sans_pro"
+        android:fontFamily="@font/alata_ref"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         android:text="Resources"
         android:textColor="@color/white"
-        android:textSize="14sp"/>
+        android:textSize="20sp"/>
 
 
 </RelativeLayout>

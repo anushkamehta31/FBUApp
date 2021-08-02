@@ -24,12 +24,6 @@
         android:layout_height="130dp"
         tools:src="@tools:sample/avatars" />
 
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/zm_transparent"
-        android:src="@drawable/outline_more_horiz_24"
-        android:layout_alignParentEnd="true"/>
 
     <com.google.android.material.chip.Chip
         android:layout_width="wrap_content"

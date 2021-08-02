@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="20dp"
+    android:background="@drawable/filter_dialog_bg">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/ivImage"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        tools:src="@tools:sample/avatars"
+        android:layout_centerHorizontal="true"
+        />
+
+    <TextView
+        android:id="@+id/tvGroupName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ivImage"
+        tools:text="FBU Android Group"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline1"
+        android:fontFamily="@font/alata_ref"
+        android:textSize="20sp"
+        />
+
+    <TextView
+        android:id="@+id/tvDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvGroupName"
+        tools:text="Study group for ENGL101 at UPenn"
+        android:layout_centerHorizontal="true"
+        android:textAlignment="center"
+        android:fontFamily="@font/source_sans_pro"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+        android:layout_marginTop="10dp"
+        android:textSize="13sp"
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnAcceptGroupInvite"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cornerRadius="20dp"
+        android:text="@string/accept"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+        android:fontFamily="@font/alata_ref"
+        android:backgroundTint="#8AD1F8"
+        android:layout_below="@id/tvDescription"
+        android:layout_marginTop="30dp"
+        />
+
+    <TextView
+        android:id="@+id/tvNotInterested"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/don_t_want_to_join_this_group"
+        android:layout_below="@id/btnAcceptGroupInvite"
+        android:fontFamily="@font/source_sans_pro"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="45dp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+        />
+
+    <TextView
+        android:id="@+id/tvRejectGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/decline_group_invite"
+        android:layout_toEndOf="@id/tvNotInterested"
+        android:layout_below="@id/btnAcceptGroupInvite"
+        android:fontFamily="@font/source_sans_pro"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="5dp"
+        android:textColor="#8AD1F8"
+        android:textStyle="bold"
+        android:layout_marginBottom="20dp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"/>
+
+</RelativeLayout>
