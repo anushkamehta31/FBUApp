@@ -200,8 +200,8 @@ public class HomeFragment extends Fragment {
                 pendingInvitesAdapter.notifyDataSetChanged();
 
                 // Display a snackbar to show the action
-                Snackbar.make(view, "Group joined", Snackbar.LENGTH_LONG)
-                        .setAction("Undo", new View.OnClickListener() {
+                Snackbar.make(view, getString(R.string.group_joined), Snackbar.LENGTH_LONG)
+                        .setAction(R.string.undo, new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 pendingGroups.add(group);
@@ -224,8 +224,8 @@ public class HomeFragment extends Fragment {
                 pendingInvitesAdapter.notifyDataSetChanged();
 
                 // Display a snackbar to show the action
-                Snackbar.make(view, "Group invite declined", Snackbar.LENGTH_LONG)
-                        .setAction("Undo", new View.OnClickListener() {
+                Snackbar.make(view, getString(R.string.invite_declined), Snackbar.LENGTH_LONG)
+                        .setAction(R.string.undo, new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 pendingGroups.add(group);

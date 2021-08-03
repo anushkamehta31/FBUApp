@@ -66,7 +66,7 @@ public class LinksAdapter extends RecyclerView.Adapter<LinksAdapter.ViewHolder>{
         public void bind(Link link) {
             tvDescription.setText(link.getDescription());
             tvUrl.setText(link.getUrl());
-            tvAddedBy.setText("Added by @"+link.getUser().getUsername());
+            tvAddedBy.setText(context.getString(R.string.added_by)+link.getUser().getUsername());
         }
     }
 }

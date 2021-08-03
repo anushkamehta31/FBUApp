@@ -46,6 +46,7 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
+import static com.example.fbuapp.Constants.KEY_ZERO;
 import static com.example.fbuapp.adapters.SwipeAdapter.KEY_LOCATION;
 
 public class PendingInvitesAdapter extends PagerAdapter {
@@ -103,7 +104,7 @@ public class PendingInvitesAdapter extends PagerAdapter {
         tvGroupName.setText(group.getName());
 
         if (group.isVirtual()) {
-            tvLocation.setText("Zoom Meeting");
+            tvLocation.setText(context.getString(R.string.zoom_meeting));
         } else {
             locationManager.getSchoolFromGroup(tvLocation, group.getLocation().getObjectId());
         }
@@ -111,7 +112,7 @@ public class PendingInvitesAdapter extends PagerAdapter {
         schoolManager.getSchoolName(group.getSchool().getObjectId(), tvSchoolName);
 
         if (group.isVirtual()) {
-            tvDistance.setText(R.string.vg);
+            tvDistance.setText(context.getString(R.string.vg));
         } else {
             ParseQuery<Location> query = new ParseQuery<Location>(Location.class);
             query.include("name");
@@ -140,22 +141,13 @@ public class PendingInvitesAdapter extends PagerAdapter {
             }
         });
 
-        Log.i(TAG, group.getName() + "is pending");
-        container.addView(view, 0);
+        container.addView(view, KEY_ZERO);
         return view;
     }
 
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         container.removeView((View)object);
-    }
-
-    private static void resetCard(MaterialCardView cardContentLayout) {
-        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) cardContentLayout
-                .getLayoutParams();
-        params.setMargins(0, 0, 0, 0);
-        cardContentLayout.setAlpha(1.0f);
-        cardContentLayout.requestLayout();
     }
 
     @Override

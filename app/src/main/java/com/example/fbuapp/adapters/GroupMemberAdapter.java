@@ -23,6 +23,8 @@ import java.util.List;
 
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
+import static com.example.fbuapp.Constants.KEY_USER_PROFILE;
+
 public class GroupMemberAdapter extends RecyclerView.Adapter<GroupMemberAdapter.ViewHolder>{
 
     // Need a context to inflate a view
@@ -76,7 +78,7 @@ public class GroupMemberAdapter extends RecyclerView.Adapter<GroupMemberAdapter.
             String imageURL;
             int placeholder;
 
-            ParseFile image = user.getParseFile("profileImage");
+            ParseFile image = user.getParseFile(KEY_USER_PROFILE);
             if (image != null) {
                 Glide.with(context).load(image.getUrl()).fitCenter().centerCrop().into(ivProfile);
             } else {

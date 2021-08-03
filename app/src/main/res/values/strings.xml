@@ -230,5 +230,11 @@
     <string name="don_t_want_to_join_this_group">Don\'t want to join this group?</string>
     <string name="accept">Accept Group Invite</string>
     <string name="group_notes">Group Notes</string>
+    <string name="zoom_meeting">Zoom Meeting</string>
+    <string name="added_by">Added by @</string>
+    <string name="group_joined">Group joined</string>
+    <string name="undo">Undo</string>
+    <string name="invite_declined">Group invite declined</string>
+    <string name="joined">Joined</string>
 
 </resources>

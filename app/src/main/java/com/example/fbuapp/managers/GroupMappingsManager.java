@@ -20,6 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static com.example.fbuapp.CreateAccountActivity.KEY_SCHOOL;
+import static com.example.fbuapp.managers.GroupManager.KEY_LOCATION;
+
 public class GroupMappingsManager {
     public static final String KEY_GROUP = "groupID";
     public static final String KEY_USER_ID = "userID";
@@ -93,6 +96,8 @@ public class GroupMappingsManager {
 
     public void findPotentialMatches(List<Group> potentialGroups, SwipeAdapter adapter) {
         ParseQuery<Group> queryGroup = new ParseQuery<Group>(Group.class);
+        queryGroup.include(KEY_LOCATION);
+        queryGroup.include(KEY_SCHOOL);
         queryGroup.findInBackground(new FindCallback<Group>() {
             @Override
             public void done(List<Group> groups, ParseException e) {

@@ -66,7 +66,6 @@ public class MapPotentialGroupsAdapter extends PagerAdapter {
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
-        Log.i(TAG, "new item");
 
         layoutInflater = LayoutInflater.from(context);
         View view = layoutInflater.inflate(R.layout.item_potential_group, container, false);
@@ -89,7 +88,7 @@ public class MapPotentialGroupsAdapter extends PagerAdapter {
         tvGroupName.setText(group.getName());
 
         if (group.isVirtual()) {
-            tvLocation.setText("Zoom Meeting");
+            tvLocation.setText(context.getString(R.string.zoom_meeting));
         } else {
             locationManager.getSchoolFromGroup(tvLocation, group.getLocation().getObjectId());
         }
@@ -99,22 +98,15 @@ public class MapPotentialGroupsAdapter extends PagerAdapter {
         if (group.isVirtual()) {
             tvDistance.setText(R.string.vg);
         } else {
-            ParseQuery<Location> query = new ParseQuery<Location>(Location.class);
-            query.include("name");
-            query.whereEqualTo("objectId", group.getLocation().getObjectId());
-            query.getFirstInBackground(new GetCallback<Location>() {
+            Location groupLocation = group.getLocation();
+            ParseQuery<Location> queryLoc = ParseQuery.getQuery(Location.class);
+            queryLoc.include(KEY_LOCATION);
+            queryLoc.whereEqualTo(Location.KEY_OBJECT_ID, ((Location) ParseUser.getCurrentUser().get(KEY_LOCATION)).getObjectId());
+            queryLoc.getFirstInBackground(new GetCallback<Location>() {
                 @Override
-                public void done(Location location, ParseException e) {
-                    ParseQuery<Location> queryLoc = ParseQuery.getQuery(Location.class);
-                    queryLoc.include(KEY_LOCATION);
-                    queryLoc.whereEqualTo("objectId", ((Location) ParseUser.getCurrentUser().get(KEY_LOCATION)).getObjectId());
-                    queryLoc.getFirstInBackground(new GetCallback<Location>() {
-                        @Override
-                        public void done(Location userLocation, ParseException e) {
-                            double distance = userLocation.getLocation().distanceInMilesTo(location.getLocation());
-                            tvDistance.setText(String.format("%.1f", distance) + " mi");
-                        }
-                    });
+                public void done(Location userLocation, ParseException e) {
+                    double distance = userLocation.getLocation().distanceInMilesTo(groupLocation.getLocation());
+                    tvDistance.setText(String.format("%.1f", distance) + " mi");
                 }
             });
         }
@@ -123,23 +115,14 @@ public class MapPotentialGroupsAdapter extends PagerAdapter {
         btnJoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btnJoin.setText("Joined");
+                btnJoin.setText(context.getString(R.string.joined));
                 GroupMappingsManager groupManager = new GroupMappingsManager();
                 groupManager.setUserMapping(ParseUser.getCurrentUser(), group);
             }
         });
 
-        Log.i(TAG, group.getName() + "is pending");
         container.addView(view, 0);
         return view;
-    }
-
-    private static void resetCard(MaterialCardView cardContentLayout) {
-        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) cardContentLayout
-                .getLayoutParams();
-        params.setMargins(0, 0, 0, 0);
-        cardContentLayout.setAlpha(1.0f);
-        cardContentLayout.requestLayout();
     }
 
 }

@@ -29,6 +29,7 @@ import com.parse.ParseUser;
 
 import java.util.List;
 
+import static com.example.fbuapp.Constants.KEY_GROUP_ITEM;
 import static com.example.fbuapp.adapters.SwipeAdapter.KEY_LOCATION;
 
 public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.ViewHolder> {
@@ -75,7 +76,7 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.ViewHolder
                     FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
                     Bundle bundle = new Bundle();
                     GroupDetailsFragment detailsFragment = new GroupDetailsFragment();
-                    bundle.putParcelable("itemGroup", mGroups.get(getAdapterPosition()));
+                    bundle.putParcelable(KEY_GROUP_ITEM, mGroups.get(getAdapterPosition()));
                     detailsFragment.setArguments(bundle);
                     ft.replace(R.id.flContainer, detailsFragment);
                     ft.commit();
@@ -100,7 +101,7 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.ViewHolder
             tvGroupName.setText(group.getName());
 
             if (group.isVirtual()) {
-                tvLocation.setText("Zoom Meeting");
+                tvLocation.setText(mContext.getString(R.string.zoom_meeting));
             } else {
                 locationManager.getSchoolFromGroup(tvLocation, group.getLocation().getObjectId());
             }
@@ -108,17 +109,17 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.ViewHolder
             schoolManager.getSchoolName(group.getSchool().getObjectId(), tvSchoolName);
 
             if (group.isVirtual()) {
-                tvDistance.setText(R.string.vg);
+                tvDistance.setText(mContext.getString(R.string.vg));
             } else {
                 ParseQuery<Location> query = new ParseQuery<Location>(Location.class);
-                query.include("name");
-                query.whereEqualTo("objectId", group.getLocation().getObjectId());
+                query.include(Location.KEY_NAME);
+                query.whereEqualTo(Location.KEY_OBJECT_ID, group.getLocation().getObjectId());
                 query.getFirstInBackground(new GetCallback<Location>() {
                     @Override
                     public void done(Location location, ParseException e) {
                         ParseQuery<Location> queryLoc = ParseQuery.getQuery(Location.class);
                         queryLoc.include(KEY_LOCATION);
-                        queryLoc.whereEqualTo("objectId", ((Location) ParseUser.getCurrentUser().get(KEY_LOCATION)).getObjectId());
+                        queryLoc.whereEqualTo(Location.KEY_OBJECT_ID, ((Location) ParseUser.getCurrentUser().get(KEY_LOCATION)).getObjectId());
                         queryLoc.getFirstInBackground(new GetCallback<Location>() {
                             @Override
                             public void done(Location userLocation, ParseException e) {
