@@ -146,12 +146,12 @@ public class HomeFragment extends Fragment {
         // Run initial data query before setting repeated alarm
         queryData();
 
-
         // Set an alarm to query the user's groups every five minutes and check if there are any changes
         Intent alarmIntent = new Intent(getContext(), AlarmReceiver.class);
         pendingIntent = PendingIntent.getBroadcast(getContext(), 0, alarmIntent, 0);
         alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
         alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, 0, 3000, pendingIntent);
+
     }
 
     public static class AlarmReceiver extends BroadcastReceiver {

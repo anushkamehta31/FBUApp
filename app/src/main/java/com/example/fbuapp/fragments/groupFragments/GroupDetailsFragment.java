@@ -30,14 +30,11 @@ import com.example.fbuapp.R;
 import com.example.fbuapp.adapters.GroupMemberAdapter;
 import com.example.fbuapp.databinding.FragmentGroupDetailsBinding;
 import com.example.fbuapp.fragments.DirectionsFragment;
-import com.example.fbuapp.fragments.resources.AgendaFragment;
 import com.example.fbuapp.fragments.resources.ChatFragment;
-import com.example.fbuapp.fragments.resources.FilesFragment;
 import com.example.fbuapp.fragments.resources.ImagesFragment;
 import com.example.fbuapp.fragments.resources.LinksFragment;
 import com.example.fbuapp.fragments.resources.NotesFragment;
 import com.example.fbuapp.fragments.resources.SettingsFragment;
-import com.example.fbuapp.fragments.resources.VideosFragment;
 import com.example.fbuapp.managers.GroupMappingsManager;
 import com.example.fbuapp.managers.LocationManager;
 import com.example.fbuapp.managers.SchoolManager;
@@ -149,17 +146,8 @@ public class GroupDetailsFragment extends Fragment {
                     case R.id.notes:
                         fragment = new NotesFragment();
                         break;
-                    case R.id.videos:
-                        fragment = new VideosFragment();
-                        break;
-                    case R.id.agenda:
-                        fragment = new AgendaFragment();
-                        break;
                     case R.id.links:
                         fragment = new LinksFragment();
-                        break;
-                    case R.id.files:
-                        fragment = new FilesFragment();
                         break;
                     case R.id.chat:
                         fragment = new ChatFragment();

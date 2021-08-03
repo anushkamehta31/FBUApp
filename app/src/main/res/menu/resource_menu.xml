@@ -11,17 +11,9 @@
             android:icon="@drawable/outline_notes_24"
             android:title="Notes"/>
         <item
-            android:id="@+id/videos"
-            android:icon="@drawable/outline_play_arrow_24"
-            android:title="Videos"/>
-        <item
             android:id="@+id/links"
             android:icon="@drawable/outline_link_24"
             android:title="Links"/>
-        <item
-            android:id="@+id/files"
-            android:icon="@drawable/outline_folder_24"
-            android:title="Files"/>
         <item
             android:id="@+id/chat"
             android:icon="@drawable/outline_question_answer_24"
@@ -36,11 +28,6 @@
                     android:title="Settings"
                     android:icon="@drawable/outline_settings_24"
                     android:id="@+id/settings"
-                    />
-                <item
-                    android:title="Agenda"
-                    android:icon="@drawable/outline_view_agenda_20"
-                    android:id="@+id/agenda"
                     />
             </group>
         </menu>
