@@ -15,48 +15,49 @@ import android.widget.Toast;
 
 import com.example.fbuapp.R;
 import com.example.fbuapp.databinding.FragmentAddLinkBinding;
-import com.example.fbuapp.databinding.FragmentCreateGroupBinding;
+import com.example.fbuapp.databinding.FragmentAddNoteBinding;
 import com.example.fbuapp.managers.ResourceManager;
 import com.example.fbuapp.models.Group;
 import com.google.android.material.button.MaterialButton;
 
 import org.jetbrains.annotations.NotNull;
 
-public class AddLinkFragment extends DialogFragment {
+public class AddNoteFragment extends DialogFragment {
 
-    FragmentAddLinkBinding binding;
-    EditText etLinkName;
-    EditText etLinkBody;
+    FragmentAddNoteBinding binding;
+    EditText etNoteTitle;
+    EditText etNoteText;
     MaterialButton btnGo;
     ResourceManager resourceManager;
     public Group group;
 
-    public AddLinkFragment() {
+    public AddNoteFragment() {
         // Required empty public constructor
     }
+
+    
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         group = (Group) getArguments().getParcelable("itemGroup");
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding = FragmentAddLinkBinding.inflate(inflater, container, false);
+        binding = FragmentAddNoteBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        
         // Get references to all views
-        etLinkName = binding.etLinkName;
-        etLinkBody = binding.etLinkBody;
+        etNoteTitle = binding.etNoteTitle;
+        etNoteText = binding.etNoteBody;
         btnGo = binding.btnGo;
 
         // Instantiate resource manager
@@ -66,19 +67,19 @@ public class AddLinkFragment extends DialogFragment {
         btnGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createLink();
+                createNote();
             }
         });
     }
 
-    private void createLink() {
-        // If the user forgot a field, make a toast to notify them
-        if (etLinkBody.getText().toString().equals("") || (etLinkName.getText().toString().equals(""))){
+    private void createNote() {
+        if (etNoteTitle.getText().toString().equals("") || (etNoteText.getText().toString().equals(""))){
             Toast.makeText(getContext(),
                     getContext().getString(R.string.missing_fields), Toast.LENGTH_SHORT).show();
             return;
         }
 
-        resourceManager.saveLink(etLinkName.getText().toString(), etLinkBody.getText().toString(), group, getContext(), this);
+        resourceManager.saveNote(etNoteTitle.getText().toString(), etNoteText.getText().toString(), group, getContext(), this);
+
     }
 }

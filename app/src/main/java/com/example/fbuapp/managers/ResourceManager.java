@@ -19,7 +19,9 @@ import com.example.fbuapp.adapters.LinksAdapter;
 import com.example.fbuapp.adapters.NotesAdapter;
 import com.example.fbuapp.adapters.VideoAdapter;
 import com.example.fbuapp.fragments.groupFragments.GroupsFragment;
+import com.example.fbuapp.fragments.resources.AddNoteFragment;
 import com.example.fbuapp.fragments.resources.LinksFragment;
+import com.example.fbuapp.fragments.resources.NotesFragment;
 import com.example.fbuapp.models.Group;
 import com.example.fbuapp.models.Image;
 import com.example.fbuapp.models.Link;
@@ -153,6 +155,31 @@ public class ResourceManager {
                 }
                 groupNotes.addAll(notes);
                 adapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    public void saveNote(String title, String text, Group group, Context context, DialogFragment dialogFragment) {
+        Note note = new Note();
+        note.setTitle(title);
+        note.setSubtitle(text);
+        note.setGroup(group);
+        note.setUser(ParseUser.getCurrentUser());
+        note.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Error while saving link", e);
+                }
+                MainActivity activity = (MainActivity) context;
+                Fragment fragment = new NotesFragment();;
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("itemGroup", group);
+                FragmentTransaction ft = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
+                fragment.setArguments(bundle);
+                ft.replace(R.id.frame, fragment).commit();
+                ft.addToBackStack(null);
+                dialogFragment.dismiss();
             }
         });
     }

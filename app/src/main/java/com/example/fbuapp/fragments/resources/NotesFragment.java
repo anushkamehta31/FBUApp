@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import com.example.fbuapp.MainActivity;
 import com.example.fbuapp.R;
 import com.example.fbuapp.adapters.LinksAdapter;
 import com.example.fbuapp.adapters.NotesAdapter;
@@ -85,5 +87,25 @@ public class NotesFragment extends Fragment {
         rvNotes.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
 
         resourceManager.queryNotes(group, groupNotes, adapter);
+
+        // Button to create a new note
+        btnAddNote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goAddNote();
+            }
+        });
+    }
+
+    private void goAddNote() {
+        MainActivity activity = (MainActivity) getContext();
+        FragmentManager ft = activity.getSupportFragmentManager();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("itemGroup", group);
+        AddNoteFragment fragment = new AddNoteFragment();
+        fragment.setArguments(bundle);
+        // Launch create group dialog fragment and set the target fragment for later use when sending results
+        fragment.setTargetFragment(NotesFragment.this, 300);
+        fragment.show(ft, "fragment_add_note");
     }
 }

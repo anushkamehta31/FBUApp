@@ -236,5 +236,9 @@
     <string name="undo">Undo</string>
     <string name="invite_declined">Group invite declined</string>
     <string name="joined">Joined</string>
+    <string name="add_a_new_note">Add a new note</string>
+    <string name="title">Title</string>
+    <string name="text">Text</string>
+    <string name="missing_fields">Missing fields</string>
 
 </resources>

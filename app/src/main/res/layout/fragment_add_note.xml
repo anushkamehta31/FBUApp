@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="10dp"
+    tools:context=".fragments.resources.AddLinkFragment">
+
+    <TextView
+        android:id="@+id/tvNoteTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_a_new_note"
+        android:fontFamily="@font/alata_ref"
+        android:layout_centerHorizontal="true"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+        />
+
+    <EditText
+        android:id="@+id/etNoteTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/title"
+        android:layout_below="@+id/tvNoteTitle"
+        android:layout_marginTop="15dp"
+        android:textSize="12sp"
+        android:fontFamily="@font/source_sans_pro"/>
+
+    <EditText
+        android:id="@+id/etNoteBody"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/text"
+        android:fontFamily="@font/source_sans_pro"
+        android:textSize="12sp"
+        android:layout_below="@id/etNoteTitle"
+        android:layout_marginTop="5dp"
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnGo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cornerRadius="20dp"
+        android:backgroundTint="@color/zm_transparent"
+        app:strokeColor="#44AEDF"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:text="@string/ok"
+        android:fontFamily="@font/source_sans_pro"
+        android:textColor="#44AEDF"
+        android:layout_below="@id/etNoteBody"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        />
+
+</RelativeLayout>
