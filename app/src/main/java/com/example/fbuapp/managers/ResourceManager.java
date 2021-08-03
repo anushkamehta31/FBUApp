@@ -16,12 +16,14 @@ import com.example.fbuapp.MainActivity;
 import com.example.fbuapp.R;
 import com.example.fbuapp.adapters.GridAdapter;
 import com.example.fbuapp.adapters.LinksAdapter;
+import com.example.fbuapp.adapters.NotesAdapter;
 import com.example.fbuapp.adapters.VideoAdapter;
 import com.example.fbuapp.fragments.groupFragments.GroupsFragment;
 import com.example.fbuapp.fragments.resources.LinksFragment;
 import com.example.fbuapp.models.Group;
 import com.example.fbuapp.models.Image;
 import com.example.fbuapp.models.Link;
+import com.example.fbuapp.models.Note;
 import com.example.fbuapp.models.Video;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -133,6 +135,24 @@ public class ResourceManager {
                 ft.replace(R.id.frame, fragment).commit();
                 ft.addToBackStack(null);
                 dialogFragment.dismiss();
+            }
+        });
+    }
+
+    public void queryNotes(Group group, List<Note> groupNotes, NotesAdapter adapter) {
+        ParseQuery<Note> query = ParseQuery.getQuery(Note.class);
+        query.include(Link.KEY_GROUP);
+        query.include(Link.KEY_USER);
+        query.whereEqualTo(Video.KEY_GROUP, group);
+        query.findInBackground(new FindCallback<Note>() {
+            @Override
+            public void done(List<Note> notes, ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Issue getting links");
+                    return;
+                }
+                groupNotes.addAll(notes);
+                adapter.notifyDataSetChanged();
             }
         });
     }

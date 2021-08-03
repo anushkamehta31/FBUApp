@@ -82,6 +82,31 @@
                 android:foregroundGravity="center"
                 android:overScrollMode="never" />
 
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/noPendingAnimation"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="0dp"
+                android:layout_below="@+id/tvPendingInvites"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/pending_meeting"
+                android:visibility="gone"
+                />
+
+            <TextView
+                android:id="@+id/tvNoPending"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                android:text="No pending invites"
+                android:textSize="15sp"
+                android:fontFamily="@font/alata_ref"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/noPendingAnimation"
+                android:visibility="gone"
+                />
+
 
         </RelativeLayout>
 

@@ -75,6 +75,8 @@ public class HomeFragment extends Fragment {
     public static List<Group> pendingGroups;
     public static TextView tvNoMeetings;
     public static LottieAnimationView lottieAnimationView;
+    public static LottieAnimationView noPendingGroups;
+    public static TextView tvNoPendingInvites;
     public static TextView tvPendingInvites;
 
 
@@ -118,7 +120,9 @@ public class HomeFragment extends Fragment {
         rvUpcomingMeetings.setLayoutManager(new LinearLayoutManager(getContext()));
         tvNoMeetings = binding.tvNoMeetings;
         lottieAnimationView = binding.animationView;
+        noPendingGroups = binding.noPendingAnimation;
         tvPendingInvites = binding.tvPendingInvites;
+        tvNoPendingInvites = binding.tvNoPending;
 
         // Query the user's groups to be added to the views
         groupManager = new GroupManager();
@@ -160,7 +164,7 @@ public class HomeFragment extends Fragment {
 
     public static void queryData() {
         groupManager.queryGroupsUpcoming(adapter, userGroups, tvNoMeetings, lottieAnimationView, tvPendingInvites);
-        groupManager.queryPendingGroups(pendingInvitesAdapter, pendingGroups);
+        groupManager.queryPendingGroups(pendingInvitesAdapter, pendingGroups, tvNoPendingInvites, noPendingGroups);
     }
 
     // Method to display the dialog of a given pending group

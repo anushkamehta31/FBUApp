@@ -116,7 +116,7 @@ public class UpcomingMeetingsAdapter extends RecyclerView.Adapter<UpcomingMeetin
             }
 
             // If meeting ended within the past 5 minutes, display expired for 5 minutes and then make view invisible
-            if (currentTime > timestamp && (currentTime - timestamp) <= 300) {
+            else if (currentTime > (timestamp + 3600)) {
                 rootView.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(GONE);
                 tvUpcomingMeeting.setVisibility(GONE);
@@ -128,21 +128,21 @@ public class UpcomingMeetingsAdapter extends RecyclerView.Adapter<UpcomingMeetin
 
 
             // If we are within five minutes of the meeting, display the countdown time from now till meeting
-            if (currentTime < timestamp && (timestamp - currentTime) <= 300) {
+            else if (currentTime < timestamp && (timestamp - currentTime) <= 300) {
                 double secondsRemaining = timestamp - currentTime;
                 double minutesRemaining = Math.ceil(secondsRemaining / 60);
                 rootView.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.VISIBLE);
                 tvUpcomingMeeting.setVisibility(View.VISIBLE);
-                int progress = 5 - ((int) Math.round(minutesRemaining/5));
+                int progress = (int) Math.round(((5-minutesRemaining)/5) * 100);
                 progressBar.setProgress(progress);
-                tvUpcomingMeeting.setText(minutesRemaining + " min.");
+                tvUpcomingMeeting.setText((int) minutesRemaining + " min");
                 ibMap.setVisibility(GONE);
                 btnJoinMeeting.setVisibility(GONE);
             }
 
             // If the meeting is currently going on, within 60 minutes (or duration) of meeting display ongoing chip
-            if (currentTime > timestamp && currentTime < timestamp + 3600) {
+            else if (currentTime > timestamp && currentTime < timestamp + 3600) {
                 rootView.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(GONE);
                 tvUpcomingMeeting.setVisibility(GONE);

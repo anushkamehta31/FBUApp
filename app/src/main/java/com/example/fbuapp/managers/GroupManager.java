@@ -236,7 +236,7 @@ public class GroupManager {
         return 0;
     }
 
-    public void queryPendingGroups(PendingInvitesAdapter pendingInvitesAdapter, List<Group> pendingGroups) {
+    public void queryPendingGroups(PendingInvitesAdapter pendingInvitesAdapter, List<Group> pendingGroups, TextView tvNoPendingInvites, LottieAnimationView noPendingGroups) {
         // Specify which class to query
         ParseQuery<ParseObject> query = ParseQuery.getQuery("GroupMappings");
         query.include(Group.KEY_GROUP_ID);
@@ -258,6 +258,13 @@ public class GroupManager {
                     Log.i(TAG, "Group: " + group.getName());
                     pendingGroups.add(group);
                     pendingInvitesAdapter.notifyDataSetChanged();
+                }
+                if (pendingGroups.size() == 0) {
+                    tvNoPendingInvites.setVisibility(View.VISIBLE);
+                    noPendingGroups.setVisibility(View.VISIBLE);
+                } else {
+                    tvNoPendingInvites.setVisibility(GONE);
+                    noPendingGroups.setVisibility(GONE);
                 }
                 Log.i(TAG, "final Size"+ pendingGroups.size());
             }

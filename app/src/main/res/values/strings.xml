@@ -229,5 +229,6 @@
     <string name="decline_group_invite">Decline group invite</string>
     <string name="don_t_want_to_join_this_group">Don\'t want to join this group?</string>
     <string name="accept">Accept Group Invite</string>
+    <string name="group_notes">Group Notes</string>
 
 </resources>
