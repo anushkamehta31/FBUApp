@@ -36,10 +36,13 @@ import com.parse.SaveCallback;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
 import static android.view.View.GONE;
+import static com.example.fbuapp.models.Group.KEY_TIMESTAMP;
 
 public class GroupManager {
 
@@ -159,9 +162,35 @@ public class GroupManager {
                     Group group = (Group) mapping.getParseObject(Group.KEY_GROUP_ID);
                     Log.i(TAG, "Group: " + group.getName());
                     userGroups.add(group);
+                    sortByNext(userGroups);
                     adapter.notifyDataSetChanged();
                 }
                 Log.i(TAG, "final Size"+ userGroups.size());
+            }
+        });
+    }
+
+    private void sortByNext(List<Group> userGroups) {
+        Collections.sort(userGroups, new Comparator<Group>() {
+            @Override
+            public int compare(Group u1, Group u2) {
+                long u1TimeStamp = u1.getTimeStamp();
+                long u2TimeStamp = u2.getTimeStamp();
+                long currentTime = System.currentTimeMillis()/1000L;
+
+                if (currentTime > (u1TimeStamp + 3900)) {
+                    while (currentTime > u1TimeStamp) {
+                        u1TimeStamp += 604800;
+                    }
+                }
+
+                if (currentTime > (u2TimeStamp + 3900)) {
+                    while (currentTime > u2TimeStamp) {
+                        u2TimeStamp += 604800;
+                    }
+                }
+
+                return (int) Math.floor(u1TimeStamp - u2TimeStamp);
             }
         });
     }
