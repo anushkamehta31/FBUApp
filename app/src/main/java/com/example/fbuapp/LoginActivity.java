@@ -6,8 +6,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.fbuapp.databinding.ActivityLoginBinding;
@@ -22,7 +25,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText etUsername;
     private EditText etPassword;
     private Button btnLogin;
-    private Button btnSignUp;
+    TextView tvCreateAccount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +36,14 @@ public class LoginActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
+        // Change status bar color
+        if (android.os.Build.VERSION.SDK_INT >= 21){
+            Window window = this.getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.setStatusBarColor(getResources().getColor(R.color.black));
+        }
+
         // If the user is already logged in then we want to go to the main activity automatically
         if (ParseUser.getCurrentUser() != null) {
             goMainActivity();
@@ -41,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
         // Get references more efficiently
         etUsername = binding.etUsername;
         etPassword = binding.etPassword;
-        btnSignUp = binding.btnSignUp;
+        tvCreateAccount = binding.tvCreateAccount;
         btnLogin = binding.btnLogin;
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,7 +64,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        btnSignUp.setOnClickListener(new View.OnClickListener() {
+        tvCreateAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Navigate to the create profile activity if user presses sign up

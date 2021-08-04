@@ -6,21 +6,46 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="16dp"
-    android:padding="10dp"
+    android:padding="15dp"
     tools:context=".CreateAccountActivity">
+
+    <TextView
+        android:id="@+id/tvCreateAccount"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:fontFamily="@font/nunito_semibold"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/create_account"/>
 
 
     <EditText
         android:id="@+id/etUsername"
         android:layout_width="match_parent"
+        android:layout_below="@id/tvCreateAccount"
+        android:layout_marginTop="100dp"
         android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:drawableStart="@drawable/custom_user_icon"
+        android:drawablePadding="12dp"
+        android:fontFamily="@font/nunito_light"
+        android:textSize="15sp"
+        android:background="@drawable/custom_input"
         android:hint="@string/username" />
 
     <EditText
         android:id="@+id/etPassword"
         android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/etUsername"
+        android:padding="10dp"
+        android:fontFamily="@font/nunito_light"
+        android:textSize="15sp"
+        android:background="@drawable/custom_input"
+        android:drawableStart="@drawable/custom_lock_icon"
+        android:drawablePadding="12dp"
         android:hint="@string/password"
         android:inputType="textPassword"
         />
@@ -29,26 +54,66 @@
         android:id="@+id/tvLocation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/custom_input"
+        android:padding="10dp"
+        android:fontFamily="@font/nunito_light"
+        android:textSize="15sp"
         android:layout_below="@id/etPassword"
-        android:hint="@string/current_location"
-        android:padding="5dp"
-        android:textSize="18sp" />
+        android:drawableStart="@drawable/outline_location_on_24"
+        android:drawablePadding="12dp"
+        android:hint="@string/current_location" />
 
     <TextView
         android:id="@+id/tvSchool"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvLocation"
-        android:hint="University"
-        android:padding="5dp"
-        android:textSize="18sp" />
+        android:background="@drawable/custom_input"
+        android:padding="10dp"
+        android:fontFamily="@font/nunito_light"
+        android:textSize="15sp"
+        android:drawableStart="@drawable/outline_school_create"
+        android:drawablePadding="12dp"
+        android:hint="@string/university" />
 
 
-    <Button
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnSignUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvSchool"
-        android:text="@string/sign_up"/>
+        android:fontFamily="@font/alata_ref"
+        android:text="@string/sign_up"
+        android:textSize="15sp"
+        android:layout_above="@+id/tvNoAccount"
+        android:backgroundTint="@color/light_blue"
+        android:layout_marginBottom="5dp"
+        app:cornerRadius="20dp"/>
+
+    <TextView
+        android:id="@+id/tvNoAccount"
+        android:text="@string/already_have_an_account"
+        android:layout_marginStart="65dp"
+        android:fontFamily="@font/nunito_light"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+        android:layout_width="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="40dp"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/tvCreate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sign_up"
+        android:fontFamily="@font/nunito_semibold"
+        android:textColor="@color/light_blue"
+        android:layout_toEndOf="@id/tvNoAccount"
+        android:layout_marginStart="5dp"
+        android:layout_alignTop="@id/tvNoAccount"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+        />
 
   </RelativeLayout>

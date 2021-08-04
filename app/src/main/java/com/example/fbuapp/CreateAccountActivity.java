@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -62,6 +64,14 @@ public class CreateAccountActivity extends AppCompatActivity {
         // layout of activity is stored in root property
         View view = binding.getRoot();
         setContentView(view);
+
+        // Change status bar color
+        if (android.os.Build.VERSION.SDK_INT >= 21){
+            Window window = this.getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.setStatusBarColor(getResources().getColor(R.color.black));
+        }
 
         etUsername = binding.etUsername;
         etPassword = binding.etPassword;
