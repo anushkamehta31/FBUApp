@@ -142,7 +142,7 @@ public class GroupManager {
         });
     }
 
-    public void queryGroups(RecyclerView.Adapter adapter, List<Group> userGroups) {
+    public void queryGroups(RecyclerView.Adapter adapter, List<Group> userGroups, Boolean isVirtual) {
         // Specify which class to query
         ParseQuery<ParseObject> query = ParseQuery.getQuery("GroupMappings");
         query.include(Group.KEY_GROUP_ID);
@@ -161,9 +161,11 @@ public class GroupManager {
                 for (ParseObject mapping : userMappings) {
                     Group group = (Group) mapping.getParseObject(Group.KEY_GROUP_ID);
                     Log.i(TAG, "Group: " + group.getName());
-                    userGroups.add(group);
-                    sortByNext(userGroups);
-                    adapter.notifyDataSetChanged();
+                    if (isVirtual == null || (isVirtual && group.isVirtual()) || ((!isVirtual) && (!group.isVirtual()))) {
+                        userGroups.add(group);
+                        sortByNext(userGroups);
+                        adapter.notifyDataSetChanged();
+                    }
                 }
                 Log.i(TAG, "final Size"+ userGroups.size());
             }

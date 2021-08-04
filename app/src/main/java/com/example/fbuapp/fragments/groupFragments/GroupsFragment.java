@@ -19,14 +19,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import com.example.fbuapp.MainActivity;
 import com.example.fbuapp.R;
 import com.example.fbuapp.adapters.GroupsAdapter;
+import com.example.fbuapp.databinding.FragmentGroupDetailsBinding;
+import com.example.fbuapp.databinding.FragmentGroupsBinding;
 import com.example.fbuapp.managers.GroupManager;
 import com.example.fbuapp.managers.GroupMappingsManager;
 import com.example.fbuapp.models.Group;
 import com.example.fbuapp.models.GroupMappings;
+import com.google.android.material.chip.Chip;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.parse.FindCallback;
@@ -44,12 +48,16 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 
 public class GroupsFragment extends Fragment {
 
+    FragmentGroupsBinding binding;
     protected RecyclerView rvGroups;
     public static final String TAG = "GroupsFragment";
     public List<Group> userGroups;
     public GroupsAdapter adapter;
     FloatingActionButton btnCreate;
     GroupMappingsManager mappingsManager;
+    Chip chipAll;
+    Chip chipVirtual;
+    Chip chipInPerson;
 
     public GroupsFragment() {
         // Required empty public constructor
@@ -60,13 +68,19 @@ public class GroupsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_groups, container, false);
+        binding = FragmentGroupsBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        rvGroups = view.findViewById(R.id.rvGroups);
+        rvGroups = binding.rvGroups;
+
+        // Get references to chips
+        chipAll = binding.chipAll;
+        chipVirtual = binding.chipVirtual;
+        chipInPerson = binding.chipInPerson;
 
         userGroups = new ArrayList<>();
         adapter = new GroupsAdapter(getContext(), userGroups);
@@ -78,12 +92,12 @@ public class GroupsFragment extends Fragment {
         rvGroups.setLayoutManager(layout);
         // Get the groups
         GroupManager groupManager = new GroupManager();
-        groupManager.queryGroups(adapter, userGroups);
+        groupManager.queryGroups(adapter, userGroups, null);
 
         mappingsManager = new GroupMappingsManager();
 
         // Create group button initialization
-        btnCreate = view.findViewById(R.id.btnCreate);
+        btnCreate = binding.btnCreate;
         btnCreate.show();
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,6 +159,37 @@ public class GroupsFragment extends Fragment {
         // Attach item touch helper to the recycler view
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(rvGroups);
+
+        // Set filter listeners
+        chipInPerson.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    userGroups.clear();
+                    groupManager.queryGroups(adapter, userGroups, false);
+                }
+            }
+        });
+
+        chipVirtual.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    userGroups.clear();
+                    groupManager.queryGroups(adapter, userGroups, true);
+                }
+            }
+        });
+
+        chipAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    userGroups.clear();
+                    groupManager.queryGroups(adapter, userGroups, null);
+                }
+            }
+        });
 
     }
 

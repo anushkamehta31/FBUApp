@@ -1,25 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.groupFragments.GroupsFragment">
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/cgGroupType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:singleSelection="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+
+        app:checkedChip="@id/chipAll">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipAll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/CustomChipStyle"
+            android:fontFamily="@font/source_sans_pro"
+            android:text="@string/all"
+            />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipVirtual"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/CustomChipStyle"
+            android:fontFamily="@font/source_sans_pro"
+            android:text="@string/virtual" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipInPerson"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/CustomChipStyle"
+            android:fontFamily="@font/source_sans_pro"
+            android:text="@string/in_person"/>
+
+    </com.google.android.material.chip.ChipGroup>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvGroups"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/cgGroupType"
         android:padding="8dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnCreate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
         android:backgroundTint="#95CCF1"
         android:layout_margin="16dp"
         android:src="@drawable/ic_baseline_add_24"
         tools:ignore="RtlHardcoded" />
 
 
-</FrameLayout>
+</RelativeLayout>
