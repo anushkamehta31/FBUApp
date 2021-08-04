@@ -2,6 +2,7 @@ package com.example.fbuapp.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,10 +14,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fbuapp.MainActivity;
 import com.example.fbuapp.R;
+import com.example.fbuapp.fragments.DirectionsFragment;
 import com.example.fbuapp.managers.ZoomManager;
 import com.example.fbuapp.models.Group;
 import com.google.android.material.button.MaterialButton;
@@ -163,6 +166,15 @@ public class UpcomingMeetingsAdapter extends RecyclerView.Adapter<UpcomingMeetin
                         @Override
                         public void onClick(View v) {
                             // TODO: Directions API
+                            MainActivity activity = (MainActivity) mContext;
+                            FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+                            Bundle bundle = new Bundle();
+                            DirectionsFragment fragment = new DirectionsFragment();
+                            bundle.putParcelable("itemGroup", group);
+                            bundle.putBoolean("homeFragment", true);
+                            fragment.setArguments(bundle);
+                            ft.replace(R.id.flContainer, fragment);
+                            ft.commit();
                         }
                     });
                 }

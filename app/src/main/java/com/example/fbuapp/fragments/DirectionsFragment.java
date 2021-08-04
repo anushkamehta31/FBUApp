@@ -21,6 +21,7 @@ import com.example.fbuapp.MainActivity;
 import com.example.fbuapp.R;
 import com.example.fbuapp.adapters.MapPotentialGroupsAdapter;
 import com.example.fbuapp.databinding.FragmentDirectionsBinding;
+import com.example.fbuapp.fragments.homeFragments.HomeFragment;
 import com.example.fbuapp.fragments.searchFragments.SearchGroupFragment;
 import com.example.fbuapp.fragments.groupFragments.GroupDetailsFragment;
 import com.example.fbuapp.managers.LocationManager;
@@ -73,6 +74,8 @@ public class DirectionsFragment extends Fragment implements OnMapReadyCallback {
 
     public List<Marker> allMarkers;
 
+    public boolean homeFragment;
+
     public DirectionsFragment() {
         // Required empty public constructor
     }
@@ -88,6 +91,11 @@ public class DirectionsFragment extends Fragment implements OnMapReadyCallback {
             }
             if (getArguments().getParcelableArrayList("potentialGroups") != null) {
                 potentialGroups = getArguments().getParcelableArrayList("potentialGroups");
+            }
+            if (getArguments().getBoolean("homeFragment")) {
+                homeFragment = true;
+            } else {
+                homeFragment = false;
             }
         }
     }
@@ -115,7 +123,9 @@ public class DirectionsFragment extends Fragment implements OnMapReadyCallback {
         ibClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (potentialGroups != null) {
+                if (homeFragment) {
+                    goHomeFragment();
+                } else if (potentialGroups != null) {
                     goSearchFragment();
                 } else if (group != null) {
                     goDetailsFragment();
@@ -123,6 +133,14 @@ public class DirectionsFragment extends Fragment implements OnMapReadyCallback {
             }
         });
         return binding.getRoot();
+    }
+
+    private void goHomeFragment() {
+        MainActivity activity = (MainActivity) getContext();
+        FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+        HomeFragment fragment = new HomeFragment();
+        ft.replace(R.id.flContainer, fragment);
+        ft.commit();
     }
 
     private void goDetailsFragment() {
