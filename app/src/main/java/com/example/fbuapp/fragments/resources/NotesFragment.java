@@ -13,7 +13,10 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.fbuapp.MainActivity;
 import com.example.fbuapp.R;
@@ -25,6 +28,9 @@ import com.example.fbuapp.managers.ResourceManager;
 import com.example.fbuapp.models.Group;
 import com.example.fbuapp.models.Link;
 import com.example.fbuapp.models.Note;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
+import com.hootsuite.nachos.NachoTextView;
 
 import org.jetbrains.annotations.NotNull;
 

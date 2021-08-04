@@ -45,6 +45,17 @@ public class GroupMappingsManager {
         mappings.save();
     }
 
+    public void setSettingsMappings(Map<String, ParseUser> map, NachoTextView nUsers, Group group) throws ParseException {
+        for (com.hootsuite.nachos.chip.Chip chip : nUsers.getAllChips()) {
+            ParseUser user = map.get(chip.getText().toString());
+            GroupMappings mappings = new GroupMappings();
+            mappings.setGroup(group);
+            mappings.setIsMember(false);
+            mappings.setUser(user);
+            mappings.save();
+        }
+    }
+
     public void setUserMapping(ParseUser user, Group group) {
         GroupMappings groupMapping = new GroupMappings();
         groupMapping.setUser(user);

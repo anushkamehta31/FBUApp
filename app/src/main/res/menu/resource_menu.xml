@@ -14,10 +14,6 @@
             android:id="@+id/links"
             android:icon="@drawable/outline_link_24"
             android:title="Links"/>
-        <item
-            android:id="@+id/chat"
-            android:icon="@drawable/outline_question_answer_24"
-            android:title="Chat"/>
 
     </group>
 

@@ -149,9 +149,6 @@ public class GroupDetailsFragment extends Fragment {
                     case R.id.links:
                         fragment = new LinksFragment();
                         break;
-                    case R.id.chat:
-                        fragment = new ChatFragment();
-                        break;
                     case R.id.settings:
                         fragment = new SettingsFragment();
                         break;

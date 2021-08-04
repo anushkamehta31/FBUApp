@@ -297,7 +297,6 @@ public class CreateGroupFragment extends DialogFragment {
                 groupManager.createGroup(group, cVirtual.isChecked(), groupName.getText().toString(), school, meetingLocation,
                         tvDescription.getText().toString(), ((Chip) chipGroupDay.getChildAt(0)).getText().toString(),
                         ((Chip) chipGroupTimes.getChildAt(0)).getText().toString(), topics, users, nUsers, getTargetFragment(), getContext(), timestamp);
-                // createGroup();
             } catch (ParseException e) {
                 e.printStackTrace();
             }

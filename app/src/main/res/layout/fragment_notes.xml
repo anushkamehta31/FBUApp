@@ -17,7 +17,6 @@
         android:includeFontPadding="false"
         android:text="@string/group_notes"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-
         android:textColor="@color/black"
         android:textSize="20sp"
         />

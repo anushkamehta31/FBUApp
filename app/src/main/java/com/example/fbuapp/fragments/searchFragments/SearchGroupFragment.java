@@ -338,7 +338,7 @@ public class SearchGroupFragment extends Fragment {
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                    return (int) (d1 - d2);
+                    return (int) Math.floor(d2 - d1);
                 }
             });
             Collections.reverse(potentialGroups);
