@@ -17,7 +17,7 @@ import com.example.fbuapp.databinding.ActivityMainBinding;
 import com.example.fbuapp.fragments.searchFragments.SearchGroupFragment;
 import com.example.fbuapp.fragments.groupFragments.GroupsFragment;
 import com.example.fbuapp.fragments.homeFragments.HomeFragment;
-import com.example.fbuapp.fragments.ProfileFragment;
+import com.example.fbuapp.fragments.profileFragments.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 

@@ -6,11 +6,14 @@ import android.widget.TextView;
 import com.example.fbuapp.models.Group;
 import com.example.fbuapp.models.Location;
 import com.example.fbuapp.models.School;
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+
+import java.util.List;
 
 public class LocationManager {
 
@@ -68,5 +71,22 @@ public class LocationManager {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void getUserLocation(TextView tvLocation) {
+        ParseQuery<Location> query = ParseQuery.getQuery(Location.class);
+        query.whereEqualTo(KEY_ID, ((Location) ParseUser.getCurrentUser().get(KEY_LOCATION)).getObjectId());
+        query.include(KEY_NAME);
+        query.include(KEY_LOCATION);
+        query.include(KEY_ADDRESS);
+        query.getFirstInBackground(new GetCallback<Location>() {
+            @Override
+            public void done(Location location, ParseException e) {
+                if (e != null) {
+                    return;
+                }
+                tvLocation.setText(location.getName());
+            }
+        });
     }
 }

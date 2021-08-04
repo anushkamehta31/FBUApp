@@ -3,13 +3,146 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.ProfileFragment"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragments.profileFragments.ProfileFragment"
     android:layout_margin="16dp">
 
-    <Button
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/ivProfileImage"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        tools:src="@tools:sample/avatars"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        />
+
+    <TextView
+        android:id="@+id/tvChangeProfileImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/change_image"
+        android:fontFamily="@font/alata_ref"
+        android:textColor="#4DB1E8"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/ivProfileImage"
+        android:layout_marginTop="10dp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+        />
+
+    <TextView
+        android:id="@+id/tvUsernameTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/username"
+        android:layout_marginTop="200dp"
+        android:layout_marginStart="15dp"
+        android:fontFamily="@font/nunito_sans"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        />
+
+    <TextView
+        android:id="@+id/tvSchoolTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/school"
+        android:fontFamily="@font/nunito_sans"
+        android:layout_below="@id/tvUsernameTitle"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="20dp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        />
+
+    <TextView
+        android:id="@+id/tvLocationTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/location"
+        android:fontFamily="@font/nunito_sans"
+        android:layout_marginStart="15dp"
+        android:layout_below="@id/tvSchoolTitle"
+        android:layout_marginTop="20dp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        />
+
+    <TextView
+        android:id="@+id/tvUserName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="anushkamehta"
+        android:layout_marginTop="203dp"
+        android:layout_marginStart="130dp"
+        android:textSize="13sp"
+        android:fontFamily="@font/nunito_sans"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        />
+
+    <TextView
+        android:id="@+id/tvSchool"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="University of Maryland"
+        android:fontFamily="@font/nunito_sans"
+        android:layout_marginStart="130dp"
+        android:layout_below="@id/tvUsernameTitle"
+        android:textSize="13sp"
+        android:layout_marginTop="23dp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        />
+
+    <TextView
+        android:id="@+id/tvLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="4200 Hartwick Road"
+        android:fontFamily="@font/nunito_sans"
+        android:layout_below="@id/tvSchoolTitle"
+        android:textSize="13sp"
+        android:layout_marginTop="23dp"
+        android:layout_marginStart="130dp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        />
+
+    <ImageButton
+        android:id="@+id/editUsername"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/outline_navigate_next_24"
+        android:backgroundTint="@color/zm_transparent"
+        android:layout_marginTop="198dp"
+        android:layout_alignParentEnd="true"
+        />
+
+    <ImageButton
+        android:id="@+id/editSchool"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/outline_navigate_next_24"
+        android:backgroundTint="@color/zm_transparent"
+        android:layout_below="@id/editUsername"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentEnd="true"
+        />
+
+    <ImageButton
+        android:id="@+id/editLocation"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/outline_navigate_next_24"
+        android:backgroundTint="@color/zm_transparent"
+        android:layout_below="@id/editSchool"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentEnd="true"
+        />
+
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnLogout"
+        app:cornerRadius="20dp"
+        android:text="@string/log_out"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/log_out"/>
+        android:layout_alignParentBottom="true"
+        android:fontFamily="@font/alata_ref"
+        android:backgroundTint="#8AD1F8"/>
 
 </RelativeLayout>

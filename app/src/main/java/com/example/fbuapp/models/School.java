@@ -17,6 +17,7 @@ public class School extends ParseObject implements Parcelable {
     String name;
     public static final String KEY_LOCATION = "location";
     public static final String KEY_NAME = "name";
+    public static final String KEY_SCHOOL = "school";
     public static final String TAG = "School";
 
     public School() {
