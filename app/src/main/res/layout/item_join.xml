@@ -1,139 +1,144 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:gravity="center">
+    android:gravity="center"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="30dp"
         android:layout_margin="8dp"
-        app:strokeColor="@color/black"
-        app:strokeWidth="2dp">
+        app:cardCornerRadius="15dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:padding="15dp"
             android:layout_height="match_parent">
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardHeading"
+            <ImageView
+                android:id="@+id/ivImage"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_centerHorizontal="true"
-                app:strokeColor="@color/black"
-                app:strokeWidth="2dp"
-                app:cardCornerRadius="10dp">
-                <RelativeLayout
-                    android:padding="20dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                    <TextView
-                        android:id="@+id/tvMembers"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        tools:text="4 members"
-                        android:fontFamily="@font/source_sans_pro"
-                        />
+                android:scaleType="centerCrop"
+                android:layout_height="200dp"
+                tools:src="@tools:sample/avatars" />
 
-                    <TextView
-                        android:id="@+id/tvLocationItem"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/tvMembers"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:fontFamily="@font/lora_bold"
-                        android:textSize="20sp"
-                        tools:text="Location: Iribe Center"
-                        android:visibility="gone"/>
-                </RelativeLayout>
-            </com.google.android.material.card.MaterialCardView>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@drawable/gradient_bg" />
 
             <TextView
                 android:id="@+id/tvNameItem"
                 android:layout_width="wrap_content"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingTop="10dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/cardHeading"
-                android:layout_marginTop="20dp"
-                android:fontFamily="@font/lora_bold"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                tools:text="COMM101 Group" />
-
-            <ImageView
-                android:id="@+id/ivImage"
-                android:layout_width="200dp"
-                android:layout_height="100dp"
-                tools:src="@tools:sample/avatars"
-                android:layout_below="@id/tvNameItem"
-                android:layout_marginTop="20dp"
-                android:scaleType="centerCrop"
-                android:layout_alignStart="@+id/cardHeading"
+                tools:text="CMSC351"
+                android:fontFamily="@font/alata_ref"
+                android:textColor="@color/white"
                 android:layout_marginBottom="10dp"
-                />
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                android:layout_margin="10dp"/>
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardDescription"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/tvLocationItem"
+                android:layout_width="wrap_content"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@+id/ivImage"
-                app:cardCornerRadius="10dp"
-                app:strokeColor="@color/black"
-                app:strokeWidth="2dp">
-                <RelativeLayout
-                    android:padding="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                    <TextView
-                        android:id="@+id/tvDistance"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        tools:text="0.2 miles from you"
-                        android:fontFamily="@font/source_sans_pro"
-                        />
+                tools:text="Princeton Public Library"
+                android:layout_marginStart="10dp"
+                android:fontFamily="@font/nunito_semibold"
+                android:textColor="@color/white"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                android:layout_below="@id/tvNameItem"/>
 
-                    <TextView
-                        android:id="@+id/tvDescriptionItem"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/tvDistance"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:fontFamily="@font/lora_bold"
-                        android:textSize="10sp"
-                        tools:text="COMM101 is a group dedicated to..." />
-                </RelativeLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnJoinMeeting"
-                app:cornerRadius="20dp"
-                android:layout_below="@+id/cardDescription"
+            <TextView
+                android:id="@+id/tvSchoolName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#65DF92"
-                android:text="join"
-                android:fontFamily="@font/source_sans_pro"
-                android:layout_centerHorizontal="true"/>
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:layout_below="@+id/tvLocationItem"
+                tools:text="University of Maryland"
+                android:fontFamily="@font/nunito_sans"
+                android:textColor="@color/white"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                android:layout_marginStart="10dp"
+                android:layout_marginBottom="10dp"/>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ivImage"
+                android:padding="10dp">
 
+                <ImageView
+                    android:id="@+id/ivNearMe"
+                    android:layout_width="15sp"
+                    android:layout_height="15sp"
+                    android:layout_marginTop="2dp"
+                    android:src="@drawable/outline_near_me_24"
+                    android:layout_toStartOf="@+id/tvDistance"
+                    android:layout_marginEnd="3dp"
+                    />
+
+                <TextView
+                    android:id="@+id/tvDistance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="22.2 mi"
+                    android:fontFamily="@font/nunito_sans"
+                    android:layout_alignParentEnd="true"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                    android:layout_marginEnd="5dp"
+                    />
+
+                <TextView
+                    android:id="@+id/tvMembers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvDistance"
+                    tools:text="6 members"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="5dp"
+                    android:fontFamily="@font/nunito_sans"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                    />
+
+                <TextView
+                    android:id="@+id/tvDescriptionItem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvMembers"
+                    tools:text="Study group for ENGL101 at UPenn"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:fontFamily="@font/nunito_sans"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                    />
+            </RelativeLayout>
 
         </RelativeLayout>
 
     </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnJoinMeeting"
+        app:cornerRadius="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#65DF92"
+        android:text="join"
+        android:fontFamily="@font/alata_ref"
+        android:layout_below="@+id/card"
+        android:layout_centerHorizontal="true"/>
+
+
 
 </RelativeLayout>

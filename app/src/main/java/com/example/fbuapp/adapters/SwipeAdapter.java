@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.example.fbuapp.R;
 import com.example.fbuapp.managers.GroupManager;
 import com.example.fbuapp.managers.GroupMappingsManager;
+import com.example.fbuapp.managers.SchoolManager;
 import com.example.fbuapp.models.Group;
 import com.example.fbuapp.models.Location;
 import com.google.android.material.button.MaterialButton;
@@ -65,7 +66,7 @@ public class SwipeAdapter extends PagerAdapter {
 
         Group group = groups.get(position);
         ImageView imageView;
-        TextView tvName, tvDescription, tvDistance, tvMembers, tvLocation;
+        TextView tvName, tvDescription, tvDistance, tvMembers, tvLocation, tvSchool;
         MaterialButton btnJoin;
 
         imageView = view.findViewById(R.id.ivImage);
@@ -75,11 +76,13 @@ public class SwipeAdapter extends PagerAdapter {
         tvMembers = view.findViewById(R.id.tvMembers);
         tvLocation = view.findViewById(R.id.tvLocationItem);
         btnJoin = view.findViewById(R.id.btnJoinMeeting);
+        tvSchool = view.findViewById(R.id.tvSchoolName);
+
+        tvSchool.setText(group.getSchool().getName());
 
         ParseFile image = group.getImage();
         if (image != null) {
-            Glide.with(context).load(image.getUrl()).centerCrop()
-                    .transform(new RoundedCornersTransformation(30,10)).into(imageView);
+            Glide.with(context).load(image.getUrl()).into(imageView);
         }
 
         tvName.setText(group.getName());
@@ -89,6 +92,7 @@ public class SwipeAdapter extends PagerAdapter {
 
         if (group.isVirtual()) {
             tvDistance.setText(R.string.vg);
+            tvLocation.setText(R.string.zoom_meeting);
         } else {
             ParseQuery<Location> query = new ParseQuery<Location>(Location.class);
             query.include("name");
