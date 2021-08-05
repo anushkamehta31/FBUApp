@@ -4,12 +4,17 @@ import android.content.Context;
 import android.content.Intent;
 import org.json.JSONObject;
 
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.DialogFragment;
 
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -105,6 +110,8 @@ import okhttp3.internal.http.HttpHeaders;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
+import static com.example.fbuapp.fragments.resources.ImagesFragment.PICK_PHOTO_CODE;
+
 import org.json.JSONObject;
 
 
@@ -124,11 +131,15 @@ public class CreateGroupFragment extends DialogFragment {
     Calendar combinedCal;
     private TextView tvLocation;
     private TextView tvSchool;
+    public TextView tvAddPhoto;
     private ImageView ivProfile;
     private ImageButton ibClose;
     private TextView tvDescription;
     private EditText groupName;
     private TextView tvUsername;
+    ParseFile image;
+    File photoFile;
+    public String photoFileName = "photo.jpg";
     private ExtendedFloatingActionButton efCreate;
     public static final String TAG = "CreateGroupFragment";
     private static int AUTOCOMPLETE_REQUEST_CODE = 1;
@@ -181,6 +192,7 @@ public class CreateGroupFragment extends DialogFragment {
         chipGroupDay = binding.cgMeetingDays;
         efCreate = binding.efCreate;
         groupName = binding.tvName;
+        tvAddPhoto = binding.tvAddPhoto;
         tvDescription = binding.tvDescription;
         usernames = new ArrayList<>();
         meetingID = new StringBuffer(getString(R.string.empty_string));
@@ -243,6 +255,13 @@ public class CreateGroupFragment extends DialogFragment {
             }
         });
 
+        tvAddPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchGallery();
+            }
+        });
+
     }
 
     private void initiateGroup() {
@@ -283,7 +302,7 @@ public class CreateGroupFragment extends DialogFragment {
                 ZoomManager zoomManager = new ZoomManager();
                 zoomManager.generateZoomRoom(getContext(), cVirtual.isChecked(), groupName.getText().toString(), school, meetingLocation,
                         tvDescription.getText().toString(), ((Chip) chipGroupDay.getChildAt(0)).getText().toString(),
-                        ((Chip) chipGroupTimes.getChildAt(0)).getText().toString(), topics, users, nUsers, getTargetFragment(), timestamp);
+                        ((Chip) chipGroupTimes.getChildAt(0)).getText().toString(), topics, users, nUsers, getTargetFragment(), timestamp, image);
                 // generateZoomRoom();
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -296,7 +315,7 @@ public class CreateGroupFragment extends DialogFragment {
                 GroupManager groupManager = new GroupManager();
                 groupManager.createGroup(group, cVirtual.isChecked(), groupName.getText().toString(), school, meetingLocation,
                         tvDescription.getText().toString(), ((Chip) chipGroupDay.getChildAt(0)).getText().toString(),
-                        ((Chip) chipGroupTimes.getChildAt(0)).getText().toString(), topics, users, nUsers, getTargetFragment(), getContext(), timestamp);
+                        ((Chip) chipGroupTimes.getChildAt(0)).getText().toString(), topics, users, nUsers, getTargetFragment(), getContext(), timestamp, image);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -509,7 +528,68 @@ public class CreateGroupFragment extends DialogFragment {
             }
             return;
         }
+
+        if (data != null && requestCode == PICK_PHOTO_CODE && resultCode == RESULT_OK) {
+            Uri selectedImageUri = data.getData();
+            String selectedImagePath = getRealPathFromURIForGallery(selectedImageUri);
+            File imageFile = new File(selectedImagePath);
+            image = new ParseFile(imageFile);
+            tvAddPhoto.setText("Photo selected");
+        }
     }
+
+    public void launchGallery() {
+        // Create intent for picking a photo from the gallery
+        Intent intent = new Intent(Intent.ACTION_PICK,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        photoFile = getPhotoFileUri(photoFileName);
+
+        // wrap File object into a content provider
+        // required for API >= 24
+        // See https://guides.codepath.com/android/Sharing-Content-with-Intents#sharing-files-with-api-24-or-higher
+        Uri fileProvider = FileProvider.getUriForFile(getContext(), "com.codepath.fileproviderx", photoFile);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
+        // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
+        // So as long as the result is not null, it's safe to use the intent.
+        startActivityForResult(intent, PICK_PHOTO_CODE);
+    }
+
+    // Returns the File for a photo stored on disk given the fileName
+    public File getPhotoFileUri(String fileName) {
+        // Get safe storage directory for photos
+        // Use `getExternalFilesDir` on Context to access package-specific directories.
+        // This way, we don't need to request external read/write runtime permissions.
+        File mediaStorageDir = new File(getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), TAG);
+
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()){
+            Log.d(TAG, "failed to create directory");
+        }
+
+        // Return the file target for the photo based on filename
+        File file = new File(mediaStorageDir.getPath() + File.separator + fileName);
+
+        return file;
+    }
+
+    public String getRealPathFromURIForGallery(Uri uri) {
+        if (uri == null) {
+            return null;
+        }
+        String[] projection = {MediaStore.Images.Media.DATA};
+        Cursor cursor = getContext().getContentResolver().query(uri, projection, null,
+                null, null);
+        if (cursor != null) {
+            int column_index =
+                    cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        }
+        assert false;
+        cursor.close();
+        return uri.getPath();
+    }
+
 
 
 }

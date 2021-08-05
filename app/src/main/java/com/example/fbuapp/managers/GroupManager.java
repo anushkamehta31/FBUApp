@@ -14,26 +14,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.fbuapp.MainActivity;
 import com.example.fbuapp.R;
-import com.example.fbuapp.adapters.GroupMemberAdapter;
-import com.example.fbuapp.adapters.GroupsAdapter;
 import com.example.fbuapp.adapters.PendingInvitesAdapter;
-import com.example.fbuapp.fragments.groupFragments.CreateGroupFragment;
 import com.example.fbuapp.fragments.groupFragments.GroupsFragment;
 import com.example.fbuapp.models.Group;
 import com.example.fbuapp.models.GroupMappings;
 import com.example.fbuapp.models.Location;
 import com.example.fbuapp.models.School;
-import com.google.android.material.chip.Chip;
 import com.hootsuite.nachos.NachoTextView;
 import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseGeoPoint;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,7 +36,6 @@ import java.util.List;
 import java.util.Map;
 
 import static android.view.View.GONE;
-import static com.example.fbuapp.models.Group.KEY_TIMESTAMP;
 
 public class GroupManager {
 
@@ -101,7 +94,7 @@ public class GroupManager {
 
     public void createGroup(Group group, boolean isVirtual, String groupName, School school, Location meetingLocation,
                             String description, String day, String time, ArrayList<String> topics, Map<String, ParseUser> map,
-                            NachoTextView nUsers, Fragment fragment, Context context, long timestamp) throws ParseException {
+                            NachoTextView nUsers, Fragment fragment, Context context, long timestamp, ParseFile image) throws ParseException {
         if (isVirtual) group.setIsVirtual(true);
         else {
             group.setLocation(meetingLocation);
@@ -116,6 +109,9 @@ public class GroupManager {
         group.setMeetingTime(time);
         group.setTopics(topics);
         group.setTimeStamp(timestamp);
+        if (image != null) {
+            group.setImage(image);
+        }
         // Save to parse
         group.saveInBackground(new SaveCallback() {
             @Override

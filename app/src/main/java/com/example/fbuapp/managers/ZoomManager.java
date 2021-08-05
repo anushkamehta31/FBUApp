@@ -12,12 +12,12 @@ import com.codepath.asynchttpclient.RequestHeaders;
 import com.codepath.asynchttpclient.RequestParams;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.example.fbuapp.R;
-import com.example.fbuapp.fragments.groupFragments.CreateGroupFragment;
 import com.example.fbuapp.models.Group;
 import com.example.fbuapp.models.Location;
 import com.example.fbuapp.models.School;
 import com.hootsuite.nachos.NachoTextView;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseUser;
 
 import org.json.JSONException;
@@ -41,7 +41,7 @@ public class ZoomManager {
     // Create Zoom room and set password and meetingID
     public void generateZoomRoom(Context context, boolean isVirtual, String groupName, School school, Location meetingLocation,
                                  String description, String day, String time, ArrayList<String> topics, Map<String, ParseUser> map,
-                                 NachoTextView nUsers, Fragment fragment, long timestamp) throws JSONException {
+                                 NachoTextView nUsers, Fragment fragment, long timestamp, ParseFile image) throws JSONException {
 
         StringBuffer meetingID = new StringBuffer(context.getString(R.string.empty_string));
         StringBuffer password = new StringBuffer(context.getString(R.string.empty_string));
@@ -85,7 +85,7 @@ public class ZoomManager {
                 GroupManager groupManager = new GroupManager();
                 try {
                     groupManager.createGroup(group, isVirtual, groupName, school, meetingLocation, description, day, time,
-                            topics, map, nUsers, fragment, context, timestamp);
+                            topics, map, nUsers, fragment, context, timestamp, image);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }

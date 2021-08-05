@@ -48,15 +48,17 @@
             android:layout_margin="7dp"
             />
 
-        <ImageView
+        <TextView
+            android:id="@+id/tvAddPhoto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/outline_arrow_downward_24"
-            android:layout_toStartOf="@id/tvCreate"
-            android:layout_alignTop="@id/tvCreate"
-            android:layout_marginEnd="3dp"
-            android:layout_marginTop="2.5dp"
-            app:tint="#4E99F4" />
+            android:text="Add a photo"
+            android:layout_below="@id/ivProfile"
+            android:fontFamily="@font/alata_ref"
+            android:textColor="@color/light_blue"
+            android:textSize="13sp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:layout_marginStart="15dp"/>
 
 
         <com.google.android.material.chip.ChipGroup
@@ -64,7 +66,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:singleSelection="true"
-            android:layout_below="@+id/tvCreate"
+            android:layout_below="@+id/tvAddPhoto"
             android:layout_marginStart="15dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="15dp">
@@ -133,17 +135,6 @@
             android:fontFamily="@font/source_sans_pro"
             android:textSize="12sp"/>
 
-        <TextView
-            android:id="@+id/tvCreate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/alata_ref"
-            android:text="@string/create_your_group_below"
-            android:textColor="#8F8F8F"
-            android:textSize="18sp"
-            android:layout_below="@+id/ivProfile"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="28dp"/>
 
 
         <com.google.android.material.chip.Chip

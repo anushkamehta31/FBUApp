@@ -20,7 +20,7 @@
             android:id="@+id/chipAll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/CustomChipStyle"
+            style="@style/CustomChipGroup"
             android:fontFamily="@font/source_sans_pro"
             android:text="@string/all"
             />
@@ -29,7 +29,7 @@
             android:id="@+id/chipVirtual"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/CustomChipStyle"
+            style="@style/CustomChipGroup"
             android:fontFamily="@font/source_sans_pro"
             android:text="@string/virtual" />
 
@@ -37,7 +37,7 @@
             android:id="@+id/chipInPerson"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/CustomChipStyle"
+            style="@style/CustomChipGroup"
             android:fontFamily="@font/source_sans_pro"
             android:text="@string/in_person"/>
 
@@ -58,6 +58,8 @@
         android:layout_alignParentBottom="true"
         android:backgroundTint="#95CCF1"
         android:layout_margin="16dp"
+        android:textColor="@color/white"
+        app:iconTint="@color/white"
         android:src="@drawable/ic_baseline_add_24"
         tools:ignore="RtlHardcoded" />
 
