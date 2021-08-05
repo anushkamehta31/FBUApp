@@ -13,8 +13,7 @@
         app:cardCornerRadius="30dp"
         android:layout_margin="8dp"
         app:strokeColor="@color/black"
-        app:strokeWidth="2dp"
-        >
+        app:strokeWidth="2dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
